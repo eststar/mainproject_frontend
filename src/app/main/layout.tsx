@@ -1,20 +1,20 @@
 import Link from 'next/link';
-import React from 'react';
+import SideBar from '@/components/SideBar';
 
 
-export default function MainLayout({ children }: {children: React.ReactNode}) {
+export default function MainLayout({ children }: { children: React.ReactNode }) {
     return (
-        <nav className='w-full flex gap-5'>
-            <aside className='w-64 h-screen bg-[#2c2f36] text-white flex flex-col fixed left-0 top-0 overflow-y-auto'>
-                <ul className='text-white'>
-                    <li><Link href="main/imageinput">이미지 업로드 검색</Link></li>
-                    <li><Link href="main/featureselect">특징 선택 검색</Link></li>
-                    <li></li>
-                </ul>
-            </aside>
-            <main className='ml-64 p-8'>
-                {children}
-            </main>
-        </nav>
+        <div className="flex min-h-screen bg-[#FAF9F6]">
+            {/* 고정 사이드바 */}
+            <SideBar />
+
+            {/* 콘텐츠 영역: 사이드바 너비만큼 왼쪽 여백(ml-64) 확보 */}
+            <div className="flex-1 ml-64 flex flex-col min-w-0">
+                
+                <main className="flex-1 p-12 overflow-y-auto">
+                    {children}
+                </main>
+            </div>
+        </div>
     );
 }
