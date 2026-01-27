@@ -6,6 +6,7 @@ interface ProductCardProps {
   index?: number; // 애니메이션 지연을 위한 인덱스
 }
 
+//출력 이미지 카드
 export default function ProductCard({ product, index = 0 } : ProductCardProps) {
   return (
     <div 

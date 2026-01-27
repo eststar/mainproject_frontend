@@ -1,3 +1,4 @@
+import { ProductType } from '@/types/ProductType';
 import Image from 'next/image';
 import { useState } from 'react';
 import { FaLayerGroup, FaMagnifyingGlass } from 'react-icons/fa6';
@@ -6,6 +7,7 @@ interface ResultGridProps {
     title?: string;
     subtitle?: string;
     isActive?: boolean;
+    products?: ProductType[] | null;
 }
 
 // // 이 데이터는 실제 API 연동 시에는 비어있는 상태로 들어오거나 props로 받아야 합니다.
@@ -16,10 +18,12 @@ const MOCK_ARCHIVE = [
     { id: '4', category: 'Outerwear', name: '', brand: '', price: 0, img: '#' },
 ];
 
+//출력된 이미지들 뿌릴 영역
 export default function ResultGrid({
     title = "Neural Match Results",
     subtitle = "Archive Discovery",
-    isActive = false
+    isActive = false,
+    products = null
 }: ResultGridProps) {
     const [activeFilter, setActiveFilter] = useState('All');
     const filters = ['All', 'Outerwear', 'Tops', 'Bottoms', 'Accessories'];

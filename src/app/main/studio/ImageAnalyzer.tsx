@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import Image from 'next/image';
+import { postImage } from "@/app/api/imageservice/Imageapi"
 
 import {
   FaXmark,
@@ -9,6 +10,8 @@ import {
   FaRotateLeft
 } from 'react-icons/fa6';
 // import { analyzeImage } from '../services/geminiService';
+
+const BASEURL = process.env.NEXT_PUBLIC_BACK_API_URL;
 
 interface ImageAnalyzerProps {
   onAction?: (data: any) => void;
@@ -21,6 +24,9 @@ export default function ImageAnalyzer({ onAction, onReset, isExternalLoading }: 
   const [isUploading, setIsUploading] = useState(false);
   const [analysisData, setAnalysisData] = useState<any>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  // const [tempImgUrl, setTempImgUrl] = useState<string | null>(null);
+
+
 
   //이미지 업로드 취소시 api 요청도 중지 비정상적 중복 요청 방지. 
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -51,38 +57,54 @@ export default function ImageAnalyzer({ onAction, onReset, isExternalLoading }: 
     setPreview(URL.createObjectURL(file));
     setIsUploading(true);
     setAnalysisData(null);
+    console.log("file", file);
+    
+    //임시로 업로드 테스트
+    // try {
+    //   const data = await postImage(file);
+    //   let imgurl : string = data.imageUrl;
+    //   const tempurl = new URL(imgurl);
+    //   const backimgurl = `${BASEURL}${tempurl.pathname}`;
+    //   setTempImgUrl(backimgurl);
+    //   console.log("이미지 URL 보이기", backimgurl);
+      
+    // } catch (error) {
+    //   console.error("error:", error);
+    // }
 
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      const base64 = (reader.result as string).split(',')[1];
-      // 새로운 요청을 위한 AbortController 생성
-      abortControllerRef.current = new AbortController();
+    // const reader = new FileReader();
+    // reader.onloadend = async () => {
+    //   const base64 = (reader.result as string).split(',')[1];
+    //   // 새로운 요청을 위한 AbortController 생성
+    //   abortControllerRef.current = new AbortController();
 
-      try {
-        // 백엔드(Spring Boot)로 데이터 전달 시뮬레이션
-        // const data = await analyzeImage(base64); //구현 예정이기 때문에 막아둠
-        const data = null;
-        // 만약 분석 도중 사용자가 취소(reset)했다면 결과 적용을 건너뜀
-        if (abortControllerRef.current.signal.aborted) return;
+    //   try {
+    //     // 백엔드(Spring Boot)통신
+    //     // const data = await analyzeImage(base64); //구현 예정이기 때문에 막아둠
+    //     const data = null;
+    //     // 만약 분석 도중 사용자가 취소(reset)했다면 결과 적용을 건너뜀
+    //     if (abortControllerRef.current.signal.aborted) return;
 
-        setAnalysisData(data);
-        if (onAction) onAction(data);
-      } catch (error) {
-        console.error("Backend communication error:", error);
-      } finally {
-        setIsUploading(false);
-        abortControllerRef.current = null;
-      }
+    //     setAnalysisData(data);
+    //     if (onAction) onAction(data);
+    //   } catch (error) {
+    //     console.error("Backend communication error:", error);
+    //   } finally {
+    //     setIsUploading(false);
+    //     abortControllerRef.current = null;
+    //   }
 
-      reader.readAsDataURL(file);//파일의 이진(Binary) 데이터를 텍스트 형태인 Base64 문자열로 변환합니다. 비동기 작업
-    }
+    //   reader.readAsDataURL(file);//파일의 이진(Binary) 데이터를 텍스트 형태인 Base64 문자열로 변환합니다. 비동기 작업
+    // }
   };
 
   const isLoading = isUploading || isExternalLoading;
 
+  
+
   return (
     <div className="flex flex-col lg:flex-row min-h-[600px] w-full">
-      {/* Left: Image Delivery Frame */}
+      {/* Left: Image upload */}
       {/* 이미지 입력 박스   */}
       <div
         className={`w-full lg:w-[480px] bg-[#121212] p-16 flex flex-col items-center justify-center cursor-pointer group relative overflow-hidden transition-all duration-700 ${isLoading ? 'opacity-90' : 'opacity-100'}`}
@@ -130,6 +152,9 @@ export default function ImageAnalyzer({ onAction, onReset, isExternalLoading }: 
           <span className="w-10 h-px bg-gray-100"></span>
           Intelligence Tunnel
         </div>
+        {/* <div>
+          {tempImgUrl && (<Image src={tempImgUrl} alt="" fill unoptimized/>)}
+        </div> */}
 
         {isLoading ? /* 로딩 */(
           <div className="space-y-12">
@@ -140,8 +165,7 @@ export default function ImageAnalyzer({ onAction, onReset, isExternalLoading }: 
               <h4 className="text-4xl font-serif italic tracking-tight text-black">Decrypting <br /> Visual Data...</h4>
             </div>
             <p className="text-[10px] font-bold text-gray-300 uppercase tracking-widest leading-relaxed">
-              Awaiting neural deconstruction from Spring Boot Core <br />
-              Syncing metadata with the global archive
+              Awaiting neural deconstruction from Spring Boot Core
             </p>
           </div>
         ) : analysisData ? /* 결과 */(

@@ -28,6 +28,8 @@ export default function Studio({ serverAction }: StudioClientProps) {
         // [Spring Boot Placeholder] 
         // const response = await fetch('/api/v1/search/visual', { method: 'POST', body: JSON.stringify(data) });
         const res = await serverAction(data);
+        console.log("StudioPage", res);
+        
         setResults(res || []); 
       } catch (e) {
         console.error("Visual Sync Error:", e);
