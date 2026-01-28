@@ -10,7 +10,7 @@ export default function IntroPage() {
         src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop"
         alt="Fashion Hero Background"
         fill
-        className="opacity-60 scale-105 transition-transform duration-[40s] animate-pulse-slow"
+        className="opacity-60 transition-transform"
       />
       <div className="absolute inset-0 bg-linear-to-b from-black/80 via-transparent to-black/95" />
       

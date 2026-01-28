@@ -15,11 +15,11 @@ export default function SignupPage() {
           src="https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=1976&auto=format&fit=crop"
           alt="Curator Aesthetic"
           fill
-          className="object-cover opacity-60 scale-110 animate-pulse-slow"
+          className="object-cover opacity-60"
         />
         <div className="absolute inset-0 bg-linear-to-r from-transparent to-black" />
         
-        <div className="absolute bottom-20 left-20 right-20 space-y-8 animate-in fade-in slide-in-from-left-10 duration-1000">
+        <div className="absolute bottom-20 left-20 right-20 space-y-8">
           <div className="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center">
             <FaCompass className="text-white/40" size={24} />
           </div>
@@ -45,7 +45,7 @@ export default function SignupPage() {
           </Link>
         </div>
 
-        <div className="w-full max-w-md space-y-16 py-20 lg:py-0 animate-in fade-in slide-in-from-right-10 duration-1000">
+        <div className="w-full max-w-md space-y-16 py-20 lg:py-0">
           <header className="space-y-6">
             <h1 className="text-3xl font-serif italic tracking-[0.5em] text-white uppercase border-b border-white/10 pb-6">Registry</h1>
             <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.6em]">New Curator Application</p>

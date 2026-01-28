@@ -113,13 +113,13 @@ export default function ImageAnalyzer({ onAction, onReset, isExternalLoading }: 
         <input type="file" ref={fileInputRef} className="hidden" onChange={onFileChange} accept="image/*" />
 
         {preview ? (
-          <div className="relative w-full h-full animate-in fade-in zoom-in-95 duration-500">
-            <Image src={preview} alt="Source Analysis" fill className="rounded-4xl shadow-2xl object-cover" />
+          <div className="relative w-full h-full">
+            <Image src={preview} alt="Source Analysis" fill className="" />
 
             {/* Cancel/Reset Button - Always available when there is a preview */}
             <button
               onClick={handleReset}
-              className="absolute top-6 right-6 w-10 h-10 bg-white text-black rounded-full flex items-center justify-center hover:scale-110 transition-all shadow-xl z-30"
+              className="absolute top-6 right-6 w-10 h-10 bg-white text-black flex items-center justify-center z-30"
               title={isLoading ? "Cancel Upload" : "Clear Image"}
             >
               <FaXmark size={14} />
@@ -127,16 +127,16 @@ export default function ImageAnalyzer({ onAction, onReset, isExternalLoading }: 
 
             {/* 업로드중일때 */}
             {isLoading && (
-              <div className="absolute inset-0 bg-black/40 backdrop-blur-sm rounded-4xl flex flex-col items-center justify-center gap-4 z-20">
-                <div className="w-10 h-10 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-                <span className="text-[10px] font-bold text-white uppercase tracking-[0.4em]">Transferring...</span>
+              <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center gap-4 z-20">
+                <div className="w-10 h-10 border-2 border-white/20 border-t-white" />
+                <span className="text-white">Transferring...</span>
               </div>
             )}
           </div>
         ) : (
           <div className="text-center space-y-8 z-10">
-            <div className="w-20 h-20 bg-white/10 border border-white/20 rounded-full flex items-center justify-center mx-auto transition-all group-hover:bg-white/20 group-hover:scale-110">
-              <FaArrowUpFromBracket size={20} className="text-white opacity-40 group-hover:opacity-100" />
+            <div className="w-20 h-20 bg-white/10 border border-white/20 flex items-center justify-center mx-auto">
+              <FaArrowUpFromBracket size={20} className="text-white" />
             </div>
             <div className="space-y-3">
               <h4 className="text-lg font-serif italic text-white tracking-widest uppercase">Imprint Vision</h4>
@@ -160,7 +160,7 @@ export default function ImageAnalyzer({ onAction, onReset, isExternalLoading }: 
           <div className="space-y-12">
             <div className="space-y-6">
               <div className="w-24 h-1 bg-gray-100 rounded-full overflow-hidden">
-                <div className="w-full h-full bg-black animate-progress-fast origin-left" />
+                <div className="w-full h-full bg-black" />
               </div>
               <h4 className="text-4xl font-serif italic tracking-tight text-black">Decrypting <br /> Visual Data...</h4>
             </div>
@@ -169,7 +169,7 @@ export default function ImageAnalyzer({ onAction, onReset, isExternalLoading }: 
             </p>
           </div>
         ) : analysisData ? /* 결과 */(
-          <div className="space-y-12 animate-in fade-in slide-in-from-right-10 duration-700">
+          <div className="space-y-12">
             <div className="grid grid-cols-2 gap-x-12 gap-y-10">
               <div className="space-y-3">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-gray-300">Taxonomy</span>
@@ -201,7 +201,7 @@ export default function ImageAnalyzer({ onAction, onReset, isExternalLoading }: 
             </button>
           </div>
         ) : /* 기본 */(
-          <div className="max-w-md space-y-8 animate-in fade-in duration-500">
+          <div className="max-w-md space-y-8">
             <h3 className="text-7xl font-serif leading-[0.9] italic tracking-tighter text-black">
               Neural <br /> Vision
             </h3>

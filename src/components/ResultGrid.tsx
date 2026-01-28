@@ -33,7 +33,7 @@ export default function ResultGrid({
         : MOCK_ARCHIVE.filter(item => item.category === activeFilter);
 
     return (
-        <div className="space-y-10 py-16 animate-in fade-in slide-in-from-bottom-10 duration-1000">
+        <div className="space-y-10 py-16">
             {/* Header & Filters */}
             <div className="flex flex-col md:flex-row justify-between items-end gap-8 border-b border-black/5 pb-10">
                 <div className="space-y-4">
@@ -62,11 +62,11 @@ export default function ResultGrid({
 
             {/* Grid Content */}
             {isActive ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-16 animate-in fade-in zoom-in-95 duration-700">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-16">
                     {filteredItems.map((item, idx) => (
-                        <div key={item.id} className="group space-y-6 cursor-pointer" style={{ animationDelay: `${idx * 100}ms` }}>
+                        <div key={item.id} className="group space-y-6 cursor-pointer">
                             <div className="aspect-3/4 overflow-hidden rounded-4xl bg-[#F5F4F0] relative">
-                                {/* <Image src={item.img} alt={item.name} fill className="group-hover:scale-110 transition-transform duration-[2s]" /> */}
+                                {/* <Image src={item.img} alt={item.name} fill className="group-hover:scale-110 transition-transform duration-1000" /> */}
                                 {/* 이미지가 '#'이면 회색 박스에 ID만 출력, 아니면 이미지 렌더링 */}
                                 {item.img !== '#' ? (
                                     <Image src={item.img} alt={item.name} fill className="object-cover" />

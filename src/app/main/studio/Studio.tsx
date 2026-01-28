@@ -79,7 +79,7 @@ export default function Studio({ serverAction }: StudioClientProps) {
       <div className="bg-white rounded-[4rem] border border-[#EBEAE7] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.04)] overflow-hidden min-h-[600px] flex flex-col justify-center">
         <div className="relative h-full">
           {mode === 'visual' ? (
-            <div key="visual" className="animate-in fade-in duration-300">
+            <div key="visual">
               <ImageAnalyzer    
                 onAction={handleVisualAction} 
                 onReset={resetAll} 
@@ -87,7 +87,7 @@ export default function Studio({ serverAction }: StudioClientProps) {
               />
             </div>
           ) : (
-            <div key="manual" className="p-20 grid grid-cols-1 lg:grid-cols-3 gap-20 animate-in fade-in duration-300">
+            <div key="manual" className="p-20 grid grid-cols-1 lg:grid-cols-3 gap-20">
                {filterGroups.map(group => (
                   <div key={group.title} className="space-y-10">
                     <h4 className="text-[10px] font-bold uppercase tracking-[0.6em] text-gray-300 border-b border-gray-50 pb-5">{group.title}</h4>

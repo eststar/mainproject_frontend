@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function MainPage() {
   return (
-     <div className="max-w-7xl mx-auto space-y-16 animate-in fade-in duration-700">
+    <div className="max-w-7xl mx-auto space-y-16">
       <div className="space-y-4">
         <span className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.5em]">Dashboard Overview</span>
         <h2 className="text-6xl font-serif italic tracking-tighter text-[#121212]">Welcome to the Studio</h2>
@@ -13,15 +13,17 @@ export default function MainPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         {/* Main Entry: Unified Studio */}
-        <Link 
+        <Link
           href="/main/studio"
-          className="lg:col-span-2 group relative h-[550px] bg-[#121212] rounded-[4rem] overflow-hidden cursor-pointer shadow-2xl transition-all hover:scale-[1.01] block"
+          className="lg:col-span-2 group relative w-full h-[550px] bg-[#121212] rounded-[4rem] overflow-hidden cursor-pointer shadow-2xl transition-all hover:scale-105 block"
         >
-          <Image 
+          <Image
             src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?q=80&w=2070&auto=format&fit=crop"
             alt="Studio Backdrop"
             fill
-            className="opacity-40 group-hover:scale-110 transition-transform duration-[5s]"
+            sizes="(max-width: 1024px) 100vw, 66vw"
+            loading="eager"
+            className="opacity-40 transition-transform"
           />
           <div className="absolute inset-0 bg-linear-to-t from-black via-black/20 to-transparent" />
           <div className="absolute bottom-20 left-20 right-20 space-y-6">
@@ -52,20 +54,20 @@ export default function MainPage() {
           <div className="space-y-6">
             <div className="h-1px bg-gray-50 w-full" />
             <p className="text-[10px] font-medium leading-relaxed text-gray-400 uppercase tracking-widest">
-              Last intelligence sync <br/> 4 minutes ago
+              Last intelligence sync <br /> 4 minutes ago
             </p>
           </div>
         </div>
       </div>
 
       <div className="pt-10 border-t border-black/5">
-         <div className="flex justify-between items-center">
-            <h4 className="text-[10px] font-bold uppercase tracking-[0.6em] text-gray-300">System Status</h4>
-            <div className="flex items-center gap-3">
-              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-500">Neural Engine Online</span>
-            </div>
-         </div>
+        <div className="flex justify-between items-center">
+          <h4 className="text-[10px] font-bold uppercase tracking-[0.6em] text-gray-300">System Status</h4>
+          <div className="flex items-center gap-3">
+            <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-500">Neural Engine Online</span>
+          </div>
+        </div>
       </div>
     </div>
   );

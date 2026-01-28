@@ -21,7 +21,7 @@ export default function LoginPage() {
           <span className="opacity-0 group-hover:opacity-100 transition-all transform translate-x-[-10px] group-hover:translate-x-0">Back to Archive</span>
         </Link>
       </div>
-      <div className="relative z-10 w-full max-w-md space-y-20 animate-in fade-in zoom-in-95 duration-1000">
+      <div className="relative z-10 w-full max-w-md space-y-20">
         <div className="text-center space-y-8">
           <div className="inline-block p-4 rounded-full border border-white/5 bg-white/5 mb-4">
              <FaKey className="text-white/20" size={20} />

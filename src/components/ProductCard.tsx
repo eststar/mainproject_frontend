@@ -10,8 +10,7 @@ interface ProductCardProps {
 export default function ProductCard({ product, index = 0 } : ProductCardProps) {
   return (
     <div 
-      className="group space-y-6 cursor-pointer animate-in fade-in zoom-in-95 duration-700"
-      style={{ animationDelay: `${index * 100}ms` }}
+      className="group space-y-6 cursor-pointer"
     >
       {/* Image Container */}
       <div className="aspect-3/4 overflow-hidden rounded-4xl bg-[#F5F4F0] relative">
@@ -19,7 +18,7 @@ export default function ProductCard({ product, index = 0 } : ProductCardProps) {
           src={product.img} 
           alt={product.name} 
           fill 
-          className="group-hover:scale-110 transition-transform duration-[2s] object-cover" 
+          className="group-hover:scale-110 transition-transform duration-1000 object-cover" 
         />
         {/* Subtle Overlay */}
         <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-all" />

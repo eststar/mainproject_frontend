@@ -50,7 +50,7 @@ export default function SideBar() {
             href={item.path}
             className={`w-full flex items-center gap-5 px-6 py-4 rounded-2xl text-[10px] font-bold uppercase tracking-[0.3em] transition-all group ${pathname === item.path ? 'bg-white/10 text-white shadow-lg' : 'text-gray-500 hover:text-white hover:bg-white/5'}`}
           >
-            <span className={`transition-transform duration-500 inline-block ${pathname === item.path ? 'scale-125' : 'group-hover:scale-125 text-gray-600 group-hover:text-white'}`}>{item.icon}</span>
+            <span className={`transition-transform inline-block ${pathname === item.path ? '' : 'text-gray-600 group-hover:text-white'}`}>{item.icon}</span>
             {item.label}
           </Link>
         ))}
@@ -61,7 +61,7 @@ export default function SideBar() {
 
         {/* Dropdown Menu (Floating) */}
         {isMenuOpen && (
-          <div className="absolute bottom-full left-6 right-6 mb-4 bg-neutral-900/90 backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-300 z-50">
+          <div className="absolute bottom-full left-6 right-6 mb-4 bg-neutral-900/90 backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl z-50">
             <div className="p-6 border-b border-white/5">
               <p className="text-[8px] font-bold text-gray-500 uppercase tracking-[0.4em] mb-2">Authenticated As</p>
               <p className="text-[11px] font-bold text-white uppercase tracking-widest">Curator 01</p>
