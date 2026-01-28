@@ -15,14 +15,14 @@ export default function Header() {
 
       <div className="flex items-center gap-3">
         <Link
-          href="/main/signup"
+          href="/signup"
           className="flex items-center gap-3 px-6 py-3 border border-black/10 text-black text-[9px] font-bold uppercase tracking-[0.4em] rounded-full hover:bg-black hover:text-white transition-all active:scale-95"
         >
           <FaUserPlus size={10} />
           JOIN
         </Link>
         <Link
-          href="/main/login"
+          href="/login"
           className="flex items-center gap-4 px-8 py-3 bg-black text-white text-[9px] font-bold uppercase tracking-[0.4em] rounded-full hover:bg-neutral-800 transition-all shadow-lg active:scale-95"
         >
           <FaLock size={10} className="text-gray-400" />
