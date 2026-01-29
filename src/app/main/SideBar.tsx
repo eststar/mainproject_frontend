@@ -12,11 +12,16 @@ import {
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
+import { authUserAtom } from '@/jotai/loginjotai';
+import { useAtom } from 'jotai';
+import { logoutAPI } from '../api/loginservice/loginapi';
+import { useRouter } from 'next/navigation';
 
 export default function SideBar() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const [authInfo, setAuthInfo ] = useAtom(authUserAtom);
 
   const navItems = [
     { id: 'home', label: 'Overview', icon: <FaHouse />, path: '/main' },
@@ -32,6 +37,29 @@ export default function SideBar() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  const handleUserMenuClick = () => {
+    console.log("[로그인 정보]", authInfo);
+
+    if (!authInfo) {
+      console.log("[로그인 안되어 있음]");
+
+      alert("로그인 후 이용 가능합니다.");
+      return;
+    }
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLogout = async () => {
+    if(!authInfo) return;
+    try {
+      await logoutAPI(authInfo);
+      setAuthInfo(null);
+      useRouter().push("/main");
+    } catch (error) {
+      console.error("로그아웃 실패:", error);
+    }
+  };
 
   return (
     <aside className="w-64 h-screen bg-[#121212] text-white flex flex-col fixed left-0 top-0 border-r border-white/5 z-50">
@@ -56,61 +84,69 @@ export default function SideBar() {
         ))}
       </nav>
 
-      {/* 유저 로그인 있으면 구현 */}
-      <div className="p-6 border-t border-white/5 bg-[#0a0a0a] relative" ref={menuRef}>
+      {/* 유저 로그인 있으면 구현 */
+        authInfo &&
 
-        {/* Dropdown Menu (Floating) */}
-        {isMenuOpen && (
-          <div className="absolute bottom-full left-6 right-6 mb-4 bg-neutral-900/90 backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl z-50">
-            <div className="p-6 border-b border-white/5">
-              <p className="text-[8px] font-bold text-gray-500 uppercase tracking-[0.4em] mb-2">Authenticated As</p>
-              <p className="text-[11px] font-bold text-white uppercase tracking-widest">Curator 01</p>
-            </div>
-            <div className="p-2">
-              <Link
-                href="/main/profile"
-                onClick={() => setIsMenuOpen(false)}
-                className="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-white/5 text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-all"
-              >
-                <FaGear size={12} className="opacity-40" /> Settings
-              </Link>
-              <Link
-                href="/main/profile"
-                onClick={() => setIsMenuOpen(false)}
-                className="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-white/5 text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-all"
-              >
-                <FaShieldHalved size={12} className="opacity-40" /> Security
-              </Link>
-              <div className="my-2 h-1px bg-white/5 mx-4" />
-              <Link
-                href="/main/login"
-                onClick={() => setIsMenuOpen(false)}
-                className="flex items-center gap-4 px-4 py-4 rounded-xl hover:bg-red-500/10 text-[10px] font-bold uppercase tracking-widest text-red-500/60 hover:text-red-500 transition-all"
-              >
-                <FaArrowRightFromBracket size={12} /> Sign Out
-              </Link>
-            </div>
-          </div>
-        )}
+        <div className="p-6 border-t border-white/5 bg-[#0a0a0a] relative" ref={menuRef}>
 
-        {/* Account Trigger Button */}
-        <button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all group ${isMenuOpen ? 'bg-white/10 border-white/20' : 'hover:bg-white/5 border-white/5 hover:border-white/10'} border`}
-        >
-          <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-white/5 group-hover:border-white/20 transition-all overflow-hidden shrink-0">
-            <FaUser size={12} className="text-gray-500 group-hover:text-white transition-colors" />
-          </div>
-          <div className="flex-1 text-left min-w-0">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-white truncate">Curator 01</p>
-            <div className="flex items-center gap-2 mt-0.5">
-              <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
-              <span className="text-[8px] font-bold text-gray-500 uppercase tracking-widest">Active</span>
+          {/* Dropdown Menu (Floating) */}
+          {isMenuOpen && (
+            <div className="absolute bottom-full left-6 right-6 mb-4 bg-neutral-900/90 backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl z-50">
+              <div className="p-6 border-b border-white/5">
+                <p className="text-[8px] font-bold text-gray-500 uppercase tracking-[0.4em] mb-2">Authenticated As</p>
+                <p className="text-[11px] font-bold text-white uppercase tracking-widest">{authInfo.name}</p>
+              </div>
+              <div className="p-2">
+                <Link
+                  href="/main/profile" //임시
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-white/5 text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-all"
+                >
+                  <FaGear size={12} className="opacity-40" /> Settings
+                </Link>
+                <Link
+                  href="/main/profile" //임시
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-white/5 text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-all"
+                >
+                  <FaShieldHalved size={12} className="opacity-40" /> Security
+                </Link>
+                <div className="my-2 h-1px bg-white/5 mx-4" />
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-4 px-4 py-4 rounded-xl hover:bg-red-500/10 text-[10px] font-bold uppercase tracking-widest text-red-500/60 hover:text-red-500 transition-all"
+                >
+                  <FaArrowRightFromBracket size={12} /> Log Out
+                </button>
+              </div>
             </div>
-          </div>
-          <FaEllipsisVertical size={12} className={`transition-all ${isMenuOpen ? 'rotate-90 text-white' : 'text-gray-500 group-hover:text-white'}`} />
-        </button>
-      </div>
+          )}
+
+          {/* Account Trigger Button */}
+          <button
+            onClick={handleUserMenuClick}
+            className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all group ${isMenuOpen ? 'bg-white/10 border-white/20' : 'hover:bg-white/5 border-white/5 hover:border-white/10'} border`}
+          >
+            <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-white/5 group-hover:border-white/20 transition-all overflow-hidden shrink-0">
+              {
+                authInfo.profile ? (
+                  <img src={authInfo.profile} alt="User Profile" className="w-full h-full object-cover" />
+                ) : (
+                  <FaUser size={16} className="text-gray-400" />
+                )
+              }
+            </div>
+            <div className="flex-1 text-left min-w-0">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-white truncate">{authInfo.name}</p>
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
+                <span className="text-[8px] font-bold text-gray-500 uppercase tracking-widest">Active</span>
+              </div>
+            </div>
+            <FaEllipsisVertical size={12} className={`transition-all ${isMenuOpen ? 'rotate-90 text-white' : 'text-gray-500 group-hover:text-white'}`} />
+          </button>
+        </div>
+      }
     </aside>
   );
 };

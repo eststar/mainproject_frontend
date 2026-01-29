@@ -1,5 +1,7 @@
 "use server"
 
+import { AuthUser } from "@/types/AuthTypes";
+
 const BASEURL = process.env.NEXT_PUBLIC_BACK_API_URL;
 
 export const loginAPI = async (email: string, password: string) => {
@@ -30,7 +32,7 @@ export const loginAPI = async (email: string, password: string) => {
     }
 };
 
-export const logoutAPI = async () => {
+export const logoutAPI = async (authInfo : AuthUser) => {
     const reqUrl = `${BASEURL}/api/members/logout`;
 
     try {
@@ -38,6 +40,7 @@ export const logoutAPI = async () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authInfo.accessToken}`,
             },
             body: JSON.stringify({  }),
         });

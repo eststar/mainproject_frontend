@@ -4,8 +4,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import { loginAPI } from "../api/loginservice/loginapi";
+import { useSetAtom } from "jotai";
+import { authUserAtom } from "@/jotai/loginjotai";
 
 export default function LoginForm() {
+  const setAuth = useSetAtom(authUserAtom);
   const router = useRouter();
   const userName = useRef<HTMLInputElement>(null);
   const password = useRef<HTMLInputElement>(null);
@@ -21,13 +24,20 @@ export default function LoginForm() {
       return;
     }
 
+    setAuth(null); //기존 로그인 정보 초기화
+
     try {
       const result = await loginAPI(userName.current?.value || "", password.current?.value || "");
       if (result && result.success) {
-        localStorage.setItem("accessToken", result.accessToken);
-        localStorage.setItem("userName", result.name);
-        localStorage.setItem("profile", result.profile);
-        console.log("Token saved to localStorage");
+        setAuth({
+          accessToken: result.accessToken,
+          userId: result.userId,
+          name: result.name,
+          profile: result.profile,
+          success: result.success
+        })
+        
+        console.log("Token saved to localStorage and jotai");
 
         router.push("/main");
       } else {
