@@ -5,3 +5,9 @@ export interface AuthUser {
     profile: string;
     success: boolean;
 }
+
+export interface JoinRequest {
+    id: string;
+    nickname: string;
+    password: string;
+}

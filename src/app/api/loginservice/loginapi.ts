@@ -1,6 +1,7 @@
 "use server"
 
 import { AuthUser } from "@/types/AuthTypes";
+import { JoinRequest } from "@/types/AuthTypes";
 
 const BASEURL = process.env.NEXT_PUBLIC_BACK_API_URL;
 
@@ -13,16 +14,17 @@ export const loginAPI = async (email: string, password: string) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ 
-                                id: email, 
-                                password : password }),
+            body: JSON.stringify({
+                id: email,
+                password: password
+            }),
         });
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(`HTTP error! status: ${response.status}`+ `, 에러 데이터: ${errorData}` );
+            throw new Error(`HTTP error! status: ${response.status}` + `, 에러 데이터: ${errorData}`);
         }
-        
+
         const data = await response.json();
         console.log("[API result] Status:", data);
         return data;
@@ -32,7 +34,7 @@ export const loginAPI = async (email: string, password: string) => {
     }
 };
 
-export const logoutAPI = async (authInfo : AuthUser) => {
+export const logoutAPI = async (authInfo: AuthUser) => {
     const reqUrl = `${BASEURL}/api/members/logout`;
 
     try {
@@ -42,39 +44,45 @@ export const logoutAPI = async (authInfo : AuthUser) => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${authInfo.accessToken}`,
             },
-            body: JSON.stringify({  }),
+            body: JSON.stringify({}),
         });
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data = await response.json();
-        return data;
+        // const data = await response.json();
+        return;// data;
     } catch (error) {
         console.error("Login API error:", error);
         throw error;
     }
 };
 
-export const signinAPI = async (email: string, password: string) => {
-    const reqUrl = `${BASEURL}/api/members/signin`;
-
+export const signupAPI = async (JoinRequest: JoinRequest) => {
+    const reqUrl = `${BASEURL}/api/members/signup`;
+    
     try {
+        console.log("회원가입 정보 :", { id: JoinRequest.id, nickname: JoinRequest.nickname, password: JoinRequest.password });
         const response = await fetch(reqUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({
+                "id": JoinRequest.id,
+                "nickname": JoinRequest.nickname,
+                "password": JoinRequest.password,
+            }
+            ),
         });
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data = await response.json();
-        return data;
+        // const data = await response.json();
+        return;// data;
     } catch (error) {
         console.error("Login API error:", error);
         throw error;

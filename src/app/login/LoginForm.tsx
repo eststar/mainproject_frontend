@@ -10,16 +10,16 @@ import { authUserAtom } from "@/jotai/loginjotai";
 export default function LoginForm() {
   const setAuth = useSetAtom(authUserAtom);
   const router = useRouter();
-  const userName = useRef<HTMLInputElement>(null);
-  const password = useRef<HTMLInputElement>(null);
+  const userIdRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!userName.current?.value) {
+    if (!userIdRef.current?.value) {
       alert("아이디를 입력하세요");
       return;
     }
-    if (!password.current?.value) {
+    if (!passwordRef.current?.value) {
       alert("비밀번호를 입력하세요");
       return;
     }
@@ -27,7 +27,7 @@ export default function LoginForm() {
     setAuth(null); //기존 로그인 정보 초기화
 
     try {
-      const result = await loginAPI(userName.current?.value || "", password.current?.value || "");
+      const result = await loginAPI(userIdRef.current?.value || "", passwordRef.current?.value || "");
       if (result && result.success) {
         setAuth({
           accessToken: result.accessToken,
@@ -56,7 +56,7 @@ export default function LoginForm() {
           <div className="group relative border-b border-white/10 focus-within:border-white transition-colors py-4">
             <label className="absolute -top-6 left-0 text-[10px] font-bold text-gray-500 uppercase tracking-[0.3em]">Identifier</label>
             <input
-              ref={userName}
+              ref={userIdRef}
               type="text"
               placeholder="Curator ID"
               className="w-full bg-transparent border-none outline-none text-white text-base font-light placeholder:text-neutral-800 tracking-[0.2em] py-2"
@@ -66,7 +66,7 @@ export default function LoginForm() {
           <div className="group relative border-b border-white/10 focus-within:border-white transition-colors py-4">
             <label className="absolute -top-6 left-0 text-[10px] font-bold text-gray-500 uppercase tracking-[0.3em]">Access Key</label>
             <input
-              ref={password}
+              ref={passwordRef}
               type="password"
               placeholder="••••••••••••"
               className="w-full bg-transparent border-none outline-none text-white text-base font-light placeholder:text-neutral-800 tracking-[0.2em] py-2"

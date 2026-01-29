@@ -22,6 +22,7 @@ export default function SideBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const [authInfo, setAuthInfo ] = useAtom(authUserAtom);
+  const router = useRouter();
 
   const navItems = [
     { id: 'home', label: 'Overview', icon: <FaHouse />, path: '/main' },
@@ -39,7 +40,7 @@ export default function SideBar() {
   }, []);
 
   const handleUserMenuClick = () => {
-    console.log("[로그인 정보]", authInfo);
+    
 
     if (!authInfo) {
       console.log("[로그인 안되어 있음]");
@@ -55,7 +56,8 @@ export default function SideBar() {
     try {
       await logoutAPI(authInfo);
       setAuthInfo(null);
-      useRouter().push("/main");
+      alert("로그아웃 되었습니다.");
+      router.push("/main");
     } catch (error) {
       console.error("로그아웃 실패:", error);
     }
