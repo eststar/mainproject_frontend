@@ -35,6 +35,7 @@ export const getProfileImgs = async ()=>{
     }
 }
 
+//이미지 입력 및 출력 수행할 컴포넌트
 export default function Studio(/* { serverAction }: StudioClientProps */) {
   const [mode, setMode] = useState<'visualInput' | 'manualInput'>('visualInput'); // 이미지 입력모드 / 카테고리 선택 모드
   const [isPending, startTransition] = useTransition(); //로딩 상태 관리 기본 urgent로 설정되어 있으나 fetch 요청등에 시간이 걸리는 경우 부자연스럽게 빈 영역 보일 수 있으니 로딩 상태를 보여줄 수 있게 함

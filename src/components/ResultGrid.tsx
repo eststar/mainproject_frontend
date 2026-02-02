@@ -11,7 +11,7 @@ interface ResultGridProps {
     products?: AuthUser[] | null; /* ProductType[] | null; */ //테스트용으로 authuser profile 사용
 }
 
-//출력된 이미지들 뿌릴 영역
+//출력된 이미지들 뿌릴 영역 //현재 직접 ResultGrid에서 뿌리는중 ProductCard는 사용하지 않음
 export default function ResultGrid({
     title = "Neural Match Results",
     subtitle = "Archive Discovery",
@@ -58,6 +58,7 @@ export default function ResultGrid({
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-16">
                     {filteredItems.map((item, idx) => (
                         /* 임시 테스트용 이미지 출력 key, alt 등 수정 필요 */
+                        //현재 테스트용으로 AuthUser 타입에서 정보 가져오는중. 추후 ProductType으로 변경 필요
                         <div key={/* item.id || */ idx} className="group space-y-6 cursor-pointer">
                             <div className="aspect-3/4 overflow-hidden rounded-4xl bg-[#F5F4F0] relative w-full">
                                 {/* <Image src={item.profile || item.imgUrl } alt={item.name || "default"} fill className="object-cover group-hover:scale-110 transition-transform duration-1000" />  */}

@@ -19,6 +19,7 @@ interface ImageAnalyzerProps {
   isExternalLoading?: boolean;
 }
 
+//이미지 입력 처리 컴포넌트
 export default function ImageAnalyzer({ onAction, onReset, isExternalLoading }: ImageAnalyzerProps) {
   const [preview, setPreview] = useState<string | null>(null); //사용자가 선택한 이미지의 URL담는거
   const [isUploading, setIsUploading] = useState(false);

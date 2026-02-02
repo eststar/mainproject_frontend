@@ -6,7 +6,8 @@ interface ProductCardProps {
   index?: number; // 애니메이션 지연을 위한 인덱스
 }
 
-//출력 이미지 카드
+//제품 출력 이미지 카드
+//현재 사용하지 않음. resultgrid에서 직접 뿌리는중
 export default function ProductCard({ product, index = 0 } : ProductCardProps) {
   return (
     <div 
@@ -15,7 +16,7 @@ export default function ProductCard({ product, index = 0 } : ProductCardProps) {
       {/* Image Container */}
       <div className="aspect-3/4 overflow-hidden rounded-4xl bg-[#F5F4F0] relative">
         <Image 
-          src={product.img} 
+          src={product.imgUrl} 
           alt={product.name} 
           fill 
           className="group-hover:scale-110 transition-transform duration-1000 object-cover" 
