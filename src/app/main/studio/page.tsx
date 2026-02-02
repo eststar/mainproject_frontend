@@ -32,7 +32,7 @@ export default function StudioPage() {
         </div>
       </div>
 
-      <Studio serverAction={fetchArchiveData} />
+      <Studio /* serverAction={fetchArchiveData}  *//>
     </div>
   );
 }

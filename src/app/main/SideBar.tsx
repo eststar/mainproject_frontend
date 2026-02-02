@@ -14,7 +14,7 @@ import { usePathname } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
 import { authUserAtom } from '@/jotai/loginjotai';
 import { useAtom } from 'jotai';
-import { logoutAPI } from '../api/loginservice/loginapi';
+import { logoutAPI } from '../api/memberService/memberapi';
 import { useRouter } from 'next/navigation';
 
 export default function SideBar() {

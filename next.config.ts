@@ -13,6 +13,29 @@ const nextConfig: NextConfig = {
         port: '8080',               // 포트 번호
         pathname: '/**',    // 이미지 저장 경로 패턴
       },
+      //1. 카카오 (Kakao)
+      {
+        protocol: 'http',
+        hostname: '*.kakaocdn.net',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.kakaocdn.net',
+        pathname: '/**',
+      },
+      // 2. 구글 (Google)
+      {
+        protocol: 'https',
+        hostname: '*.googleusercontent.com',
+        pathname: '/**',
+      },
+      // 3. 네이버 (Naver)
+      {
+        protocol: 'https',
+        hostname: '*.pstatic.net',
+        pathname: '/**',
+      },
     ],
   },
 };

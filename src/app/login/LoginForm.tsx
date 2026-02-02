@@ -3,7 +3,7 @@ import { FaArrowRight, FaFingerprint } from "react-icons/fa6";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
-import { loginAPI } from "../api/loginservice/loginapi";
+import { loginAPI } from "../api/memberService/memberapi";
 import { useSetAtom } from "jotai";
 import { authUserAtom } from "@/jotai/loginjotai";
 

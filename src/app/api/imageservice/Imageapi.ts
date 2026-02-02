@@ -16,6 +16,7 @@ export const postImage = async (file : File)=>{
 
         if (!response.ok) {
             // 서버 에러 메시지를 확인하기 위해 로그 추가
+            console.error("Server error:", response.status, response.statusText);
         }
         const data = await response.json();
         return data;
@@ -39,6 +40,7 @@ export const getImages = async (file : File)=>{
 
         if (!response.ok) {
             // 서버 에러 메시지를 확인하기 위해 로그 추가
+            console.error("Server error:", response.status, response.statusText);
         }
         const data = await response.json();
         return data;
@@ -46,3 +48,4 @@ export const getImages = async (file : File)=>{
         console.error("error:", error);    
     }
 }
+

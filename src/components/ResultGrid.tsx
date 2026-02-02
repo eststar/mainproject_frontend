@@ -1,13 +1,14 @@
 import { ProductType } from '@/types/ProductType';
 import Image from 'next/image';
 import { useState } from 'react';
-import { FaLayerGroup, FaMagnifyingGlass } from 'react-icons/fa6';
+import { FaImage, FaLayerGroup, FaMagnifyingGlass } from 'react-icons/fa6';
+import { AuthUser } from '@/types/AuthTypes';
 
 interface ResultGridProps {
     title?: string;
     subtitle?: string;
     isActive?: boolean;
-    products?: ProductType[] | null;
+    products?: AuthUser[] | null; /* ProductType[] | null; */ //테스트용으로 authuser profile 사용
 }
 
 //출력된 이미지들 뿌릴 영역
@@ -18,11 +19,11 @@ export default function ResultGrid({
     products = null
 }: ResultGridProps) {
     const [activeFilter, setActiveFilter] = useState('All');
-    const filters = ['All', 'Outerwear', 'Tops', 'Bottoms', 'Accessories'];
-
+    const filters = ['All', 'Outerwear', 'Tops', 'Bottoms', 'Accessories']; //임시 필터 리스트 fetch 한 데이터 사용해야함
+    // console.log("ResultGrid Products:", products);
     const filteredItems = products && activeFilter === 'All'
         ? products
-        : products?.filter(item => item.category === activeFilter) || [];
+        : products /* ?.filter(item => item.category === activeFilter)  */ || [];
 
     return (
         <div className="space-y-10 py-16">
@@ -42,8 +43,8 @@ export default function ResultGrid({
                             key={filter}
                             onClick={() => setActiveFilter(filter)}
                             className={`px-8 py-3 text-[10px] font-bold uppercase tracking-widest transition-all rounded-full border ${activeFilter === filter
-                                    ? 'bg-black text-white border-black shadow-lg scale-105'
-                                    : 'bg-transparent text-gray-400 border-gray-100 hover:border-black hover:text-black'
+                                ? 'bg-black text-white border-black shadow-lg scale-105'
+                                : 'bg-transparent text-gray-400 border-gray-100 hover:border-black hover:text-black'
                                 }`}
                         >
                             {filter}
@@ -56,17 +57,33 @@ export default function ResultGrid({
             {isActive && products && products.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-16">
                     {filteredItems.map((item, idx) => (
-                        <div key={item.id} className="group space-y-6 cursor-pointer">
-                            <div className="aspect-3/4 overflow-hidden rounded-4xl bg-[#F5F4F0] relative">
-                                <Image src={item.img} alt={item.name} fill className="object-cover group-hover:scale-110 transition-transform duration-1000" />
+                        /* 임시 테스트용 이미지 출력 key, alt 등 수정 필요 */
+                        <div key={/* item.id || */ idx} className="group space-y-6 cursor-pointer">
+                            <div className="aspect-3/4 overflow-hidden rounded-4xl bg-[#F5F4F0] relative w-full">
+                                {/* <Image src={item.profile || item.imgUrl } alt={item.name || "default"} fill className="object-cover group-hover:scale-110 transition-transform duration-1000" />  */}
+                                {item.profile && item.profile.trim() !== "" ? (
+                                    <Image
+                                        src={item.profile/* item.imgUrl */}
+                                        alt={item.name || "default"}
+                                        fill
+                                        className="object-cover group-hover:scale-110 transition-transform duration-1000"
+                                        sizes="(max-width: 640px) 100vw, max-width: 1024px) 50vw, 25vw"
+                                        unoptimized
+                                    />
+                                ) : (
+                                    /* 이미지가 없을 때 보여줄 대체 UI (예: 회색 배경에 아이콘) */
+                                    <div className="w-full h-full flex items-center justify-center text-gray-200">
+                                        <FaImage size={40} />
+                                    </div>
+                                )}
                                 <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-all" />
                             </div>
                             <div className="space-y-1 px-2">
                                 <div className="flex justify-between items-start">
-                                    <span className="text-[10px] font-bold text-gray-300 uppercase tracking-widest">{item.brand}</span>
-                                    <span className="text-[11px] font-serif italic">${item.price}</span>
+                                    <span className="text-[10px] font-bold text-gray-300 uppercase tracking-widest">{/* item.brand || */ "default"}</span>
+                                    <span className="text-[11px] font-serif italic">${/* item.price || */ "0"}</span>
                                 </div>
-                                <h4 className="text-lg font-serif italic text-[#121212] tracking-tight">{item.name}</h4>
+                                <h4 className="text-lg font-serif italic text-[#121212] tracking-tight">{item.name || "default"}</h4>
                             </div>
                         </div>
                     ))}

@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { FaArrowRight, FaShieldHalved } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
-import { signupAPI } from "../api/loginservice/loginapi";
+import { signupAPI } from "../api/memberService/memberapi";
 import { useRef } from "react";
 import { useSetAtom } from "jotai";
 import { authUserAtom } from "@/jotai/loginjotai";

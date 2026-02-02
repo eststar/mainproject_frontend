@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import Image from 'next/image';
-import { postImage } from "@/app/api/imageservice/Imageapi"
+import { postImage } from "@/app/api/imageService/Imageapi"
 
 import {
   FaXmark,
@@ -53,24 +53,23 @@ export default function ImageAnalyzer({ onAction, onReset, isExternalLoading }: 
   const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];// input-file을 이용해 받은 file객체
     if (!file) return;
-
+    abortControllerRef.current = new AbortController();
     setPreview(URL.createObjectURL(file));
     setIsUploading(true);
     setAnalysisData(null);
-    console.log("file", file);
-    
-    //임시로 업로드 테스트
-    // try {
-    //   const data = await postImage(file);
-    //   let imgurl : string = data.imageUrl;
-    //   const tempurl = new URL(imgurl);
-    //   const backimgurl = `${BASEURL}${tempurl.pathname}`;
-    //   setTempImgUrl(backimgurl);
-    //   console.log("이미지 URL 보이기", backimgurl);
+    // console.log("file", file);
+    try {
       
-    // } catch (error) {
-    //   console.error("error:", error);
-    // }
+      if (onAction)
+        await onAction(file);
+        
+      if (abortControllerRef.current.signal.aborted) return;
+    } catch (error) {
+      console.error("Action Error:", error);
+    } finally {
+      setIsUploading(false);
+      abortControllerRef.current = null;
+    }
 
     // const reader = new FileReader();
     // reader.onloadend = async () => {
@@ -100,7 +99,7 @@ export default function ImageAnalyzer({ onAction, onReset, isExternalLoading }: 
 
   const isLoading = isUploading || isExternalLoading;
 
-  
+
 
   return (
     <div className="flex flex-col lg:flex-row min-h-[600px] w-full">
