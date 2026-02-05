@@ -49,9 +49,9 @@ export default function UploadPanel({ onResultFound, isPending, startTransition 
           /* [업로드 대기 상태] */
           <div 
             onClick={() => fileInputRef.current?.click()}
-            className="group aspect-video border-2 border-dashed border-gray-200 dark:border-white/10 rounded-4xl flex flex-col items-center justify-center gap-4 cursor-pointer hover:border-violet-400 dark:hover:border-violet-500 transition-colors"
+            className="group aspect-video border-2 border-dashed border-neutral-200 dark:border-white/5 rounded-4xl flex flex-col items-center justify-center gap-4 cursor-pointer hover:border-violet-400 dark:hover:border-violet-500 transition-colors"
           >
-            <div className="w-16 h-16 rounded-full bg-gray-50 dark:bg-white/5 flex items-center justify-center text-gray-400 group-hover:text-violet-600 transition-colors">
+            <div className="w-16 h-16 rounded-full bg-white dark:bg-neutral-900/50 flex items-center justify-center text-gray-400 group-hover:text-violet-600 transition-colors">
               <FaCloudArrowUp size={24} />
             </div>
             <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">
@@ -67,7 +67,7 @@ export default function UploadPanel({ onResultFound, isPending, startTransition 
           </div>
         ) : (
           /* [업로드 완료 상태] */
-          <div className="relative aspect-video rounded-4xl overflow-hidden border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black">
+          <div className="relative aspect-video rounded-4xl overflow-hidden border border-neutral-200 dark:border-white/5 bg-white dark:bg-neutral-900/50">
             {/* Next.js Image Component */}
             <Image 
               src={preview} 

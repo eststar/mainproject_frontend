@@ -16,7 +16,7 @@ interface ModeTabsProps {
  */
 export default function ModeTabs({ mode, onModeChange }: ModeTabsProps) {
   return (
-    <div className="flex gap-1 p-1 bg-gray-100 dark:bg-neutral-900 rounded-full w-fit mx-auto border border-gray-200 dark:border-white/5 shadow-inner">
+    <div className="flex gap-1 p-1 bg-white dark:bg-neutral-900/50 rounded-full w-fit mx-auto border border-neutral-200 dark:border-white/5 shadow-inner">
       
       {/* Visual Discovery 버튼 */}
       <button 

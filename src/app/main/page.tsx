@@ -29,7 +29,7 @@ export default function MainPage() {
         {/* Card 1: Archive Studio */}
         <Link 
           href="/main/studio"
-          className="lg:col-span-2 group relative h-[560px] bg-neutral-900 rounded-[3rem] overflow-hidden border border-white/5 dark:border-violet-900/30 transition-shadow hover:shadow-xl"
+          className="lg:col-span-2 group relative h-[560px] bg-neutral-900 rounded-[3rem] overflow-hidden border border-neutral-200 dark:border-white/5 transition-shadow hover:shadow-xl"
         >
           <Image 
             src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?q=80&w=2070&auto=format&fit=crop"
@@ -60,7 +60,7 @@ export default function MainPage() {
         {/* Card 2: Statistics Dashboard */}
         <Link 
           href="/main/statistics"
-          className="relative flex flex-col justify-between overflow-hidden rounded-[3rem] border border-gray-100 bg-white p-10 dark:border-violet-900/30 dark:bg-neutral-900 md:p-14 group shadow-sm transition-colors hover:border-violet-500/40"
+          className="relative flex flex-col justify-between overflow-hidden rounded-[3rem] border border-neutral-200 bg-white p-10 dark:border-white/5 dark:bg-neutral-900/50 md:p-14 group shadow-sm transition-colors hover:border-violet-500/40"
         >
           <div className="relative z-10 space-y-12">
             <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-violet-600 shadow-lg group-hover:bg-violet-500">
@@ -76,7 +76,7 @@ export default function MainPage() {
             </div>
           </div>
           
-          <div className="relative z-10 flex flex-col gap-6 border-t border-gray-100 pt-12 dark:border-white/5">
+          <div className="relative z-10 flex flex-col gap-6 border-t border-neutral-200 pt-12 dark:border-white/5">
             <div className="flex items-center gap-4">
                {/* animate-pulse는 Tailwind 공식 기본 클래스입니다. (완전 제거를 원하시면 이 줄의 animate-pulse만 지우세요) */}
                <div className="h-2 w-2 rounded-full bg-violet-500 animate-pulse"></div>

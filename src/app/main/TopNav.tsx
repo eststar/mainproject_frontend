@@ -93,13 +93,13 @@ export default function TopNav() {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
 
         {/* Left: Brand & Nav Links */}
-        <div className="flex items-center bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl p-1.5 rounded-full border border-gray-200 dark:border-white/10 shadow-xl">
+        <div className="flex items-center bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl p-1.5 rounded-full border border-neutral-200 dark:border-white/5 shadow-xl">
           <Link href="/" className="flex flex-col items-center px-6 py-1 hover:opacity-70 transition-opacity">
             <h1 className="text-lg font-serif italic tracking-[0.3em] uppercase text-neutral-900 dark:text-white leading-none">ATELIER</h1>
             <span className="text-[7px] font-bold text-violet-500 dark:text-violet-400 uppercase tracking-[0.4em] mt-1.5">Neural Archive</span>
           </Link>
 
-          <div className="w-px h-6 bg-gray-200 dark:bg-white/10 mx-2" />
+          <div className="w-px h-6 bg-gray-200 dark:bg-white/5 mx-2" />
 
           <div className="flex items-center gap-1">
             {navItems.map((item) => (
@@ -125,7 +125,7 @@ export default function TopNav() {
             onClick={toggleTheme}
             type="button"
             /* w-24로 너비를 고정하여 크기 변화를 방지합니다. */
-            className="relative w-24 h-10 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl border border-gray-200 dark:border-white/10 
+            className="relative w-24 h-10 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl border border-neutral-200 dark:border-white/5 
                           rounded-full shadow-lg cursor-pointer overflow-hidden transition-colors duration-500 hover:border-violet-400 outline-none"
           >
             {/* 슬라이딩되는 아이콘 원형 뭉치 */}
@@ -154,7 +154,7 @@ export default function TopNav() {
           </button>
 
           {!authInfo ? (
-            <div className="flex items-center gap-1 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl p-1.5 rounded-full border border-gray-200 dark:border-white/10 shadow-lg">
+            <div className="flex items-center gap-1 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl p-1.5 rounded-full border border-neutral-200 dark:border-white/5 shadow-lg">
               <Link href="/main/login" className="px-5 py-2.5 text-[9px] font-bold uppercase tracking-widest text-gray-500 hover:text-violet-600 transition-colors">
                 Sign In
               </Link>
@@ -168,7 +168,7 @@ export default function TopNav() {
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
                 className={`flex items-center gap-3 pl-2 pr-4 py-1.5 rounded-full border transition-all shadow-lg active:scale-95 ${isProfileOpen
                     ? 'bg-violet-50 dark:bg-violet-900/20 border-violet-300 dark:border-violet-700'
-                    : 'bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl border-gray-200 dark:border-white/10'
+                    : 'bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl border-neutral-200 dark:border-white/5'
                   }`}
               >
                 <div className="w-8 h-8 rounded-full bg-violet-600 overflow-hidden flex items-center justify-center border border-white/20">
@@ -189,8 +189,8 @@ export default function TopNav() {
 
               {/* Dropdown */}
               {isProfileOpen && (
-                <div className="absolute top-full right-0 mt-3 w-56 bg-white dark:bg-neutral-900 border border-gray-200 dark:border-white/10 rounded-3xl shadow-2xl overflow-hidden py-2 z-50">
-                  <div className="px-6 py-4 border-b border-gray-100 dark:border-white/5 mb-1">
+                <div className="absolute top-full right-0 mt-3 w-56 bg-white dark:bg-neutral-900/50 border border-neutral-200 dark:border-white/5 rounded-3xl shadow-2xl overflow-hidden py-2 z-50">
+                  <div className="px-6 py-4 border-b border-neutral-200 dark:border-white/5 mb-1">
                     <p className="text-[7px] font-bold text-gray-400 uppercase tracking-widest">Access Key</p>
                     <p className="text-[10px] font-bold text-neutral-900 dark:text-white truncate mt-1">{authInfo.name}</p>
                   </div>

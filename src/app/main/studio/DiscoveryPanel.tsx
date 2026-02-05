@@ -87,7 +87,7 @@ export default function DiscoveryPanel({ onResultFound, startTransition }: Disco
 
       {/* 2. 메인 콘텐츠 영역 */}
       {selectedCat || isFetching ? (
-        <div className="space-y-6 pt-6 border-t border-neutral-100 dark:border-white/5">
+        <div className="space-y-6 pt-6 border-t border-neutral-200 dark:border-white/5">
           <div className="flex items-center justify-between pb-4">
             <span className="text-[9px] font-bold text-neutral-900 dark:text-white uppercase tracking-widest">
               Reference: <span className="italic font-serif normal-case text-xs text-violet-500">{selectedCat}</span>
@@ -137,8 +137,8 @@ export default function DiscoveryPanel({ onResultFound, startTransition }: Disco
       ) : (
         /* [대기 상태 UI] */
         
-        <div className="py-24 flex flex-col items-center justify-center border border-dashed border-neutral-100 dark:border-white/10 rounded-4xl bg-neutral-50/50 dark:bg-white/5">
-          <div className="w-14 h-14 rounded-full bg-white dark:bg-neutral-900 flex items-center justify-center text-neutral-200 dark:text-neutral-800 mb-6 border border-neutral-50 dark:border-white/5">
+        <div className="py-24 flex flex-col items-center justify-center border border-dashed border-neutral-200 dark:border-white/5 rounded-4xl bg-white dark:bg-neutral-900/50">
+          <div className="w-14 h-14 rounded-full bg-white dark:bg-neutral-900/50 flex items-center justify-center text-neutral-200 dark:text-neutral-800 mb-6 border border-neutral-50 dark:border-white/5">
               <FaFingerprint size={20} className="animate-pulse" />
           </div>
           <p className="text-[9px] font-bold text-neutral-400 dark:text-neutral-600 uppercase tracking-widest text-center leading-relaxed">

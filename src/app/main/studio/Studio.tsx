@@ -76,7 +76,7 @@ export default function Studio(/* { serverAction }: StudioClientProps */) {
       <ModeTabs mode={mode} onModeChange={handleModeChange} />
 
       {/* 2. 메인 입력 패널 영역 */}
-      <div className="bg-white dark:bg-neutral-900/40 rounded-[2.5rem] border border-gray-100 dark:border-white/5 shadow-xl overflow-hidden min-h-[500px]">
+      <div className="bg-white dark:bg-neutral-900/50 rounded-[2.5rem] border border-neutral-200 dark:border-white/5 shadow-xl overflow-hidden min-h-[500px]">
         {/* 애니메이션 클래스(animate-in 등)를 모두 제거하여 정적으로 렌더링됩니다. */}
         <div className="p-10 lg:p-14">
           {mode === 'imageDiscovery' ? (

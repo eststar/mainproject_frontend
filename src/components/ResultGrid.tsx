@@ -21,7 +21,7 @@ const ResultGrid: React.FC<ResultGridProps> = ({
   return (
     <div className="space-y-10 py-10">
       {/* Header Section: 경계선을 명확히 하여 영역 분리 */}
-      <div className="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-neutral-200 pb-8 dark:border-white/10">
+      <div className="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-neutral-200 pb-8 dark:border-white/5">
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-neutral-400 dark:text-neutral-500">
             <FaLayerGroup size={10} className="text-violet-500" />
@@ -55,7 +55,7 @@ const ResultGrid: React.FC<ResultGridProps> = ({
         </div>
       ) : (
         
-        <div className="flex flex-col items-center justify-center rounded-[2.5rem] border border-dashed border-neutral-200 bg-neutral-50/50 py-24 transition-colors hover:bg-neutral-100 dark:border-white/5 dark:bg-white/5 dark:hover:bg-white/10 group">
+        <div className="flex flex-col items-center justify-center rounded-[2.5rem] border border-dashed border-neutral-200 bg-white dark:bg-neutral-900/50 py-24 transition-colors hover:bg-neutral-100 dark:border-white/5 dark:hover:bg-white/10 group">
           <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-neutral-100 bg-white text-neutral-200 shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:text-violet-500 dark:border-white/5 dark:bg-neutral-800 dark:text-neutral-700">
              <FaMagnifyingGlass size={20} className="animate-pulse" />
           </div>

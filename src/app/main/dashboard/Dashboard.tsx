@@ -33,7 +33,7 @@ export default function Dashboard() {
       {/* 주요 지표 그리드 영역 */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {mainMetrics.map((metric, i) => (
-          <div key={i} className="bg-white dark:bg-neutral-900 p-8 rounded-[2.5rem] border border-black/5 dark:border-white/5 shadow-sm space-y-6 hover:border-violet-100 dark:hover:border-violet-800 transition-colors group">
+          <div key={i} className="bg-white dark:bg-neutral-900/50 p-8 rounded-[2.5rem] border border-neutral-200 dark:border-white/5 shadow-sm space-y-6 hover:border-violet-100 dark:hover:border-violet-800 transition-colors group">
             <div className="flex justify-between items-start">
               <div className={`w-10 h-10 rounded-2xl flex items-center justify-center text-white text-sm shadow-lg ${
                 metric.color === 'violet' ? 'bg-violet-600 shadow-violet-100 dark:shadow-none' : 
@@ -57,7 +57,7 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         {/* 카테고리 분포 시각화 섹션 (Progress Bar 형태) */}
-        <div className="lg:col-span-2 bg-white dark:bg-neutral-900 rounded-[3rem] border border-black/5 dark:border-white/5 p-12 space-y-10 shadow-sm transition-colors">
+        <div className="lg:col-span-2 bg-white dark:bg-neutral-900/50 rounded-[3rem] border border-neutral-200 dark:border-white/5 p-12 space-y-10 shadow-sm transition-colors">
           <div className="flex justify-between items-end">
             <div className="space-y-2">
               <span className="text-[9px] font-bold text-gray-300 dark:text-gray-600 uppercase tracking-[0.4em]">Inventory Mapping</span>
