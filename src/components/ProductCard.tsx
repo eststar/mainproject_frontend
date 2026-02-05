@@ -14,7 +14,7 @@ export default function ProductCard({ product, index = 0 } : ProductCardProps) {
       className="group space-y-6 cursor-pointer"
     >
       {/* Image Container */}
-      <div className="aspect-3/4 overflow-hidden rounded-4xl bg-[#F5F4F0] relative">
+      <div className="aspect-3/4 overflow-hidden rounded-4xl bg-white dark:bg-neutral-900/50 border border-neutral-200 dark:border-white/5 relative">
         <Image 
           src={product.imgUrl} 
           alt={product.name} 
@@ -26,7 +26,7 @@ export default function ProductCard({ product, index = 0 } : ProductCardProps) {
         
         {/* Floating Category Tag */}
         <div className="absolute top-6 left-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-          <span className="px-4 py-2 bg-white/80 backdrop-blur-md text-[8px] font-bold text-black uppercase tracking-widest rounded-full">
+          <span className="px-4 py-2 bg-white/80 dark:bg-white/10 backdrop-blur-md text-[8px] font-bold text-black dark:text-white uppercase tracking-widest rounded-full">
             {product.category}
           </span>
         </div>

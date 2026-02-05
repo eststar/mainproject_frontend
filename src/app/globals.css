@@ -1,34 +1,51 @@
 @import "tailwindcss";
 
-/* html,
-body,
-#__next {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-} */
+@custom-variant dark (&:where(.dark, .dark *));
 
-/* :root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* 폰트 설정 */
+  --font-serif: "Bodoni Moda", serif;
+  --font-sans: "Inter", sans-serif;
+
+  /* 컬러 설정 */
+  --color-violet-50: #f5f3ff;
+  --color-violet-100: #ede9fe;
+  --color-violet-200: #ddd6fe;
+  --color-violet-300: #c4b5fd;
+  --color-violet-400: #a78bfa;
+  --color-violet-500: #8b5cf6;
+  --color-violet-600: #7c3aed;
+  --color-violet-700: #6d28d9;
+  --color-violet-800: #5b21b6;
+  --color-violet-900: #4c1d95;
+  --color-violet-950: #2e1065;
+
+  /* 배경색 설정 */
+  --color-background-light: #F4F4F9;
+  --color-background-dark: #0D0C12;
+
+  /* 카드나 네비게이션 바 등 '표면'에 사용할 색상 (배경보다 약간 밝거나 어둡게) */
+  --color-surface-light: #FFFFFF;
+  --color-surface-dark: #16151D;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  body {
+    background-color: var(--color-background-light);
+    color: #1A1A1A;
+    font-family: var(--font-sans);
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :where(.dark) body {
+    background-color: var(--color-background-dark);
+    color: #E5E5E5;
+  }
+
+  /* 부드러운 색상 전환을 위한 기본 트랜지션만 적용 (애니메이션 아님) */
+  * {
+    transition-property: color, background-color, border-color;
+    transition-duration: 300ms;
+    transition-timing-function: ease;
   }
 }
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-} */

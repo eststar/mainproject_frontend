@@ -1,107 +1,71 @@
+'use client';
+
+import React from 'react';
+import { FaLayerGroup, FaMagnifyingGlass, FaWaveSquare } from 'react-icons/fa6';
+import ProductCard from './ProductCard';
 import { ProductType } from '@/types/ProductType';
-import Image from 'next/image';
-import { useState } from 'react';
-import { FaImage, FaLayerGroup, FaMagnifyingGlass } from 'react-icons/fa6';
-import { AuthUser } from '@/types/AuthTypes';
 
 interface ResultGridProps {
-    title?: string;
-    subtitle?: string;
-    isActive?: boolean;
-    products?: AuthUser[] | null; /* ProductType[] | null; */ //테스트용으로 authuser profile 사용
+  title?: string;
+  subtitle?: string;
+  isActive?: boolean;
+  products?: ProductType[] | null;
 }
 
-//출력된 이미지들 뿌릴 영역 //현재 직접 ResultGrid에서 뿌리는중 ProductCard는 사용하지 않음
-export default function ResultGrid({
-    title = "Neural Match Results",
-    subtitle = "Archive Discovery",
-    isActive = false,
-    products = null
-}: ResultGridProps) {
-    const [activeFilter, setActiveFilter] = useState('All');
-    const filters = ['All', 'Outerwear', 'Tops', 'Bottoms', 'Accessories']; //임시 필터 리스트 fetch 한 데이터 사용해야함
-    // console.log("ResultGrid Products:", products);
-    const filteredItems = products && activeFilter === 'All'
-        ? products
-        : products /* ?.filter(item => item.category === activeFilter)  */ || [];
-
-    return (
-        <div className="space-y-10 py-16">
-            {/* Header & Filters */}
-            <div className="flex flex-col md:flex-row justify-between items-end gap-8 border-b border-black/5 pb-10">
-                <div className="space-y-4">
-                    <div className="flex items-center gap-3 text-gray-400">
-                        <FaLayerGroup size={12} />
-                        <span className="text-[10px] font-bold uppercase tracking-[0.4em]">{subtitle}</span>
-                    </div>
-                    <h3 className="text-4xl font-serif italic tracking-tighter text-black">{title}</h3>
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                    {filters.map(filter => (
-                        <button
-                            key={filter}
-                            onClick={() => setActiveFilter(filter)}
-                            className={`px-8 py-3 text-[10px] font-bold uppercase tracking-widest transition-all rounded-full border ${activeFilter === filter
-                                ? 'bg-black text-white border-black shadow-lg scale-105'
-                                : 'bg-transparent text-gray-400 border-gray-100 hover:border-black hover:text-black'
-                                }`}
-                        >
-                            {filter}
-                        </button>
-                    ))}
-                </div>
-            </div>
-
-            {/* Grid Content */}
-            {isActive && products && products.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-16">
-                    {filteredItems.map((item, idx) => (
-                        /* 임시 테스트용 이미지 출력 key, alt 등 수정 필요 */
-                        //현재 테스트용으로 AuthUser 타입에서 정보 가져오는중. 추후 ProductType으로 변경 필요
-                        <div key={/* item.id || */ idx} className="group space-y-6 cursor-pointer">
-                            <div className="aspect-3/4 overflow-hidden rounded-4xl bg-[#F5F4F0] relative w-full">
-                                {/* <Image src={item.profile || item.imgUrl } alt={item.name || "default"} fill className="object-cover group-hover:scale-110 transition-transform duration-1000" />  */}
-                                {item.profile && item.profile.trim() !== "" ? (
-                                    <Image
-                                        src={item.profile/* item.imgUrl */}
-                                        alt={item.name || "default"}
-                                        fill
-                                        className="object-cover group-hover:scale-110 transition-transform duration-1000"
-                                        sizes="(max-width: 640px) 100vw, max-width: 1024px) 50vw, 25vw"
-                                        unoptimized
-                                    />
-                                ) : (
-                                    /* 이미지가 없을 때 보여줄 대체 UI (예: 회색 배경에 아이콘) */
-                                    <div className="w-full h-full flex items-center justify-center text-gray-200">
-                                        <FaImage size={40} />
-                                    </div>
-                                )}
-                                <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-all" />
-                            </div>
-                            <div className="space-y-1 px-2">
-                                <div className="flex justify-between items-start">
-                                    <span className="text-[10px] font-bold text-gray-300 uppercase tracking-widest">{/* item.brand || */ "default"}</span>
-                                    <span className="text-[11px] font-serif italic">${/* item.price || */ "0"}</span>
-                                </div>
-                                <h4 className="text-lg font-serif italic text-[#121212] tracking-tight">{item.name || "default"}</h4>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            ) : (
-                /* Empty State: 레이아웃만 보여줌 */
-                <div className="py-40 flex flex-col items-center justify-center border border-dashed border-[#EBEAE7] rounded-[4rem] bg-[#FAF9F6]/30">
-                    <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center mb-8 shadow-sm">
-                        <FaMagnifyingGlass className="text-gray-200" size={20} />
-                    </div>
-                    <p className="text-[10px] font-bold text-gray-300 uppercase tracking-[0.5em] text-center max-w-xs leading-loose">
-                        Awaiting parameters to initialize <br /> archival cross-reference
-                    </p>
-                </div>
-            )}
+const ResultGrid: React.FC<ResultGridProps> = ({ 
+  title = "Archive Selection", 
+  subtitle = "Inventory Scan",
+  isActive = false,
+  products = null
+}) => {
+  return (
+    <div className="space-y-10 py-10">
+      {/* Header Section: 경계선을 명확히 하여 영역 분리 */}
+      <div className="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-neutral-200 pb-8 dark:border-white/10">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-neutral-400 dark:text-neutral-500">
+            <FaLayerGroup size={10} className="text-violet-500" />
+            <span className="text-[9px] font-bold uppercase tracking-widest">{subtitle}</span>
+          </div>
+          <h3 className="font-serif text-4xl italic tracking-tighter text-neutral-900 dark:text-white">
+            {title}
+          </h3>
         </div>
-    );
+
+        {/* AI Similarity Badge: 보라색 포인트 유지 */}
+        {isActive && (
+          <div className="flex items-center gap-3 rounded-full border border-violet-100 bg-violet-50 px-6 py-2.5 transition-colors hover:bg-violet-600 hover:text-white dark:border-violet-800 dark:bg-violet-900/10 dark:hover:bg-violet-700 group shadow-sm">
+            {/* animate-pulse는 Tailwind 기본 내장 기능입니다 */}
+            <FaWaveSquare size={10} className="text-violet-400 group-hover:text-white animate-pulse" />
+            <span className="flex items-center gap-2 text-[8px] font-bold uppercase tracking-widest text-violet-700 group-hover:text-white dark:text-violet-400">
+              DNA Similarity: 
+              <span className="font-serif text-[10px] italic">98.2%</span>
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* Content Area: 조건부 렌더링 */}
+      {isActive && products ? (
+        
+        <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+          {products.map((item, idx) => (
+            <ProductCard key={item.id} product={item} index={idx} />
+          ))}
+        </div>
+      ) : (
+        
+        <div className="flex flex-col items-center justify-center rounded-[2.5rem] border border-dashed border-neutral-200 bg-neutral-50/50 py-24 transition-colors hover:bg-neutral-100 dark:border-white/5 dark:bg-white/5 dark:hover:bg-white/10 group">
+          <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-neutral-100 bg-white text-neutral-200 shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:text-violet-500 dark:border-white/5 dark:bg-neutral-800 dark:text-neutral-700">
+             <FaMagnifyingGlass size={20} className="animate-pulse" />
+          </div>
+          <p className="max-w-xs text-center text-[10px] font-bold uppercase tracking-widest leading-loose text-neutral-400 transition-colors group-hover:text-violet-600 dark:text-neutral-600">
+            Awaiting parameters <br/> to initialize curation engine
+          </p>
+        </div>
+      )}
+    </div>
+  );
 };
 
-
+export default ResultGrid;
