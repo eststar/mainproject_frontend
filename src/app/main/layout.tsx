@@ -1,5 +1,5 @@
 
-import TopNav from '@/app/main/TopNav';
+import Header from '@/app/main/Header';
 import Footer from './Footer';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
@@ -20,7 +20,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
             </div>
 
             {/* 상단 버튼으로 변경 */}
-            <TopNav />
+            <Header />
 
             <main className="flex-1 w-full max-w-7xl mx-auto p-8 pt-32 relative">
                 {children}

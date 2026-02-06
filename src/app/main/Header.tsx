@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   FaHouse,
   FaMicrochip,
@@ -19,7 +19,7 @@ import { useAtom } from 'jotai';
 import { authUserAtom } from '@/jotai/loginjotai';
 import { logoutAPI } from '../api/memberService/memberapi';
 
-export default function TopNav() {
+export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const [authInfo, setAuthInfo] = useAtom(authUserAtom);
@@ -155,11 +155,11 @@ export default function TopNav() {
 
           {!authInfo ? (
             <div className="flex items-center gap-1 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl p-1.5 rounded-full border border-neutral-200 dark:border-white/5 shadow-lg">
-              <Link href="/main/login" className="px-5 py-2.5 text-[9px] font-bold uppercase tracking-widest text-gray-500 hover:text-violet-600 transition-colors">
-                Sign In
+              <Link href="/login" className="px-5 py-2.5 text-[9px] font-bold uppercase tracking-widest text-gray-500 hover:text-violet-600 transition-colors">
+                Log In
               </Link>
-              <Link href="/main/signup" className="px-6 py-2.5 bg-violet-600 text-white text-[9px] font-bold uppercase tracking-widest rounded-full hover:bg-violet-700 transition-all flex items-center gap-2 shadow-md active:scale-95">
-                Registry <FaArrowRight size={8} />
+              <Link href="/signup" className="px-6 py-2.5 bg-violet-600 text-white text-[9px] font-bold uppercase tracking-widest rounded-full hover:bg-violet-700 transition-all flex items-center gap-2 shadow-md active:scale-95">
+                Join <FaArrowRight size={8} />
               </Link>
             </div>
           ) : (

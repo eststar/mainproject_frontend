@@ -1,37 +1,107 @@
-import { FaArrowLeft, FaKey  } from 'react-icons/fa6';
+"use client";
+import { FaArrowLeft, FaKey, FaMoon, FaSun } from 'react-icons/fa6';
 import Link from 'next/link';
 import LoginForm from './LoginForm';
+import { useEffect, useState } from 'react';
 
 export default function LoginPage() {
+  const [isDarkMode, setIsDarkMode] = useState(true); // 기본 다크 고정이었으므로 true
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('atelier_theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (savedTheme === 'light') {
+      setIsDarkMode(false);
+      document.documentElement.classList.remove('dark');
+    } else {
+      setIsDarkMode(true);
+      document.documentElement.classList.add('dark');
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newMode = !isDarkMode;
+    setIsDarkMode(newMode);
+    if (newMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('atelier_theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('atelier_theme', 'light');
+    }
+  };
 
   return (
-    <main className="relative w-full h-screen overflow-hidden bg-black flex items-center justify-center p-10">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))] from-neutral-900/40 via-black to-black opacity-80" />
-      
-      <div className="absolute top-12 left-12 z-20">
-        <Link 
-          href="/main" 
-          className="group flex items-center gap-5 text-[11px] font-bold text-gray-400 uppercase tracking-[0.4em] hover:text-white transition-all"
+    /* bg-neutral-100/50: 너무 생하얀색이 아닌 차분한 미색 배경 적용 */
+    <main className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-neutral-100/50 transition-colors duration-500 p-6 md:p-10 dark:bg-neutral-950">
+
+      {/* 1. 테마 토글 버튼: 위치를 살짝 아래로 내려 텍스트 가독성 확보 */}
+      <div className="absolute top-10 right-10 z-50">
+        <button
+          onClick={toggleTheme}
+          type="button"
+          className="relative w-24 h-10 bg-white/80 dark:bg-neutral-900/40 backdrop-blur-xl border border-neutral-200 dark:border-white/10 rounded-full shadow-lg cursor-pointer overflow-hidden transition-colors hover:border-violet-400 outline-none"
         >
-          <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:border-white group-hover:bg-white/5 transition-all">
-            <FaArrowLeft className="group-hover:-translate-x-1 transition-transform text-white" size={16} />
+          <div className={`absolute top-1 w-8 h-8 rounded-full bg-violet-600 flex items-center justify-center text-white transition-transform duration-500 ease-in-out z-20 shadow-md ${isDarkMode ? 'translate-x-[58px]' : 'translate-x-1'
+            }`}>
+            {isDarkMode ? <FaMoon size={10} /> : <FaSun size={10} />}
           </div>
-          <span className="opacity-0 group-hover:opacity-100 transition-all transform translate-x-[-10px] group-hover:translate-x-0">Back to Archive</span>
+          <div className="relative w-full h-full flex items-center justify-between px-3 z-10">
+            <span className={`text-[8px] font-bold uppercase tracking-widest transition-all duration-500 ${isDarkMode ? 'opacity-100 text-violet-300' : 'opacity-0 translate-x-2'
+              }`}>Night</span>
+            <span className={`text-[8px] font-bold uppercase tracking-widest transition-all duration-500 ${!isDarkMode ? 'opacity-100 text-violet-600' : 'opacity-0 -translate-x-2'
+              }`}>Day</span>
+          </div>
+        </button>
+      </div>
+
+      {/* 2. 배경 아트워크: 라이트 모드에서는 불투명도를 낮춰 눈 피로도 감소 */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,var(--tw-gradient-stops))] from-violet-900/10 via-transparent to-transparent opacity-50 dark:from-violet-900/20 dark:via-neutral-950 dark:to-neutral-950 dark:opacity-90" />
+      <div className="absolute -top-[10%] -left-[10%] h-[40%] w-[40%] rounded-full bg-violet-600/5 blur-[150px] dark:bg-violet-600/10" />
+
+      {/* 3. 장식적 메타데이터: 버튼과 겹치지 않게 하단 혹은 반대편으로 이동 가능하나, 
+          여기서는 텍스트 가독성을 위해 opacity를 더 조절함 */}
+      <div className="absolute top-24 right-12 hidden space-y-2 opacity-30 lg:block dark:opacity-20">
+        <p className="font-mono text-[8px] uppercase tracking-[0.3em] text-violet-600 dark:text-violet-400">Protocol: AES-256-GCM</p>
+        <p className="font-mono text-[8px] uppercase tracking-[0.3em] text-violet-600 dark:text-violet-400">Access Point: SEOUL_NODE_01</p>
+      </div>
+
+      {/* 4. 뒤로 가기 네비게이션 */}
+      <div className="absolute top-12 left-12 z-20">
+        <Link
+          href="/main"
+          className="group flex items-center gap-5 text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-400 transition-all hover:text-violet-600 dark:text-neutral-500 dark:hover:text-violet-300"
+        >
+          <div className="flex h-12 w-12 items-center justify-center rounded-full border border-neutral-200 bg-white transition-all group-hover:border-violet-500/50 group-hover:bg-violet-500/5 dark:border-white/5 dark:bg-transparent">
+            <FaArrowLeft className="text-neutral-400 transition-transform group-hover:-translate-x-1 group-hover:text-violet-600 dark:text-white/40 dark:group-hover:text-violet-400" size={14} />
+          </div>
+          <span className="translate-x-[-10px] opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100">
+            Back to overview
+          </span>
         </Link>
       </div>
-      <div className="relative z-10 w-full max-w-md space-y-20">
-        <div className="text-center space-y-8">
-          <div className="inline-block p-4 rounded-full border border-white/5 bg-white/5 mb-4">
-             <FaKey className="text-white/20" size={20} />
+
+      {/* 5. 로그인 카드: 
+          - bg-white: 라이트모드에서 명확한 흰색 배경 
+          - border-neutral-200: 라이트모드에서 테두리 명확화
+      */}
+      <div className="relative z-10 w-full max-w-lg rounded-[3.5rem] border border-neutral-200 bg-white p-12 shadow-2xl backdrop-blur-3xl lg:p-20 space-y-16 dark:border-white/5 dark:bg-neutral-900/50 dark:shadow-none">
+        <div className="space-y-6 text-center">
+          <div className="mb-4 inline-flex rounded-3xl border border-violet-100 bg-violet-50 p-4 dark:border-violet-500/20 dark:bg-violet-600/10">
+            <FaKey className="text-violet-600 dark:text-violet-500/50" size={18} />
           </div>
           <div className="space-y-4">
-            <h1 className="text-4xl font-serif italic tracking-[0.6em] text-white uppercase ml-[0.6em]">ATELIER</h1>
-            <p className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.8em]">Security Protocol v.1.2</p>
+            <h1 className="translate-x-[0.3em] font-serif text-4xl italic uppercase tracking-[0.6em] text-neutral-900 dark:text-white">ATELIER</h1>
+            <p className="text-[9px] font-bold uppercase tracking-[0.8em] text-violet-600 dark:text-violet-500/60">Secure Neural Access</p>
           </div>
         </div>
         <LoginForm />
       </div>
-      
+
+      {/* 6. 푸터 */}
+      <div className="absolute bottom-10 left-10 hidden opacity-40 lg:block dark:opacity-20">
+        <p className="font-mono text-[8px] uppercase tracking-[0.5em] text-violet-600 dark:text-violet-400">© 2026 ATELIER NEURAL SYSTEMS</p>
+      </div>
     </main>
   );
 }

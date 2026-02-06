@@ -1,98 +1,195 @@
-"use client"
-import { FaArrowRight, FaFingerprint } from "react-icons/fa6";
+"use client";
+
+import { FaArrowRight, FaGoogle } from "react-icons/fa6";
+import { SiNaver, SiKakaotalk } from "react-icons/si";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useRef } from "react";
-import { loginAPI } from "../api/memberService/memberapi";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useRef, useEffect, useCallback, useState } from "react";
+import { loginAPI, socialLoginAPI } from "@/app/api/memberService/memberapi"; 
 import { useSetAtom } from "jotai";
 import { authUserAtom } from "@/jotai/loginjotai";
 
 export default function LoginForm() {
+  // Jotai atom을 사용하여 전역 인증 상태 관리
   const setAuth = useSetAtom(authUserAtom);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  // 소셜 로그인 처리 중 로딩 상태를 관리하는 state
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
+  
+  // 입력 필드 참조를 위한 ref
   const userIdRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!userIdRef.current?.value) {
-      alert("아이디를 입력하세요");
-      return;
-    }
-    if (!passwordRef.current?.value) {
-      alert("비밀번호를 입력하세요");
-      return;
-    }
-
-    setAuth(null); //기존 로그인 정보 초기화
-
+  // [추가] 소셜 로그인 성공 후 백엔드와 통신하는 함수
+  // 인가 코드를 받아 백엔드 API로 전송하고, 성공 시 사용자 정보를 전역 상태에 저장
+  const handleSocialCallback = useCallback(async (code: string) => {
+    setIsAuthenticating(true); // 로딩 시작
     try {
-      const result = await loginAPI(userIdRef.current?.value || "", passwordRef.current?.value || "");
+      const result = await socialLoginAPI(code); 
       if (result && result.success) {
+        // 로그인 성공 시 Jotai atom 업데이트
         setAuth({
           accessToken: result.accessToken,
           userId: result.userId,
           name: result.name,
           profile: result.profile,
           success: result.success
-        })
-        
-        console.log("Token saved to localStorage and jotai");
-
-        router.push("/main");
+        });
+        router.push("/main"); // 메인 페이지로 이동
       } else {
-        alert("로그인에 실패했습니다.");
+        alert("소셜 인증에 실패했습니다.");
       }
     } catch (error) {
-      console.error("로그인 실패:", error);
-      alert("로그인에 실패했습니다.");
+      console.error("Social Auth Error:", error);
+    } finally {
+      setIsAuthenticating(false); // 로딩 종료
+    }
+  }, [router, setAuth]);
+
+  // [추가] 페이지 진입 시 URL에 'code'가 있는지 감시
+  // 소셜 로그인 리다이렉트 후 인가 코드가 있으면 처리 함수 실행
+  useEffect(() => {
+    const code = searchParams.get("code");
+    if (code) {
+      handleSocialCallback(code);
+    }
+  }, [searchParams, handleSocialCallback]);
+
+  // [유지] 기존 일반 로그인 로직 (ID/PW 방식)
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const userId = userIdRef.current?.value || "";
+    const password = passwordRef.current?.value || "";
+
+    if (!userId || !password) {
+      alert("ID와 Key를 모두 입력해주세요.");
+      return;
+    }
+
+    setAuth(null); // 기존 인증 정보 초기화
+
+    try {
+      const result = await loginAPI(userId, password);
+      if (result && result.success) {
+        // 로그인 성공 시 Jotai atom 업데이트
+        setAuth({
+          accessToken: result.accessToken,
+          userId: result.userId,
+          name: result.name,
+          profile: result.profile,
+          success: result.success
+        });
+        router.push("/main");
+      } else {
+        alert("인증 정보가 올바르지 않습니다.");
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+      alert("로그인 중 오류가 발생했습니다.");
     }
   };
 
+  // 소셜 로그인 버튼 클릭 핸들러
+  // 각 제공자별 OAuth URL로 리다이렉트
+  const handleSocialLogin = (provider: string) => {
+    const backendUrl = process.env.NEXT_PUBLIC_BACK_API_URL;
+    if (!backendUrl) {
+      console.error("Backend API URL is not defined.");
+      return;
+    }
+
+    let endpoint = "";
+    switch (provider) {
+      case "Google": endpoint = "/oauth2/authorization/google"; break;
+      case "Kakao": endpoint = "/oauth2/authorization/kakao"; break;
+      case "Naver": endpoint = "/oauth2/authorization/naver"; break;
+    }
+    if (endpoint) window.location.href = `${backendUrl}${endpoint}`;
+  };
+
   return (
-    <>
-      <form onSubmit={handleSubmit} className="space-y-12">
-        <div className="space-y-10">
-          <div className="group relative border-b border-white/10 focus-within:border-white transition-colors py-4">
-            <label className="absolute -top-6 left-0 text-[10px] font-bold text-gray-500 uppercase tracking-[0.3em]">Identifier</label>
+    <div className="relative">
+      {/* 로딩 오버레이: 소셜 로그인 처리 중일 때 표시 */}
+      {isAuthenticating && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm dark:bg-neutral-950/80">
+          <div className="text-center">
+            <div className="mb-4 h-8 w-8 animate-spin rounded-full border-2 border-violet-600 border-t-transparent mx-auto"></div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-violet-600">Syncing Protocol...</p>
+          </div>
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-10">
+        <div className="space-y-8">
+          {/* 아이디 입력 필드 */}
+          <div className="group relative border-b border-neutral-300 py-3 transition-all duration-500 focus-within:border-violet-500 dark:border-white/10">
+            <label className="absolute -top-6 left-0 text-[9px] font-bold uppercase tracking-[0.3em] text-neutral-500 transition-colors group-focus-within:text-violet-600 dark:group-focus-within:text-violet-400">
+              Identifier
+            </label>
             <input
               ref={userIdRef}
               type="text"
-              placeholder="Curator ID"
-              className="w-full bg-transparent border-none outline-none text-white text-base font-light placeholder:text-neutral-800 tracking-[0.2em] py-2"
+              placeholder="CURATOR_ID"
+              className="w-full border-none bg-transparent py-2 text-sm font-light tracking-[0.3em] text-neutral-900 outline-none placeholder:text-neutral-400 dark:text-white dark:placeholder:text-neutral-600"
               required
             />
           </div>
-          <div className="group relative border-b border-white/10 focus-within:border-white transition-colors py-4">
-            <label className="absolute -top-6 left-0 text-[10px] font-bold text-gray-500 uppercase tracking-[0.3em]">Access Key</label>
+
+          {/* 비밀번호 입력 필드 */}
+          <div className="group relative border-b border-neutral-300 py-3 transition-all duration-500 focus-within:border-violet-500 dark:border-white/10">
+            <label className="absolute -top-6 left-0 text-[9px] font-bold uppercase tracking-[0.3em] text-neutral-500 transition-colors group-focus-within:text-violet-600 dark:group-focus-within:text-violet-400">
+              Security Key
+            </label>
             <input
               ref={passwordRef}
               type="password"
               placeholder="••••••••••••"
-              className="w-full bg-transparent border-none outline-none text-white text-base font-light placeholder:text-neutral-800 tracking-[0.2em] py-2"
+              className="w-full border-none bg-transparent py-2 text-sm font-light tracking-[0.3em] text-neutral-900 outline-none placeholder:text-neutral-400 dark:text-white dark:placeholder:text-neutral-600"
               required
             />
           </div>
         </div>
 
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-5">
+          {/* 로그인 버튼 */}
           <button
             type="submit"
-            className="w-full py-7 bg-white text-black text-[11px] font-bold uppercase tracking-[0.8em] hover:bg-neutral-200 transition-all flex items-center justify-center gap-6 group shadow-[0_30px_60px_-15px_rgba(255,255,255,0.1)] active:scale-95"
+            className="group flex w-full items-center justify-center gap-6 bg-neutral-900 py-4 text-[10px] font-bold uppercase tracking-[0.8em] text-white shadow-xl transition-all active:scale-[0.98] hover:bg-violet-600 dark:bg-violet-600 dark:hover:bg-violet-500"
           >
-            Login <FaArrowRight className="group-hover:translate-x-3 transition-transform" />
+            Authenticate <FaArrowRight className="transition-transform group-hover:translate-x-2" />
           </button>
 
-          <div className="flex flex-col items-center gap-6">
-            <Link href="/signup" className="text-[10px] font-bold text-gray-500 uppercase tracking-widest hover:text-white transition-colors border-b border-transparent hover:border-white pb-1">
-              New Curator? Request Registry
+          {/* 소셜 로그인 구분선 */}
+          <div className="relative flex items-center justify-center py-2 gap-4">
+            <div className="flex-1 border-t border-neutral-300 dark:border-white/10"></div>
+            <span className="text-[9px] font-bold uppercase tracking-widest text-neutral-400 dark:text-neutral-500 shrink-0">
+              Or Access With
+            </span>
+            <div className="flex-1 border-t border-neutral-300 dark:border-white/10"></div>
+          </div>
+
+          {/* 소셜 로그인 버튼 그룹 */}
+          <div className="flex justify-center gap-6 pt-2">
+            <button type="button" onClick={() => handleSocialLogin('Google')} className="flex h-12 w-12 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-800 shadow-sm transition-all hover:scale-110 hover:border-violet-200">
+              <FaGoogle size={18} />
+            </button>
+            <button type="button" onClick={() => handleSocialLogin('Kakao')} className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FEE500] text-[#3c1e1e] transition-transform hover:scale-110">
+              <SiKakaotalk size={20} />
+            </button>
+            <button type="button" onClick={() => handleSocialLogin('Naver')} className="flex h-12 w-12 items-center justify-center rounded-full bg-[#03C75A] text-white transition-transform hover:scale-110">
+              <SiNaver size={16} />
+            </button>
+          </div>
+
+          {/* 회원가입 링크 */}
+          <div className="flex flex-col items-center gap-3 pt-1">
+            <Link href="/main/signup" className="border-b border-transparent pb-1 text-[9px] font-bold uppercase tracking-[0.4em] text-neutral-500 transition-colors hover:border-violet-500 hover:text-violet-600 dark:hover:text-violet-400">
+              Registry New Curator
             </Link>
-            <div className="flex items-center gap-3 text-[10px] font-bold text-gray-700 uppercase tracking-widest">
-              <FaFingerprint size={14} className="opacity-40" /> Biometric Bridge Ready
-            </div>
           </div>
         </div>
       </form>
-    </>
+    </div>
   );
 }

@@ -24,7 +24,7 @@
   --color-background-light: #F4F4F9;
   --color-background-dark: #0D0C12;
 
-  /* 카드나 네비게이션 바 등 '표면'에 사용할 색상 (배경보다 약간 밝거나 어둡게) */
+  /* 표면 색상 */
   --color-surface-light: #FFFFFF;
   --color-surface-dark: #16151D;
 }
@@ -42,10 +42,37 @@
     color: #E5E5E5;
   }
 
-  /* 부드러운 색상 전환을 위한 기본 트랜지션만 적용 (애니메이션 아님) */
+  /* 모든 요소에 부드러운 전환 적용 */
   * {
     transition-property: color, background-color, border-color;
     transition-duration: 300ms;
     transition-timing-function: ease;
+  }
+
+  /* [Autofill 설정 수정됨] */
+  /* 1. 공통: 배경색 투명하게 유지하는 트릭 (5000초 동안 변하도록 설정) */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-transition: background-color 5000s ease-in-out 0s;
+  }
+
+  /* 2. 라이트 모드 (기본): 진한 회색 글자 */
+  input:-webkit-autofill {
+    -webkit-text-fill-color: #1A1A1A !important;
+    caret-color: #1A1A1A !important;
+  }
+
+  /* 3. 다크 모드: 흰색 글자 */
+  :where(.dark) input:-webkit-autofill {
+    -webkit-text-fill-color: #FFFFFF !important;
+    caret-color: #FFFFFF !important;
+  }
+
+  /* 일반 입력 상태에서의 커서 색상 */
+  input {
+    caret-color: #a78bfa; /* 기본은 보라색 */
   }
 }

@@ -112,3 +112,17 @@ export const signoutAPI = async (email: string, password: string) => {
         throw error;
     }
 };
+
+export const socialLoginAPI = async (code: string) => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/social`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code }),
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
+};
