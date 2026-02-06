@@ -6,7 +6,7 @@ import { SiNaver, SiKakaotalk } from "react-icons/si";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useRef, useEffect, useCallback, useState } from "react";
-import { loginAPI, socialLoginAPI } from "@/app/api/memberService/memberapi";
+import { loginAPI } from "@/app/api/memberService/memberapi";
 import { useSetAtom } from "jotai";
 import { authUserAtom } from "@/jotai/loginjotai";
 
@@ -22,40 +22,24 @@ export default function LoginForm() {
   const userIdRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  // [추가] 소셜 로그인 성공 후 백엔드와 통신하는 함수
-  // 인가 코드를 받아 백엔드 API로 전송하고, 성공 시 사용자 정보를 전역 상태에 저장
-  const handleSocialCallback = useCallback(async (code: string) => {
-    setIsAuthenticating(true); // 로딩 시작
-    try {
-      const result = await socialLoginAPI(code);
-      if (result && result.success) {
-        // 로그인 성공 시 Jotai atom 업데이트
-        setAuth({
-          accessToken: result.accessToken,
-          userId: result.userId,
-          name: result.name,
-          profile: result.profile,
-          success: result.success
-        });
-        router.push("/main"); // 메인 페이지로 이동
-      } else {
-        alert("소셜 인증에 실패했습니다.");
-      }
-    } catch (error) {
-      console.error("Social Auth Error:", error);
-    } finally {
-      setIsAuthenticating(false); // 로딩 종료
-    }
-  }, [router, setAuth]);
-
-  // [추가] 페이지 진입 시 URL에 'code'가 있는지 감시
-  // 소셜 로그인 리다이렉트 후 인가 코드가 있으면 처리 함수 실행
+  // [변경] 백엔드에서 인증 완료 후 리다이렉트 시 넘겨주는 정보를 처리
   useEffect(() => {
-    const code = searchParams.get("code");
-    if (code) {
-      handleSocialCallback(code);
+    const accessToken = searchParams.get("accessToken");
+    const userId = searchParams.get("userId");
+    const name = searchParams.get("name");
+
+    // 주소창에 토큰 정보가 있다면 로그인 성공으로 간주하고 상태 저장
+    if (accessToken) {
+      setAuth({
+        accessToken,
+        userId: userId || "",
+        name: name || "",
+        profile: "", // 기본값 할당
+        success: true
+      });
+      router.push("/main");
     }
-  }, [searchParams, handleSocialCallback]);
+  }, [searchParams, router, setAuth]);
 
   // [유지] 기존 일반 로그인 로직 (ID/PW 방식)
   const handleSubmit = async (e: React.FormEvent) => {
@@ -100,13 +84,19 @@ export default function LoginForm() {
       return;
     }
 
+    // 프론트엔드로 돌아올 리다이렉트 주소를 동적으로 생성 (현재 도메인/login)
+    const frontendRedirectUrl = encodeURIComponent(`${window.location.origin}/main`);
+
     let endpoint = "";
     switch (provider) {
       case "Google": endpoint = "/oauth2/authorization/google"; break;
       case "Kakao": endpoint = "/oauth2/authorization/kakao"; break;
       case "Naver": endpoint = "/oauth2/authorization/naver"; break;
     }
-    if (endpoint) window.location.href = `${backendUrl}${endpoint}`;
+
+    if (endpoint) {
+      window.location.href = `${backendUrl}${endpoint}?redirect_uri=${frontendRedirectUrl}`;
+    }
   };
 
   return (
