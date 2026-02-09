@@ -1,9 +1,12 @@
-'use client';
-
+import React from 'react';
 import { FaArrowRight, FaMicrochip, FaChartLine, FaShieldHalved } from 'react-icons/fa6';
 import Link from 'next/link';
 import Image from 'next/image';
 
+/**
+ * [MainPage]
+ * 서버 컴포넌트로 전환하여 초기 진입 시 카드 이미지 깜빡임을 해결합니다.
+ */
 export default function MainPage() {
   return (
     <div className="max-w-7xl mx-auto space-y-16">
@@ -30,14 +33,19 @@ export default function MainPage() {
           href="/main/studio"
           className="lg:col-span-2 group relative h-[560px] bg-neutral-900 rounded-[3rem] overflow-hidden border border-neutral-200 dark:border-white/5 transition-shadow hover:shadow-xl"
         >
-          <Image
-            src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?q=80&w=2070&auto=format&fit=crop"
-            alt="Studio Background"
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 850px"
-            priority
-            className="opacity-30 object-cover transition-transform duration-500 group-hover:scale-105"
-          />
+          <div className="absolute inset-0 bg-neutral-900 overflow-hidden">
+            <Image
+              src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?q=80&w=2070&auto=format&fit=crop"
+              alt="Studio Background"
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 850px"
+              priority
+              placeholder="blur"
+              /* 중립적인 어두운 색상의 플레이스홀더를 사용하여 파란색 톤 왜곡을 방지합니다. */
+              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+              className="opacity-50 object-cover group-hover:scale-105"
+            />
+          </div>
           <div className="absolute inset-0 bg-linear-to-t from-black via-transparent to-transparent opacity-90" />
 
           <div className="absolute bottom-12 left-12 right-12 space-y-8">
@@ -60,7 +68,8 @@ export default function MainPage() {
         {/* Card 2: Statistics Dashboard */}
         <Link
           href="/main/statistics"
-          className="relative flex flex-col justify-between overflow-hidden rounded-[3rem] border border-neutral-200 bg-white p-10 dark:border-white/5 dark:bg-neutral-900/50 md:p-14 group shadow-sm transition-colors hover:border-violet-500/40"
+          suppressHydrationWarning
+          className="relative flex flex-col justify-between overflow-hidden rounded-[3rem] border border-neutral-200 bg-white p-10 dark:border-white/5 dark:bg-neutral-900/50 md:p-14 group shadow-sm transition-[border-color,box-shadow,transform] duration-300 hover:border-violet-500/40"
         >
           <div className="relative z-10 space-y-12">
             <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-violet-600 shadow-lg group-hover:bg-violet-500">

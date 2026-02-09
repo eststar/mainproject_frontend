@@ -18,7 +18,6 @@ export const getSalesRanking = async (): Promise<SalesRankItem[]> => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'ngrok-skip-browser-warning': '69420',
             },
             next: { revalidate: 3600 } // 1시간 단위 캐싱 (필요에 따라 조정)
         });

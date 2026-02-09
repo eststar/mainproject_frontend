@@ -1,9 +1,10 @@
+import React, { Suspense } from "react";
 import Studio from "./Studio";
 
 export default function StudioPage() {
 
   return (
-    <div className="max-w-7xl mx-auto space-y-12">
+    <div className="max-w-7xl mx-auto space-y-12" suppressHydrationWarning>
       {/* Header Section */}
       <div className="space-y-4">
         {/* 상단 장식 라인 및 레이블 */}
@@ -31,7 +32,9 @@ export default function StudioPage() {
         </div>
       </div>
 
-      <Studio />
+      <Suspense fallback={<div className="h-125 animate-pulse bg-gray-50/10 rounded-[2.5rem]" />}>
+        <Studio />
+      </Suspense>
     </div>
   );
 }

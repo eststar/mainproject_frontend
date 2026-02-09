@@ -10,8 +10,6 @@ export const getShoppingTrends = async () => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                // ngrok 무료 버전의 경우 브라우저 경고 페이지를 건너뛰기 위해 헤더 추가
-                'ngrok-skip-browser-warning': '69420',
             },
         });
 

@@ -26,18 +26,12 @@ export default function Header() {
 
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false); // SSR과 일치시키기 위해 기본값 false
   const profileRef = useRef<HTMLDivElement>(null);
 
-  /**
-   * 다크모드 설정 로직
-   * 로컬 스토리지 또는 브라우저 설정을 확인하여 초기 테마를 결정합니다.
-   */
   useEffect(() => {
     const savedTheme = localStorage.getItem('atelier_theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+    if (savedTheme === 'dark') {
       setIsDarkMode(true);
       document.documentElement.classList.add('dark');
     }
@@ -100,7 +94,12 @@ export default function Header() {
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 px-8 transition-all duration-500 ${isScrolled ? 'py-4' : 'py-8'}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 px-8 py-6 transition-all duration-300 ${isScrolled ? '-translate-y-1' : 'translate-y-0'}`}>
+      {/* 
+        [Header Stabilization]
+        기존 py-4 <-> py-8 전환은 전체 레이아웃 높이를 변화시켜 버튼들이 흔들리는 현상(Jitter)을 유발했습니다.
+        패딩을 고정하고 translate-y 또는 border/glassmorphism 효과만 변화시켜 시각적 안정성을 확보합니다.
+      */}
       <div className="max-w-7xl mx-auto flex items-center justify-between">
 
         {/* Left: Brand & Nav Links */}
@@ -135,30 +134,29 @@ export default function Header() {
           <button
             onClick={toggleTheme}
             type="button"
-            /* w-24로 너비를 고정하여 크기 변화를 방지합니다. */
+            suppressHydrationWarning
             className="relative w-24 h-10 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl border border-neutral-200 dark:border-white/5 
-                          rounded-full shadow-lg cursor-pointer overflow-hidden transition-colors duration-500 hover:border-violet-400 outline-none"
+                          rounded-full shadow-lg cursor-pointer overflow-hidden hover:border-violet-400 outline-none"
           >
-            {/* 슬라이딩되는 아이콘 원형 뭉치 */}
-            <div className={`absolute top-1 w-8 h-8 rounded-full bg-violet-600 flex items-center justify-center text-white transition-transform duration-500 ease-in-out z-20 
-                    ${isDarkMode ? 'translate-x-[58px]' : 'translate-x-1'}`}
+            {/* 
+              [Pure CSS Driven UI]
+              isDarkMode 상태(React)가 아닌 html 태그의 .dark 클래스(CSS)를 기준으로 UI를 초기 렌더링합니다.
+              layout.tsx의 헤드 스크립트가 이미 클래스를 박아두었으므로, 하이드레이션 에러 없이 로딩 즉시 올바른 위치에 있게 됩니다.
+            */}
+            <div className="absolute top-1 w-8 h-8 rounded-full bg-violet-600 flex items-center justify-center text-white transition-transform duration-500 ease-in-out z-20 
+                    translate-x-1 dark:translate-x-14.5"
             >
-              {isDarkMode ? <FaMoon size={10} /> : <FaSun size={10} />}
+              <FaSun size={10} className="dark:hidden" />
+              <FaMoon size={10} className="hidden dark:block" />
             </div>
 
             {/* 버튼 내부 텍스트 레이어 */}
             <div className="relative w-full h-full flex items-center justify-between px-3 z-10">
-              {/* Night 텍스트 (다크모드일 때 왼쪽에 나타남) */}
-              <span className={`text-[8px] font-bold uppercase tracking-widest transition-all duration-500 
-                  ${isDarkMode ? 'opacity-100 translate-x-0 text-gray-400' : 'opacity-0 translate-x-2'}`}
-              >
+              <span className="text-[8px] font-bold uppercase tracking-widest transition-all duration-500 opacity-0 translate-x-2 dark:opacity-100 dark:translate-x-0 text-gray-400">
                 Night
               </span>
 
-              {/* Day 텍스트 (라이트모드일 때 오른쪽에 나타남) */}
-              <span className={`text-[8px] font-bold uppercase tracking-widest transition-all duration-500 
-                    ${!isDarkMode ? 'opacity-100 translate-x-0 text-gray-500' : 'opacity-0 -translate-x-2'}`}
-              >
+              <span className="text-[8px] font-bold uppercase tracking-widest transition-all duration-500 opacity-100 translate-x-0 dark:opacity-0 dark:-translate-x-2 text-gray-500">
                 Day
               </span>
             </div>

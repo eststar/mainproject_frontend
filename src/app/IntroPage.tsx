@@ -1,24 +1,39 @@
-'use client';
-
 import React from 'react';
 import { FaArrowRight } from 'react-icons/fa6';
 import Link from 'next/link';
 import Image from 'next/image';
 
+/**
+ * [IntroPage]
+ * 서버 컴포넌트로 전환하여 하이드레이션 깜빡임을 원천 차단합니다.
+ * 브라우저는 서버로부터 이미지가 투명도 50%로 설정된 완성된 HTML을 받습니다.
+ */
 export default function IntroPage() {
   return (
-    /* 고정 다크 배경: bg-neutral-950 */
-    <main className="relative h-screen w-full overflow-hidden bg-neutral-950 text-white">
+    /* 인트로 페이지는 항상 다크 테마이므로, 본문 배경색에 관계없이 검은색으로 강제 고정하여 깜빡임을 방지합니다. */
+    <main
+      style={{ backgroundColor: 'black' }}
+      suppressHydrationWarning
+      className="relative h-screen w-full overflow-hidden text-white selection:bg-violet-500 selection:text-white"
+    >
 
-      {/* 1. 배경 이미지: 다크 감성에 맞춰 투명도 30% 고정 */}
-      <Image
-        src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop"
-        alt="Fashion Hero Background"
-        fill
-        sizes="100vw"
-        priority
-        className="object-cover opacity-30 scale-105 transition-transform duration-[10s] hover:scale-100"
-      />
+      {/* 1. 배경 이미지: React 상태를 타지 않고 이미지가 준비되는 즉시 브라우저가 그리도록 합니다. */}
+      {/* priority 옵션이 있으므로 브라우저는 최우선 순위로 로딩을 시작합니다. */}
+      <div className="absolute inset-0 bg-black overflow-hidden">
+        <Image
+          src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop"
+          alt="Fashion Hero Background"
+          fill
+          sizes="100vw"
+          priority
+          placeholder="blur"
+          /* 중립적인 어두운 색상의 플레이스홀더를 사용하여 파란색 톤 왜곡을 방지합니다. */
+          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+          className="object-cover opacity-50"
+        />
+        {/* 투명 오버레이를 추가하여 플레이스홀더에서 고해상도 이미지로의 전환을 부드럽게 합니다. */}
+        <div className="absolute inset-0 bg-black/20" />
+      </div>
 
       {/* 2. 시그니처 보라색 그라데이션 오버레이 */}
       <div className="absolute inset-0 bg-linear-to-br from-violet-950/40 via-transparent to-black/80" />

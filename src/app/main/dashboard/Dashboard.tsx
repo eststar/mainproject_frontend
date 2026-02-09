@@ -13,6 +13,7 @@ import {
 import { getShoppingTrends } from '@/app/api/trendService/trendapi';
 import { getSalesRanking, SalesRankItem } from '@/app/api/salesService/salesapi';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
+import TSNEPlot from '@/components/TSNEPlot';
 
 export default function Dashboard({
   initialTrends = [],
@@ -131,7 +132,7 @@ export default function Dashboard({
                   <span className="text-[10px] font-bold text-gray-400 dark:text-gray-600 uppercase tracking-widest">{cat.count} items / {cat.percentage}%</span>
                 </div>
                 {/* 커스텀 프로그레스 바: 데이터 비율 표시 */}
-                <div className="h-[2px] w-full bg-gray-50 dark:bg-neutral-800 overflow-hidden rounded-full">
+                <div className="h-0.5 w-full bg-gray-50 dark:bg-neutral-800 overflow-hidden rounded-full">
                   <div
                     className="h-full bg-linear-to-r from-violet-500 to-indigo-600 transition-all duration-1000 ease-out"
                     style={{ width: `${cat.percentage}%` }}
@@ -202,6 +203,13 @@ export default function Dashboard({
             )}
           </div>
         </div>
+
+        {/* 
+          [t-SNE 시각화 섹션]
+          고차원 스타일 데이터를 2차원으로 투영하여 클러스터링을 시각화합니다.
+          별도의 컴포넌트로 분리하여 관리가 용이하도록 했습니다.
+        */}
+        <TSNEPlot />
 
         {/* 신규: Recharts를 사용한 전체 스타일 분포 차트 */}
         <div className="lg:col-span-3 bg-white dark:bg-neutral-900/50 rounded-[3rem] border border-neutral-200 dark:border-white/5 p-12 shadow-sm transition-colors overflow-hidden relative">
