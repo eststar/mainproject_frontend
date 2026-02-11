@@ -164,7 +164,7 @@ export default function DiscoveryPanel({
       {/* 스크롤 영역: onScroll 연결 필수 */}
       <div
         onScroll={handleScroll}
-        className="flex-1 overflow-y-auto pr-4 custom-scrollbar min-h-0 border-t border-neutral-100 dark:border-white/5"
+        className="flex-1 overflow-y-auto pr-4 custom-scrollbar min-h-0 border-t border-neutral-200 dark:border-white/10"
       >
         {isFetching || isFiltering ? (
           <div className="flex flex-col items-center justify-center h-full gap-4">
@@ -213,11 +213,11 @@ export default function DiscoveryPanel({
             </div>
           </div>
         ) : (
-          <div className="h-full flex flex-col items-center justify-center bg-white dark:bg-neutral-900/50 rounded-[3rem]">
-            <div className="w-16 h-16 rounded-full bg-neutral-50 dark:bg-neutral-900 flex items-center justify-center text-neutral-300 mb-6 border border-neutral-100 shadow-inner">
-              <FaFingerprint size={32} className="animate-pulse" />
+          <div className="h-full flex flex-col items-center justify-center bg-white dark:bg-neutral-900/50 rounded-[3rem] py-20">
+            <div className="w-20 h-20 rounded-full bg-neutral-50 dark:bg-neutral-900 flex items-center justify-center text-neutral-300 mb-8 border border-neutral-100 shadow-inner">
+              <FaFingerprint size={40} className="animate-pulse" />
             </div>
-            <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-[0.15em] text-center leading-loose">
+            <p className="text-xs font-bold text-neutral-400 uppercase tracking-[0.2em] text-center leading-loose">
               Select a category above <br /> to initialize reference indexing
             </p>
           </div>

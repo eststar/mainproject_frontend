@@ -48,8 +48,8 @@ export default function UploadPanel({ onResultFound, onAnalysisStart, onAnalysis
   };
 
   return (
-    <div className="space-y-10">
-      <div className="max-w-2xl mx-auto">
+    <div className="h-full flex flex-col justify-center py-10 lg:py-0">
+      <div className="max-w-2xl mx-auto w-full">
         {!preview ? (
           <div
             onClick={() => fileInputRef.current?.click()}

@@ -51,7 +51,7 @@ export default function Studio() {
   };
 
   return (
-    <div className="space-y-10 max-w-7xl mx-auto w-full">
+    <div className="space-y-6 lg:space-y-10 max-w-7xl mx-auto w-full px-4 lg:px-0">
       {!results && (
         <ModeTabs mode={mode} onModeChange={(newMode) => {
           setResults(null);
@@ -59,11 +59,19 @@ export default function Studio() {
         }} />
       )}
 
-      {/* 카드 컨테이너: 카드 자체의 높이를 크게 잡습니다. */}
-      <div className="bg-white dark:bg-neutral-900/50 rounded-[2.5rem] border border-neutral-200 dark:border-white/5 shadow-xl overflow-hidden flex flex-col h-[1100px]">
+      {/* 카드 컨테이너: 반응형 높이 및 부드러운 전환 효과 적용 */}
+      <div className={`
+        bg-white dark:bg-neutral-900/50 
+        rounded-[2rem] lg:rounded-[2.5rem] 
+        border border-neutral-200 dark:border-white/5 
+        shadow-xl overflow-hidden flex flex-col 
+        transition-all duration-500 ease-in-out
+        min-h-[500px]
+        ${mode === 'imageInput' ? 'lg:h-[600px]' : 'lg:h-[1100px]'}
+      `}>
 
-        {/* 패딩을 조절한 내부 컨테이너 */}
-        <div className="flex-1 flex flex-col p-8 lg:p-12 overflow-hidden h-full">
+        {/* 패딩을 조절한 내부 컨테이너: 모바일 대응 패딩 조절 */}
+        <div className="flex-1 flex flex-col p-6 lg:p-12 overflow-hidden h-full">
 
           {results ? (
             /* 결과 화면도 내부 스크롤 적용 */
