@@ -14,9 +14,9 @@ const nextConfig: NextConfig = {
         pathname: '/**',    // 이미지 저장 경로 패턴
       },
       {
-        //https://wizardofounce.loca.lt
+        //https://unwilling-amalle-270ml-95aaf6de.koyeb.app
         protocol: 'https',
-        hostname: '*.wizardofounce.loca.lt',
+        hostname: 'unwilling-amalle-270ml-95aaf6de.koyeb.app',
         pathname: '/**',
       },
       {

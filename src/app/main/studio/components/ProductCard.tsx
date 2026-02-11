@@ -42,11 +42,11 @@ export default function ProductCard({ product, index = 0, onClick }: ProductCard
                     <span className="text-[10px] font-bold text-gray-300 uppercase tracking-widest group-hover:text-black transition-colors">
                         {product.similarityScore}
                     </span>
-                    <span className="text-[11px] font-serif italic text-gray-500 group-hover:text-black transition-colors">
+                    <span className="text-[11px] font-normal italic text-gray-500 group-hover:text-black transition-colors">
                         \{(product.price / 100) * 100}
                     </span>
                 </div>
-                <h4 className="text-lg font-serif italic text-[#121212] tracking-tight group-hover:translate-x-1 transition-transform">
+                <h4 className="text-lg font-normal italic text-[#121212] tracking-tight group-hover:translate-x-1 transition-transform">
                     {product.title}
                 </h4>
             </div>

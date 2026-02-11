@@ -3,6 +3,9 @@
 import React, { useState, useRef } from 'react';
 import { FaCloudArrowUp, FaXmark, FaMagnifyingGlass } from 'react-icons/fa6';
 import Image from 'next/image';
+import { RecommendData } from '@/types/ProductType';
+import { getRecommendList } from '@/app/api/productService/productapi';
+import { postImage } from '@/app/api/imageService/Imageapi';
 
 interface UploadPanelProps {
   onResultFound: (results: any[] | null) => void;
@@ -14,11 +17,13 @@ interface UploadPanelProps {
 
 export default function UploadPanel({ onResultFound, onAnalysisStart, onAnalysisCancel, isPending, startTransition }: UploadPanelProps) {
   const [preview, setPreview] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setSelectedFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         const result = reader.result as string;
@@ -31,19 +36,34 @@ export default function UploadPanel({ onResultFound, onAnalysisStart, onAnalysis
 
   const handleCancel = () => {
     setPreview(null);
+    setSelectedFile(null);
     onAnalysisCancel();
     // 검색 결과도 같이 초기화를 원할 경우
     onResultFound(null);
   };
 
   const handleSearch = () => {
-    if (!preview) return;
+    if (!selectedFile) return;
 
     startTransition(async () => {
-      // Mock result finding for demonstration
-      setTimeout(() => {
-        onResultFound([]); // trigger empty results to show grid
-      }, 2000);
+      // 1. 즉시 결과 페이지(로딩 상태)로 진입
+      onResultFound([]);
+
+      try {
+        // 2. 이미지 서버 전송
+        const uploadResult = await postImage(selectedFile);
+        console.log("Upload Success:", uploadResult);
+
+        // 3. 분석 후 추천 리스트 가져오기 (가상의 딜레이 포함 시나리오)
+        // 실제 API 연결 시 productId 등을 uploadResult에서 받아올 수 있습니다.
+        const results: RecommendData[] = await getRecommendList("AKA3CA001");
+
+        onResultFound(results);
+      } catch (e) {
+        console.error("검색 실패:", e);
+        // 에러 시 사용자에게 알림을 주거나 빈 결과 전달
+        onResultFound(null);
+      }
     });
   };
 

@@ -37,7 +37,7 @@ const mockBarData = [
 ];
 
 /**
- * AnalysisSection: Studio 페이지 전 전에서 이미지 분석 결과를 시각화합니다.
+ * AnalysisSection: Studio 페이지에서 이미지 분석 결과를 시각화합니다.
  */
 export default function AnalysisSection({ sourceImage, productName, isLoading }: AnalysisSectionProps) {
     const [isMounting, setIsMounting] = useState(true);
@@ -46,10 +46,8 @@ export default function AnalysisSection({ sourceImage, productName, isLoading }:
         setIsMounting(false);
     }, []);
 
-    if (!sourceImage && !isLoading) return null;
-
     return (
-        <div className="space-y-10 py-10">
+        <div className="space-y-8">
             {/* 1. Header Area with dynamic title */}
             <div className="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-neutral-200 pb-8 dark:border-white/5">
                 <div className="space-y-2">
