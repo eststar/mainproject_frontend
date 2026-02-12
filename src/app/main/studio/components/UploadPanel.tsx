@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { FaCloudArrowUp, FaXmark, FaMagnifyingGlass } from 'react-icons/fa6';
+import { FaCloudArrowUp, FaXmark, FaMagnifyingGlass, FaCircleInfo, FaExpand, FaFileImage, FaLightbulb } from 'react-icons/fa6';
 import Image from 'next/image';
 import { RecommendData } from '@/types/ProductType';
 import { getRecommendList } from '@/app/api/productService/productapi';
@@ -67,7 +67,6 @@ export default function UploadPanel({ onResultFound, onAnalysisStart, onAnalysis
         console.log("Upload Success:", uploadResult);
 
         // 3. 분석 결과를 바탕으로 유사 상품 추천 리스트 조회
-        // TODO: 실제 연동 시 uploadResult에서 상품 ID 또는 임베딩 정보를 추출하여 전달
         const results: RecommendData[] = await getRecommendList("AKA3CA001");
 
         onResultFound(results);
@@ -80,63 +79,121 @@ export default function UploadPanel({ onResultFound, onAnalysisStart, onAnalysis
 
   return (
     <div className="h-full flex flex-col justify-center py-10 lg:py-0">
-      <div className="max-w-2xl mx-auto w-full">
-        {!preview ? (
-          /* 파일 선택 전: 드롭존 형태의 UI */
-          <div
-            onClick={() => fileInputRef.current?.click()}
-            className="group aspect-video border-2 border-dashed border-neutral-200 dark:border-white/5 rounded-4xl flex flex-col items-center justify-center gap-4 cursor-pointer hover:border-violet-400 dark:hover:border-violet-500 transition-colors"
-          >
-            <div className="w-16 h-16 rounded-full bg-white dark:bg-neutral-900/50 flex items-center justify-center text-gray-400 group-hover:text-violet-600 transition-colors">
-              <FaCloudArrowUp size={24} />
-            </div>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">
-              Upload reference for indexing
-            </p>
-            <input
-              type="file"
-              ref={fileInputRef}
-              className="hidden"
-              accept="image/*"
-              onChange={handleFileChange}
-            />
-          </div>
-        ) : (
-          /* 파일 선택 후: 선택 이미지 미리보기 UI */
-          <div className="relative aspect-video rounded-4xl overflow-hidden border border-neutral-200 dark:border-white/5 bg-white dark:bg-neutral-900/50">
-            <Image
-              src={preview}
-              alt="Target"
-              fill
-              className="object-contain p-4"
-              unoptimized
-            />
-            <button
-              onClick={handleCancel}
-              className="absolute top-6 right-6 w-10 h-10 bg-black/60 backdrop-blur-md text-white rounded-full flex items-center justify-center hover:bg-red-500 transition-colors shadow-lg"
-            >
-              <FaXmark size={14} />
-            </button>
-          </div>
-        )}
+      <div className="max-w-5xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
-        {/* 하단 동작 버튼 */}
-        <div className="mt-8">
+        {/* Left Side: Upload Interaction */}
+        <div className="w-full space-y-8 animate-in fade-in slide-in-from-left duration-700">
+          {!preview ? (
+            /* 파일 선택 전: 드롭존 형태의 UI */
+            <div
+              onClick={() => fileInputRef.current?.click()}
+              className="group aspect-square lg:aspect-video border-2 border-dashed border-neutral-200 dark:border-white/5 rounded-[2.5rem] flex flex-col items-center justify-center gap-6 cursor-pointer hover:border-violet-400 dark:hover:border-violet-500 transition-all bg-neutral-50/50 dark:bg-neutral-900/30 hover:bg-white dark:hover:bg-neutral-900/50 shadow-inner"
+            >
+              <div className="w-20 h-20 rounded-full bg-white dark:bg-neutral-900 shadow-xl flex items-center justify-center text-gray-400 group-hover:text-violet-600 group-hover:scale-110 transition-all duration-500">
+                <FaCloudArrowUp size={32} />
+              </div>
+              <div className="text-center space-y-2">
+                <p className="text-[11px] font-black uppercase tracking-[0.3em] text-neutral-800 dark:text-neutral-200">
+                  Drop Image
+                </p>
+                <p className="text-[9px] font-bold uppercase tracking-widest text-neutral-400">
+                  Supported: JPG, PNG, WEBP
+                </p>
+              </div>
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+            </div>
+          ) : (
+            /* 파일 선택 후: 선택 이미지 미리보기 UI */
+            <div className="relative aspect-square lg:aspect-video rounded-[2.5rem] overflow-hidden border-2 border-violet-500/30 bg-white dark:bg-neutral-900/50 shadow-2xl animate-in zoom-in-95 duration-500">
+              <Image
+                src={preview}
+                alt="Target"
+                fill
+                className="object-contain p-8"
+                unoptimized
+              />
+              <button
+                onClick={handleCancel}
+                className="absolute top-6 right-6 w-12 h-12 bg-black/60 backdrop-blur-md text-white rounded-full flex items-center justify-center hover:bg-red-500 transition-all shadow-xl group"
+              >
+                <FaXmark size={18} className="group-hover:rotate-90 transition-transform" />
+              </button>
+            </div>
+          )}
+
+          {/* 동작 버튼 */}
           <button
             onClick={handleSearch}
             disabled={!preview || isPending}
-            className="w-full py-5 bg-violet-600 text-white text-[10px] font-bold uppercase tracking-widest rounded-full disabled:opacity-30 flex items-center justify-center gap-3 transition-all active:scale-[0.98] shadow-lg"
+            className="w-full py-6 bg-violet-600 text-white text-[11px] font-black uppercase tracking-[0.4em] rounded-full disabled:opacity-20 flex items-center justify-center gap-4 transition-all active:scale-[0.98] shadow-2xl shadow-violet-600/20 hover:bg-violet-500"
           >
             {isPending ? (
-              <span className="animate-pulse">Processing DNA...</span>
+              <span className="animate-pulse">Processing DNA Matrix...</span>
             ) : (
               <>
-                <FaMagnifyingGlass size={12} />
-                <span>Scan Reference</span>
+                <FaMagnifyingGlass size={14} />
+                <span>Initialize Analysis</span>
               </>
             )}
           </button>
         </div>
+
+        {/* Right Side: Instructions & Requirements */}
+        <div className="w-full space-y-6 animate-in fade-in slide-in-from-right duration-700 delay-100">
+          {/* Header */}
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-2xl bg-violet-600 text-white shadow-lg shadow-violet-600/20">
+              <FaCircleInfo size={14} />
+            </div>
+            <h2 className="text-xl font-normal italic text-neutral-900 dark:text-white">Upload Protocol</h2>
+          </div>
+
+          {/* Integrated Example & Specs */}
+          <div className="space-y-4">
+            <div className="flex gap-5">
+              {/* Single Example Image Placeholder */}
+              <div className="w-32 h-32 flex-none rounded-4xl bg-neutral-100 dark:bg-neutral-800/50 border border-neutral-100 dark:border-white/5 overflow-hidden relative group/ex">
+                <div className="absolute inset-0 flex items-center justify-center text-neutral-300 dark:text-neutral-700">
+                  <FaFileImage size={24} />
+                </div>
+                <div className="absolute inset-0 bg-violet-600/10 opacity-0 group-hover/ex:opacity-100 transition-opacity" />
+              </div>
+
+              {/* Right Side Info */}
+              <div className="flex flex-col justify-center gap-4">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <div className="w-1 h-3 bg-violet-500 rounded-full" />
+                    <h4 className="text-[10px] font-black uppercase tracking-widest text-neutral-800 dark:text-neutral-200">Scale</h4>
+                  </div>
+                  <p className="text-[10px] text-neutral-500 dark:text-neutral-400 pl-3">Under 800x800px optimization.</p>
+                </div>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <div className="w-1 h-3 bg-violet-500 rounded-full" />
+                    <h4 className="text-[10px] font-black uppercase tracking-widest text-neutral-800 dark:text-neutral-200">Clarity</h4>
+                  </div>
+                  <p className="text-[10px] text-neutral-500 dark:text-neutral-400 pl-3">Centered & clear focus.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Side Info */}
+            <div className="p-5 rounded-3xl border border-neutral-100 dark:border-white/5 bg-neutral-50/50 dark:bg-neutral-800/30 space-y-2">
+              <h4 className="text-[10px] font-black uppercase tracking-widest text-neutral-800 dark:text-neutral-200">Formats & Quality</h4>
+              <p className="text-[10px] text-neutral-500 dark:text-neutral-400 leading-relaxed">
+                Standard JPG/PNG with clean backgrounds ensures maximum DNA fidelity and matching accuracy.
+              </p>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );
