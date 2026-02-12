@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
-import { FaArrowRotateLeft, FaArrowsRotate, FaCheck, FaFingerprint, FaMagnifyingGlass } from 'react-icons/fa6';
+import { FaArrowRotateLeft, FaArrowsRotate, FaCheck, FaFingerprint, FaMagnifyingGlass, FaChartLine, FaCalendarDays } from 'react-icons/fa6';
 import { ProductData, RecommendData } from '@/types/ProductType';
 import Image from 'next/image';
+import ProductCard from './ProductCard';
 import { getProductList, getRecommendList } from '@/app/api/productService/productapi';
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -203,40 +204,50 @@ export default function DiscoveryPanel({
         ) : selectedCat ? (
           /* 상품 리스트 노출 */
           <div className="pt-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
-            <div className="flex items-center justify-between pb-6">
-              <span className="text-[9px] font-bold text-neutral-900 dark:text-white uppercase tracking-widest">
-                Reference: <span className="font-extrabold normal-case text-xs text-violet-500">{selectedCat}</span>
-                <span className="ml-2 text-neutral-400 font-normal">({filteredProducts.length} items)</span>
-              </span>
-              <button onClick={handleReset} className="text-neutral-300 hover:text-violet-600 transition-colors">
-                <FaArrowRotateLeft size={14} />
-              </button>
+            <div className="flex flex-col gap-4 pb-8">
+              <div className="flex items-center justify-between">
+                <span className="text-[9px] font-bold text-neutral-900 dark:text-white uppercase tracking-widest">
+                  Reference: <span className="font-extrabold normal-case text-xs text-violet-500">{selectedCat}</span>
+                  <span className="ml-2 text-neutral-400 font-normal">({filteredProducts.length} items)</span>
+                </span>
+                <button onClick={handleReset} className="text-neutral-300 hover:text-violet-600 transition-colors">
+                  <FaArrowRotateLeft size={14} />
+                </button>
+              </div>
+
+              {/* Data Insights Badges */}
+              <div className="flex flex-wrap gap-2.5">
+                <div className="px-4 py-2 bg-violet-50 dark:bg-violet-900/20 rounded-full border border-violet-100 dark:border-violet-800/30 flex items-center gap-2.5 shadow-sm">
+                  <FaCalendarDays size={10} className="text-violet-600 dark:text-violet-400" />
+                  <span className="text-[8px] font-black text-violet-600 dark:text-violet-400 uppercase tracking-[0.2em]">Past 12 Months Analytics</span>
+                </div>
+                <div className="px-4 py-2 bg-neutral-50 dark:bg-neutral-800/50 rounded-full border border-neutral-100 dark:border-white/5 flex items-center gap-2.5 shadow-sm">
+                  <FaChartLine size={10} className="text-neutral-500 dark:text-neutral-400" />
+                  <span className="text-[8px] font-black text-neutral-500 dark:text-neutral-400 uppercase tracking-[0.2em]">Ranked by Sales Momentum</span>
+                </div>
+              </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pb-20">
-              {visibleProducts.map(product => (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10 pb-20">
+              {visibleProducts.map((product, idx) => (
                 <div
                   key={product.productId}
-                  onClick={() => selectProduct(product)}
-                  // 대량 렌더링 성능 최적화 속성
+                  // 대량 렌더링 성능 최적화 속성 유지
                   style={{ contentVisibility: 'auto', containIntrinsicSize: '0 400px' }}
-                  className={`group relative aspect-[3/4] rounded-2xl overflow-hidden cursor-pointer border-2 transition-all 
-                  ${selectedProductId === product.productId ? 'border-violet-600 shadow-2xl ring-4 ring-violet-600/10' : 'border-transparent hover:border-violet-200'}`}
                 >
-                  <Image
-                    src={product.imageUrl}
-                    alt={product.productName}
-                    fill
-                    sizes="(max-width: 768px) 50vw, 25vw"
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  <ProductCard
+                    product={{
+                      productId: product.productId,
+                      title: product.productName,
+                      price: product.price,
+                      imageUrl: product.imageUrl,
+                      productLink: "", // 리스트 탐색용이므로 링크는 비워둠
+                      similarityScore: undefined // 탐색 단계이므로 유사도 점수 제외
+                    }}
+                    index={idx}
+                    selected={selectedProductId === product.productId}
+                    onClick={() => selectProduct(product)}
                   />
-                  {selectedProductId === product.productId && (
-                    <div className="absolute inset-0 bg-violet-600/30 flex items-center justify-center backdrop-blur-[2px]">
-                      <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-violet-600 shadow-2xl">
-                        <FaCheck size={18} />
-                      </div>
-                    </div>
-                  )}
                 </div>
               ))}
             </div>

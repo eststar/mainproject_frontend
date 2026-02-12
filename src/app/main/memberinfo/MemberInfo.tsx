@@ -367,7 +367,7 @@ export default function MemberInfo() {
 
       {/* 회원 탈퇴 모달 (Withdrawal Modal) */}
       {isDeleteModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/60 backdrop-blur-md animate-in fade-in">
+        <div className="fixed inset-0 z-100 flex items-center justify-center p-6 bg-black/60 backdrop-blur-md animate-in fade-in">
           <div className="w-full max-w-md bg-white dark:bg-neutral-900 rounded-[2.5rem] shadow-2xl border border-neutral-100 dark:border-white/5 overflow-hidden animate-in zoom-in-95 duration-300">
             <div className="p-8 space-y-6">
               <div className="flex items-center justify-between">

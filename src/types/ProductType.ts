@@ -21,5 +21,5 @@ export interface RecommendData {
   price: number,
   imageUrl: string,
   productLink: string,
-  similarityScore: number
+  similarityScore?: number
 }

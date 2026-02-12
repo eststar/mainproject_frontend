@@ -99,10 +99,10 @@ export default function Studio() {
               products={results}
               title="Neural Recommendations"
               onProductClick={(product: RecommendData) => {
-                // 특정 추천 상품 클릭 시 해당 상품을 기준으로 상단 분석표 갱신
-                setAnalysisImage(product.imageUrl);
-                setAnalysisName(product.title);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                // 추천 상품 클릭 시 상세 페이지(상품 링크)로 이동
+                if (product.productLink) {
+                  window.open(product.productLink, '_blank');
+                }
               }}
             />
           </div>

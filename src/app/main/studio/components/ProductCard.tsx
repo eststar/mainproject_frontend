@@ -1,23 +1,23 @@
 import { RecommendData } from "@/types/ProductType";
 import Image from "next/image";
+import { FaCheck } from "react-icons/fa6";
 
 interface ProductCardProps {
     product: RecommendData;
-    index?: number; // 애니메이션 순서 제어를 위한 인덱스
+    index?: number;
+    selected?: boolean; // 선택 상태 추가
     onClick?: () => void;
 }
 
 /**
  * ProductCard: 스튜디오 검색 결과나 추천 상품을 보여주는 개별 상품 카드
- * 세련된 이미지 오버레이와 함께 유사도 점수, 가격 등의 정보를 매력적으로 표시합니다.
  */
-export default function ProductCard({ product, index = 0, onClick }: ProductCardProps) {
-    // 유사도 점수 포맷팅 (숫자인 경우 퍼센트로 변환)
+export default function ProductCard({ product, index = 0, selected = false, onClick }: ProductCardProps) {
+    // ... 기존 포맷팅 로직 생략 (유지에 주의)
     const formattedScore = typeof product.similarityScore === 'number'
         ? `${(product.similarityScore * 100).toFixed(1)}%`
         : product.similarityScore;
 
-    // 가격 포맷팅 (세 자리마다 쉼표 추가)
     const formattedPrice = new Intl.NumberFormat('ko-KR', {
         style: 'currency',
         currency: 'KRW'
@@ -26,42 +26,48 @@ export default function ProductCard({ product, index = 0, onClick }: ProductCard
     return (
         <div
             onClick={onClick}
-            className="group space-y-6 cursor-pointer"
+            className={`group space-y-4 cursor-pointer transition-all ${selected ? 'scale-[1.02]' : ''}`}
         >
-            {/* 1. 이미지 컨테이너 (3:4 비율 고정) */}
-            <div className="aspect-3/4 overflow-hidden rounded-4xl bg-white dark:bg-neutral-900/50 border border-neutral-200 dark:border-white/5 relative shadow-sm">
+            {/* 1. 이미지 컨테이너 */}
+            <div className={`aspect-3/4 overflow-hidden rounded-3xl bg-white dark:bg-neutral-900/50 border-2 relative shadow-sm transition-all
+                ${selected ? 'border-violet-600 ring-4 ring-violet-600/10 shadow-2xl' : 'border-neutral-200 dark:border-white/5 group-hover:border-violet-200'}`}>
                 <Image
                     src={product.imageUrl}
                     alt={product.title}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="group-hover:scale-110 transition-transform duration-1000 object-cover"
+                    className={`group-hover:scale-110 transition-transform duration-1000 object-cover ${selected ? 'brightness-75' : ''}`}
                 />
 
-                {/* 호버 시 이미지가 선명해지는 효과를 위한 오버레이 */}
-                <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-all" />
+                {/* 선택 시 체크 표시 오버레이 */}
+                {selected && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-violet-600/20 backdrop-blur-[2px] animate-in zoom-in duration-300">
+                        <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-violet-600 shadow-2xl">
+                            <FaCheck size={18} />
+                        </div>
+                    </div>
+                )}
 
-                {/* 선택사항: 유사도 점수를 이미지 위에도 작게 띄우고 싶을 때 사용 가능 */}
+                <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-all" />
             </div>
 
             {/* 2. 상품 정보 컨테이너 */}
-            <div className="space-y-2 px-2">
-                <div className="flex justify-between items-center">
-                    {/* 유사도 매칭 정보 */}
-                    <div className="flex items-center gap-1.5">
-                        <div className="w-1 h-1 rounded-full bg-violet-500" />
-                        <span className="text-[10px] font-bold text-violet-500 uppercase tracking-widest">
-                            {formattedScore} Match
-                        </span>
-                    </div>
-                    {/* 가격 정보 */}
-                    <span className="text-[11px] font-normal italic text-gray-500 group-hover:text-black dark:group-hover:text-white transition-colors">
+            <div className={`space-y-1.5 px-1 transition-colors ${selected ? 'text-violet-600' : ''}`}>
+                <div className="flex justify-between items-center h-4">
+                    {product.similarityScore !== undefined && (
+                        <div className="flex items-center gap-1.5">
+                            <div className="w-1 h-1 rounded-full bg-violet-500" />
+                            <span className="text-[10px] font-bold text-violet-500 uppercase tracking-widest">
+                                {formattedScore} Match
+                            </span>
+                        </div>
+                    )}
+                    <span className={`text-[10px] font-normal italic transition-colors ${selected ? 'text-violet-500' : 'text-gray-500'}`}>
                         {formattedPrice}
                     </span>
                 </div>
 
-                {/* 상품명 */}
-                <h4 className="text-lg font-normal italic text-neutral-900 dark:text-neutral-100 tracking-tight group-hover:translate-x-1 transition-transform">
+                <h4 className={`text-sm font-medium italic tracking-tight transition-all duration-300 truncate ${selected ? 'translate-x-1 text-violet-600 font-bold' : 'text-neutral-900 dark:text-neutral-100 group-hover:translate-x-1'}`}>
                     {product.title}
                 </h4>
             </div>
