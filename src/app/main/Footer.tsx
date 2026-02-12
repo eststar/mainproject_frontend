@@ -22,7 +22,7 @@ export default function Footer() {
           <div className="col-span-1 space-y-6 md:col-span-2">
             <Link href="/main" className="group flex flex-col items-start">
               <h2 className="font-sans text-xl font-black uppercase tracking-[0.4em] text-neutral-900 transition-colors group-hover:text-violet-600 dark:text-white dark:group-hover:text-violet-400">
-                ATELIER
+                WIZARD of OUNCE
               </h2>
               <span className="mt-1.5 text-[7px] font-bold uppercase tracking-[0.5em] text-violet-500 dark:text-violet-800">
                 The Neural Fashion Archive
@@ -51,43 +51,22 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Protocol Links */}
-          <div className="space-y-6">
-            <h4 className="text-[9px] font-bold uppercase tracking-[0.4em] text-violet-600 dark:text-violet-500">Protocol</h4>
-            <ul className="space-y-3">
-              {[
-                { label: 'Security', path: '/policy/security' },
-                { label: 'API Registry', path: '/api/registry' },
-                { label: 'Status', path: '/status' }
-              ].map((item) => (
-                <li key={item.label}>
-                  <Link
-                    href={item.path}
-                    className="text-[11px] font-light uppercase tracking-widest text-neutral-500 transition-colors hover:text-violet-600 dark:text-neutral-400 dark:hover:text-violet-400"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
 
-        {/* Bottom Bar: 높이를 더 콤팩트하게 조정 */}
         <div className="flex flex-col items-center justify-between gap-4 border-t border-neutral-200 pt-4 dark:border-white/5 md:flex-row">
           <div className="flex items-center gap-8">
             <span className="text-[8px] font-bold uppercase tracking-[0.4em] text-neutral-400 dark:text-violet-900/60">
-              © 2026 ATELIER
+              © 2026 Santa Clothes
             </span>
             <div className="flex items-center gap-4">
               <div className="h-1 w-1 animate-pulse rounded-full bg-violet-600"></div>
               <span className="text-[8px] font-bold uppercase tracking-[0.4em] text-neutral-400 dark:text-violet-900/60">
-                Core v2.4.0
+                temp
               </span>
             </div>
           </div>
           <div className="text-[8px] font-bold uppercase tracking-[0.4em] text-neutral-400 dark:text-violet-950">
-            Encoded in Seoul // Globally Decoded
+            temp
           </div>
         </div>
       </div>

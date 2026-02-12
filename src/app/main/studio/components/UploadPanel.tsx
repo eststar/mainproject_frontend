@@ -97,7 +97,7 @@ export default function UploadPanel({ onResultFound, onAnalysisStart, onAnalysis
                   Drop Image
                 </p>
                 <p className="text-[9px] font-bold uppercase tracking-widest text-neutral-400">
-                  Supported: JPG, PNG, WEBP
+                  Supported: JPG, PNG
                 </p>
               </div>
               <input
@@ -180,6 +180,13 @@ export default function UploadPanel({ onResultFound, onAnalysisStart, onAnalysis
                     <h4 className="text-[10px] font-black uppercase tracking-widest text-neutral-800 dark:text-neutral-200">Clarity</h4>
                   </div>
                   <p className="text-[10px] text-neutral-500 dark:text-neutral-400 pl-3">Centered & clear focus.</p>
+                </div>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <div className="w-1 h-3 bg-violet-500 rounded-full" />
+                    <h4 className="text-[10px] font-black uppercase tracking-widest text-neutral-800 dark:text-neutral-200">Size</h4>
+                  </div>
+                  <p className="text-[10px] text-neutral-500 dark:text-neutral-400 pl-3">Under 10MB.</p>
                 </div>
               </div>
             </div>

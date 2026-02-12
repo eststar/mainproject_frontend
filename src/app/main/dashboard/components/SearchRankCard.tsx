@@ -60,8 +60,7 @@ const SearchRankCard: React.FC<Props> = ({ trends, isLoading, error, onRetry }) 
                         >
                             <div className="flex items-center gap-2">
                                 {/* 순위 인덱스 */}
-                                <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-serif italic text-sm shadow-sm transition-colors ${i === 0 ? 'bg-violet-600 text-white' : 'bg-gray-50 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-500'
-                                    }`}>
+                                <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-normal italic text-sm shadow-sm transition-colors bg-violet-600 text-white`}>
                                     {i + 1}
                                 </div>
 
@@ -70,7 +69,7 @@ const SearchRankCard: React.FC<Props> = ({ trends, isLoading, error, onRetry }) 
                                     <span className="text-[11px] font-bold text-neutral-900 dark:text-white uppercase tracking-widest group-hover:text-violet-600 transition-colors">
                                         {trend?.style || 'Analysis Pending'}
                                     </span>
-                                    <span className="text-[10px] font-medium text-gray-400 uppercase tracking-tighter">Style DNA Matrix</span>
+                                    {/* <span className="text-[10px] font-medium text-gray-400 uppercase tracking-tighter">Style DNA Matrix</span> */}
                                 </div>
                             </div>
                         </div>

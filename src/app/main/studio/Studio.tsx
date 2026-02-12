@@ -11,7 +11,7 @@ import AnalysisSection from './components/AnalysisSection';
 
 import { RecommendData } from '@/types/ProductType';
 
-export type StudioMode = 'imageDiscovery' | 'imageInput';
+export type StudioMode = 'imageInput' | 'imageDiscovery';
 
 /**
  * Studio: AI 기반 스타일 탐색 및 분석의 메인 페이지 컨테이너
@@ -24,7 +24,7 @@ export default function Studio() {
 
   // URL 파라미터를 통한 모드 관리
   const modeParam = searchParams.get('mode');
-  const mode: StudioMode = modeParam === 'imageInput' ? 'imageInput' : 'imageDiscovery';
+  const mode: StudioMode = modeParam ? modeParam === 'imageInput' ? 'imageInput' : 'imageDiscovery' : 'imageInput';
 
   // React 18 Transition을 사용한 매끄러운 상태 전환
   const [isPending, startTransition] = useTransition();

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
-import { FaArrowRotateLeft, FaArrowsRotate, FaCheck, FaFingerprint, FaMagnifyingGlass, FaChartLine, FaCalendarDays } from 'react-icons/fa6';
+import { FaArrowRotateLeft, FaArrowsRotate, FaCheck, FaFingerprint, FaMagnifyingGlass, FaChartLine, FaCalendarDays, FaShirt } from 'react-icons/fa6';
 import { ProductData, RecommendData } from '@/types/ProductType';
 import Image from 'next/image';
 import ProductCard from './ProductCard';
@@ -256,10 +256,10 @@ export default function DiscoveryPanel({
           /* 카테고리 선택 전 빈 화면 */
           <div className="h-full flex flex-col items-center justify-center bg-white dark:bg-neutral-900/50 rounded-[3rem] py-20">
             <div className="w-20 h-20 rounded-full bg-neutral-50 dark:bg-neutral-900 flex items-center justify-center text-neutral-300 mb-8 border border-neutral-100 shadow-inner">
-              <FaFingerprint size={40} className="animate-pulse" />
+              <FaShirt size={40} className="animate-pulse" />
             </div>
             <p className="text-xs font-bold text-neutral-400 uppercase tracking-[0.2em] text-center leading-loose">
-              Select a category above <br /> to initialize reference indexing
+              Select a category above
             </p>
           </div>
         )}

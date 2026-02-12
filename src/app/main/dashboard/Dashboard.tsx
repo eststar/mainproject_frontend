@@ -7,14 +7,20 @@ import {
   FaTags,
   FaGem,
   FaWaveSquare,
-  FaBolt
+  FaBolt,
+  FaArrowsRotate,
+  FaBoxesStacked
 } from 'react-icons/fa6';
 import SearchRankCard from './components/SearchRankCard';
 import AestheticDistributionCard from './components/AestheticDistributionCard';
 import BestSellersCard from './components/BestSellersCard';
+import DashboardCard from './components/DashboardCard';
 import { getShoppingTrends } from '@/app/api/trendService/trendapi';
 import { getSalesRanking, SalesRankItem } from '@/app/api/salesService/salesapi';
 import TSNEPlot from './components/TSNEPlot';
+import { getNaverProductList, getProductList } from '@/app/api/productService/productapi';
+import { SiNaver } from "react-icons/si";
+
 
 /**
  * DashboardTrendItem: 트렌드 분석 결과 데이터의 내부 타입 정의
@@ -29,6 +35,16 @@ interface DashboardTrendItem {
   productId: string;
   productName: string;
 }
+
+/**
+ * 메트릭 카드의 색상 스타일 정의
+ */
+const METRIC_COLORS: Record<string, string> = {
+  violet: 'bg-violet-600 shadow-violet-100 dark:shadow-none',
+  indigo: 'bg-indigo-600 shadow-indigo-100 dark:shadow-none',
+  green: 'bg-emerald-500 shadow-emerald-100 dark:shadow-none',
+  black: 'bg-black dark:bg-neutral-800 shadow-gray-100 dark:shadow-none',
+};
 
 /**
  * Dashboard Component
@@ -65,9 +81,56 @@ export default function Dashboard({
   const [isLoadingSales, setIsLoadingSales] = useState(initialSales.length === 0);
   const [errorSales, setErrorSales] = useState<string | null>(null);
 
+  //내부 상품 개수
+  const [internalProductCount, setInternalProductCount] = useState(0);
+  const [isLoadingInternalProductCount, setIsLoadingInternalProductCount] = useState(true);
+  const [errorInternalProductCount, setErrorInternalProductCount] = useState<string | null>(null);
+
+  //네이버 상품 개수
+  const [naverProductCount, setNaverProductCount] = useState(0);
+  const [isLoadingNaverProductCount, setIsLoadingNaverProductCount] = useState(true);
+  const [errorNaverProductCount, setErrorNaverProductCount] = useState<string | null>(null);
+
   // 무한 페칭 방지를 위한 요청 시도 플래그
   const [hasAttemptedFetch, setHasAttemptedFetch] = useState(false);
   const [hasAttemptedSalesFetch, setHasAttemptedSalesFetch] = useState(false);
+  const [hasAttemptedInternalProductCount, setHasAttemptedInternalProductCount] = useState(false);
+  const [hasAttemptedNaverProductCount, setHasAttemptedNaverProductCount] = useState(false);
+
+
+  //내부 상품 개수 페칭
+  const fetchInternalProductCount = async (isRetry = false) => {
+    if (!isRetry && hasAttemptedInternalProductCount) return;
+    setHasAttemptedInternalProductCount(true);
+    setIsLoadingInternalProductCount(true);
+    setErrorInternalProductCount(null);
+    try {
+      const result = await getProductList();
+      setInternalProductCount(result.length);
+    } catch (err) {
+      console.error('Failed to fetch product count:', err);
+      setErrorInternalProductCount('Connection Failed');
+    } finally {
+      setIsLoadingInternalProductCount(false);
+    }
+  };
+
+  //네이버 상품 개수 페칭
+  const fetchNaverProductCount = async (isRetry = false) => {
+    if (!isRetry && hasAttemptedNaverProductCount) return;
+    setHasAttemptedNaverProductCount(true);
+    setIsLoadingNaverProductCount(true);
+    setErrorNaverProductCount(null);
+    try {
+      const result = await getNaverProductList();
+      setNaverProductCount(result.length);
+    } catch (err) {
+      console.error('Failed to fetch product count:', err);
+      setErrorNaverProductCount('Connection Failed');
+    } finally {
+      setIsLoadingNaverProductCount(false);
+    }
+  };
 
   /**
    * 스타일 트렌드 데이터 페칭 및 가공
@@ -124,15 +187,35 @@ export default function Dashboard({
   useEffect(() => {
     if (initialData.length === 0 && !hasAttemptedFetch) fetchData();
     if (initialSales.length === 0 && !hasAttemptedSalesFetch) fetchSales();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (internalProductCount === 0 && !hasAttemptedInternalProductCount) fetchInternalProductCount();
+    if (naverProductCount === 0 && !hasAttemptedNaverProductCount) fetchNaverProductCount();
+
   }, []);
 
   // 대시보드 메트릭 카드 정의
   const mainMetrics = [
-    { label: 'Inventory Growth', value: '+12.5%', trend: 'up', sub: 'vs last month', icon: <FaBolt />, color: 'violet' },
-    { label: 'Aesthetic DNA Score', value: '94.8', trend: 'up', sub: 'High Fidelity', icon: <FaGem />, color: 'indigo' },
-    { label: 'Curation Rate', value: '820/d', trend: 'down', sub: '-4% from avg', icon: <FaWaveSquare />, color: 'black' },
-    { label: 'Active Metadata', value: '45.2K', trend: 'up', sub: 'Optimal indexing', icon: <FaTags />, color: 'violet' },
+    {
+      label: 'Internal Inventory',
+      value: internalProductCount,
+      sub: 'Total Products',
+      icon: <FaBoxesStacked />,
+      color: 'violet',
+      isLoading: isLoadingInternalProductCount,
+      error: errorInternalProductCount,
+      onRetry: () => fetchInternalProductCount(true)
+    },
+    {
+      label: 'Naver Inventory',
+      value: naverProductCount,
+      sub: 'Total Products',
+      icon: <SiNaver size={12} />,
+      color: 'green',
+      isLoading: isLoadingNaverProductCount,
+      error: errorNaverProductCount,
+      onRetry: () => fetchNaverProductCount(true)
+    },
+    { label: 'Curation Rate', value: '820/d', sub: '-4% from avg', icon: <FaWaveSquare />, color: 'black', isLoading: false, error: null },
+    { label: 'Active Metadata', value: '45.2K', sub: 'Optimal indexing', icon: <FaTags />, color: 'violet', isLoading: false, error: null },
   ];
 
   return (
@@ -140,23 +223,35 @@ export default function Dashboard({
       {/* 1. 상단 주요 지표 요약 섹션 */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {mainMetrics.map((metric, i) => (
-          <div key={i} className="bg-white dark:bg-neutral-900/50 p-6 rounded-4xl border border-neutral-200 dark:border-white/5 shadow-sm space-y-4 hover:border-violet-100 dark:hover:border-violet-800 transition-colors group">
-            <div className="flex justify-between items-start">
-              <div className={`w-10 h-10 rounded-2xl flex items-center justify-center text-white text-sm shadow-lg ${metric.color === 'violet' ? 'bg-violet-600 shadow-violet-100 dark:shadow-none' :
-                metric.color === 'indigo' ? 'bg-indigo-600 shadow-indigo-100 dark:shadow-none' : 'bg-black dark:bg-neutral-800 shadow-gray-100 dark:shadow-none'
-                }`}>
+          <DashboardCard
+            key={i}
+            isMetric={true}
+            subtitle={metric.label}
+            title={
+              metric.isLoading ? (
+                <div className="flex items-center gap-3">
+                  <span className="opacity-20 translate-y-1">---</span>
+                  <FaArrowsRotate size={18} className="text-violet-500/40 animate-spin" />
+                </div>
+              ) : (
+                String(metric.value)
+              )
+            }
+            isLoading={false} // 카드 전체 로딩 대신 제목(Title) 내에서 로딩 처리
+            error={metric.error}
+            onRetry={metric.onRetry || (() => { })}
+            lgColSpan={1}
+            className="hover:border-violet-100 dark:hover:border-violet-800 transition-colors group h-44 flex flex-col justify-between"
+            topRight={
+              <div className={`w-10 h-10 rounded-2xl flex items-center justify-center text-white text-sm shadow-lg transform group-hover:scale-110 transition-transform ${METRIC_COLORS[metric.color] || METRIC_COLORS.black}`}>
                 {metric.icon}
               </div>
-              <div className={`flex items-center gap-1 text-xs font-bold ${metric.trend === 'up' ? 'text-green-500' : 'text-red-500'}`}>
-                {metric.trend === 'up' ? <FaArrowUp size={10} /> : <FaArrowDown size={10} />}
-              </div>
+            }
+          >
+            <div className="flex justify-between items-center">
+              <p className="text-[9px] text-gray-400 dark:text-gray-600 uppercase tracking-widest leading-none">{metric.sub}</p>
             </div>
-            <div className="space-y-2">
-              <p className="text-[9px] font-bold text-gray-400 dark:text-gray-600 uppercase tracking-widest">{metric.label}</p>
-              <h3 className="text-3xl font-serif italic text-black dark:text-white tracking-tight">{metric.value}</h3>
-              <p className="text-[9px] text-gray-400 dark:text-gray-600 uppercase tracking-widest">{metric.sub}</p>
-            </div>
-          </div>
+          </DashboardCard>
         ))}
       </div>
 

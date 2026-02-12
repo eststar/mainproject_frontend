@@ -58,3 +58,28 @@ export const getRecommendList = async (productId: string): Promise<RecommendData
         return [];
     }
 }
+
+/**
+ * 네이버 상품 리스트를 가져옵니다.
+ */
+export const getNaverProductList = async (): Promise<ProductData[]> => {
+    try {
+        const response = await fetch(`${BASEURL}/api/naver-products/list`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            console.error(`서버 에러: ${response.status}`);
+            return [];
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("getRecommendList error:", error);
+        return [];
+    }
+}

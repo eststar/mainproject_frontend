@@ -20,10 +20,6 @@ export default function MainPage() {
           </div>
           <h2 className="text-6xl font-serif italic tracking-tighter text-neutral-900 dark:text-white">Overview</h2>
         </div>
-        <div className="flex items-center gap-4 px-5 py-2 bg-violet-50 dark:bg-violet-950/30 rounded-full border border-violet-100 dark:border-violet-900/40">
-          <FaShieldHalved className="text-violet-500" size={12} />
-          <span className="text-[10px] font-bold text-violet-800 dark:text-violet-300 uppercase tracking-widest">System Integrity: 100%</span>
-        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
@@ -49,13 +45,10 @@ export default function MainPage() {
           <div className="absolute inset-0 bg-linear-to-t from-black via-transparent to-transparent opacity-90" />
 
           <div className="absolute bottom-12 left-12 right-12 space-y-8">
-            <div className="w-20 h-20 rounded-4xl bg-violet-600/20 backdrop-blur-3xl flex items-center justify-center border border-white/10">
-              <FaMicrochip className="text-white text-4xl" />
-            </div>
             <div className="space-y-4">
               <h3 className="text-5xl md:text-7xl font-serif italic text-white tracking-tighter leading-none">Archive Studio</h3>
               <p className="text-lg md:text-xl font-light text-violet-100/60 max-w-lg leading-relaxed font-serif italic">
-                Neural indexing for aesthetic curation.
+                {/* Neural indexing for aesthetic curation. */}
               </p>
             </div>
             {/* transition-all은 기본 제공 클래스입니다. */}
@@ -76,11 +69,10 @@ export default function MainPage() {
               <FaChartLine className="text-white text-2xl" />
             </div>
             <div className="space-y-4">
-              <h4 className="text-[11px] font-bold uppercase tracking-widest text-violet-500">Archival Scale</h4>
-              <p className="text-7xl font-serif italic tracking-tighter text-neutral-900 dark:text-white">12,482</p>
+              <h4 className="text-[11px] font-bold uppercase tracking-widest text-violet-500">Dashboard</h4>
+              <p className="text-7xl font-serif italic tracking-tighter text-neutral-900 dark:text-white"></p>
               <div className="flex items-center gap-3">
-                <span className="rounded-md bg-violet-100 px-2 py-0.5 text-[10px] font-bold text-violet-600 dark:bg-violet-900/50 dark:text-violet-400">+12.4%</span>
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Growth</span>
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">statistics</span>
               </div>
             </div>
           </div>
@@ -91,7 +83,7 @@ export default function MainPage() {
               <div className="h-2 w-2 rounded-full bg-violet-500 animate-pulse"></div>
               <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest dark:text-violet-700">Sync Active</p>
             </div>
-            <div className="flex items-center gap-4 text-[11px] font-bold text-neutral-900 uppercase tracking-widest opacity-0 transition-opacity group-hover:opacity-100 dark:text-violet-100">
+            <div className="flex items-center gap-4 text-[11px] font-bold text-neutral-900 uppercase tracking-widest dark:text-violet-100">
               View Analytics <FaArrowRight className="transition-transform group-hover:translate-x-2" />
             </div>
           </div>

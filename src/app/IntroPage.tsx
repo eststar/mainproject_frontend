@@ -51,13 +51,13 @@ export default function IntroPage() {
 
         {/* Hero Section: 고정된 다크 스타일 타이포그래피 */}
         <div className="mx-auto flex max-w-5xl flex-col items-center text-center">
-          <div className="mb-8 inline-block rounded-full border border-violet-500/20 bg-violet-500/10 px-4 py-1.5 backdrop-blur-sm">
+          {/* <div className="mb-8 inline-block rounded-full border border-violet-500/20 bg-violet-500/10 px-4 py-1.5 backdrop-blur-sm">
             <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-violet-300 subpixel-antialiased">New Protocol Ready</span>
-          </div>
+          </div> */}
 
           {/* 하이엔드 텍스트 그라데이션 수정: px-16 및 tracking-normal로 글자 잘림을 완벽히 방지 */}
-          <h2 className="mb-12 bg-linear-to-b from-white to-violet-200 bg-clip-text font-serif text-[12vw] leading-none italic tracking-normal text-transparent md:text-[10vw] px-20 block">
-            Santa <br /> Clothes
+          <h2 className="mb-10 bg-linear-to-b from-white to-violet-200 bg-clip-text font-serif text-[10vw] leading-none italic tracking-normal text-transparent md:text-[8vw] px-20 block">
+            Wizard <br /> of <br /> Ounce
           </h2>
 
           <p className="mx-auto max-w-md text-sm font-light uppercase leading-relaxed tracking-widest text-neutral-400">

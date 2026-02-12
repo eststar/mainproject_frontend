@@ -2,8 +2,10 @@
 
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
+import Image from 'next/image';
 import DashboardCard from './DashboardCard';
 import { FaTriangleExclamation } from 'react-icons/fa6';
+import fabicon from '@/assets/fabicon.svg';
 
 interface ProductVectorInfo {
     productId: string;
@@ -41,7 +43,7 @@ const AestheticDistributionCard: React.FC<Props> = ({ data, isLoading, error, on
 
     return (
         <DashboardCard
-            title="Aesthetic"
+            title="Style"
             subtitle="Distribution"
             isLoading={isLoading}
             error={error}
@@ -91,7 +93,7 @@ const AestheticDistributionCard: React.FC<Props> = ({ data, isLoading, error, on
                         </ResponsiveContainer>
                     )}
                     <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                        <span className="text-2xl font-serif italic text-black dark:text-white">DNA</span>
+                        <Image src={fabicon} alt="Style Distribution" width={75} height={75} className='opacity-50' />
                     </div>
                 </div>
 

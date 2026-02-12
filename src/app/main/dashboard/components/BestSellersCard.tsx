@@ -80,7 +80,7 @@ const BestSellersCard: React.FC<Props> = ({ sales, isLoading, error, onRetry }) 
                         <div key={item.shortName} className="space-y-1.5 group">
                             <div className="flex justify-between items-end">
                                 <div className="flex items-center gap-2">
-                                    <span className={`text-[12px] font-serif italic ${i === 0 ? 'text-violet-600 font-bold' : 'text-gray-300'}`}>0{i + 1}</span>
+                                    <span className={`text-[12px] italic text-violet-600 font-bold`}>0{i + 1}</span>
                                     <span className="text-[11px] font-bold text-black dark:text-white uppercase tracking-tight truncate max-w-28 group-hover:text-violet-500 transition-colors">
                                         {item.shortName}
                                     </span>
@@ -92,7 +92,7 @@ const BestSellersCard: React.FC<Props> = ({ sales, isLoading, error, onRetry }) 
                             {/* 가로형 커스텀 바 가시화 */}
                             <div className="h-1.5 w-full bg-gray-50 dark:bg-white/5 rounded-full overflow-hidden">
                                 <div
-                                    className={`h-full rounded-full transition-all duration-1000 ${i === 0 ? 'bg-violet-600' : 'bg-violet-200 dark:bg-violet-900/40'}`}
+                                    className={`h-full rounded-full transition-all duration-1000 bg-violet-600`}
                                     style={{ width: `${(item.quantity / (aggregatedData[0]?.quantity || 1)) * 100}%` }}
                                 ></div>
                             </div>
