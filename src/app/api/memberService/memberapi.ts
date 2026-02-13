@@ -33,7 +33,7 @@ export const loginAPI = async (email: string, password: string) => {
         return data;
     } catch (error) {
         console.error("Login API error:", error);
-        return [];
+        return null;
     }
 };
 
@@ -123,7 +123,7 @@ export const getUserInfoAPI = async (token: string) => {
 
         if (!response.ok) {
             console.error(`User info fetch failed: ${response.status}`);
-            return [];
+            return null;
         }
 
         const userData = await response.json();
@@ -131,7 +131,7 @@ export const getUserInfoAPI = async (token: string) => {
         return userData;
     } catch (error) {
         console.error("GetUserInfo Error:", error);
-        return [];
+        return null;
     }
 };
 
@@ -198,7 +198,7 @@ export const deleteMemberAPI = async (token: string, id: string, password: strin
         });
 
         if (!response.ok) return null;
-        return await response.json();
+        return await response;
     } catch (error) {
         console.error("DeleteMember Error:", error);
         return null;

@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAtom } from 'jotai';
 import { authUserAtom } from '@/jotai/loginjotai';
-import { updateMemberInfoAPI, deleteMemberAPI, updateProfileImg } from '@/app/api/memberService/memberapi';
+import { updateMemberInfoAPI, deleteMemberAPI, updateProfileImg, getUserInfoAPI } from '@/app/api/memberService/memberapi';
 import { useRouter } from 'next/navigation';
 import { FaUser, FaLock, FaTrash, FaCamera, FaCircleCheck, FaTriangleExclamation, FaXmark } from 'react-icons/fa6';
 import Image from 'next/image';
@@ -37,13 +37,24 @@ export default function MemberInfo() {
   }, []);
 
 
-  // auth 데이터가 로드되면 로컬 상태 변수들에 동기화
+  // auth 데이터가 로드되면 로컬 상태 변수들에 동기화 및 세션 유효성 검사
   useEffect(() => {
     if (auth) {
       setNickname(auth.name || '');
       setProfileImage(auth.profile || '');
+
+      // 세션 유효성 검사 (인가 실패 시 자동 로그아웃)
+      const verifySession = async () => {
+        const userInfo = await getUserInfoAPI(auth.accessToken);
+        if (!userInfo) {
+          // 인가 실패 혹은 서버 에러 시 로그아웃 처리
+          setAuth(null);
+          router.push('/login');
+        }
+      };
+      verifySession();
     }
-  }, [auth]);
+  }, [auth, setAuth, router]);
 
   useEffect(() => {
     if (isMounted) {
@@ -154,6 +165,7 @@ export default function MemberInfo() {
       const result = await deleteMemberAPI(auth.accessToken, withdrawId, withdrawPassword);
       if (result) {
         setAuth(null);
+        setIsDeleteModalOpen(false)
         router.push('/login');
       } else {
         alert('Withdrawal failed. Please check your credentials.');
@@ -383,7 +395,7 @@ export default function MemberInfo() {
 
               <form onSubmit={submitWithdraw} className="space-y-4">
                 <div className="space-y-1.5">
-                  <label className="text-[9px] font-bold text-neutral-400 uppercase tracking-widest ml-1">Curator ID</label>
+                  <label className="text-[9px] font-bold text-neutral-400 uppercase tracking-widest ml-1">ID</label>
                   <input
                     type="text"
                     value={withdrawId}
@@ -394,7 +406,7 @@ export default function MemberInfo() {
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[9px] font-bold text-neutral-400 uppercase tracking-widest ml-1">Security Key</label>
+                  <label className="text-[9px] font-bold text-neutral-400 uppercase tracking-widest ml-1">Password</label>
                   <input
                     type="password"
                     value={withdrawPassword}

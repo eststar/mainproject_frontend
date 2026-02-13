@@ -18,7 +18,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAtom } from 'jotai';
 import { authUserAtom } from '@/jotai/loginjotai';
-import { logoutAPI } from '../api/memberService/memberapi';
+import { logoutAPI, getUserInfoAPI } from '../api/memberService/memberapi';
 import Image from 'next/image';
 import Wizard from '@/assets/wizard.svg';
 
@@ -48,6 +48,25 @@ export default function Header() {
       document.documentElement.classList.add('dark');
     }
   }, []);
+
+  // 세션 유효성 검증 (Header에서 전역적으로 인가 실패 체크)
+  useEffect(() => {
+    if (isMounted && authInfo) {
+      const verifySession = async () => {
+        try {
+          const userInfo = await getUserInfoAPI(authInfo.accessToken);
+          if (!userInfo) {
+            // 인가 실패 혹은 계정 삭제 시 로그아웃 처리
+            setAuthInfo(null);
+            router.push('/login');
+          }
+        } catch (error) {
+          console.error("Session verification failed:", error);
+        }
+      };
+      verifySession();
+    }
+  }, [isMounted, authInfo, setAuthInfo, router]);
 
   // 전역 클릭 및 스크롤 이벤트 리스너 등록
   useEffect(() => {
