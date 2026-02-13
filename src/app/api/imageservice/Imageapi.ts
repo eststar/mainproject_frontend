@@ -1,7 +1,7 @@
 "use server"
 
 /**
- * Imageapi.ts
+ * imageapi.ts
  * 스타일 분석을 위한 이미지 업로드 및 관련 처리를 담당하는 Server Actions
  */
 
