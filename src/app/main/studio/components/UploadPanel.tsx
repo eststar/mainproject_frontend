@@ -4,9 +4,9 @@ import React, { useState, useRef } from 'react';
 import { FaCloudArrowUp, FaXmark, FaMagnifyingGlass, FaCircleInfo, FaExpand, FaFileImage, FaLightbulb } from 'react-icons/fa6';
 import Image from 'next/image';
 import { RecommendData } from '@/types/ProductType';
-import { getRecommendList } from '@/app/api/productService/productapi';
-import { postImage } from '@/app/api/imageService/imageapi';
-import { searchByImage, FashionSearchResponse } from '@/app/api/imageService/fashionSearch';
+// import { getRecommendList } from '@/app/api/productservice/productapi';
+// import { postImage } from '@/app/api/imageservice/imageapi';
+import { searchByImage, FashionSearchResponse } from '@/app/api/imageservice/fashionSearch';
 
 interface UploadPanelProps {
   onResultFound: (results: any[] | null) => void;
