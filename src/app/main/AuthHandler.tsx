@@ -21,6 +21,9 @@ export default function AuthHandler() {
         const token = searchParams.get('token');
 
         if (token) {
+            /**
+             * 토큰을 사용하여 사용자 정보를 조회하고, 성공 시 전역 상태를 업데이트합니다.
+             */
             const fetchUserInfo = async () => {
                 setIsProcessing(true);
                 try {

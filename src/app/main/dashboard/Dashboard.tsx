@@ -94,7 +94,11 @@ export default function Dashboard({
   const [hasAttemptedNaverProductCount, setHasAttemptedNaverProductCount] = useState(false);
 
 
-  //내부 상품 개수 페칭
+  /**
+   * 내부 상품(Internal Inventory) 개수를 비동기로 조회합니다.
+   * 중복 요청 방지 로직이 포함되어 있습니다.
+   * @param isRetry - 재시도 여부 (true일 경우 중복 방지 플래그 무시)
+   */
   const fetchInternalProductCount = async (isRetry = false) => {
     if (!isRetry && hasAttemptedInternalProductCount) return;
     setHasAttemptedInternalProductCount(true);
@@ -111,7 +115,10 @@ export default function Dashboard({
     }
   };
 
-  //네이버 상품 개수 페칭
+  /**
+   * 네이버 검색 상품 개수를 비동기로 조회합니다.
+   * @param isRetry - 재시도 여부
+   */
   const fetchNaverProductCount = async (isRetry = false) => {
     if (!isRetry && hasAttemptedNaverProductCount) return;
     setHasAttemptedNaverProductCount(true);
@@ -129,7 +136,8 @@ export default function Dashboard({
   };
 
   /**
-   * 스타일 트렌드 데이터 페칭 및 가공
+   * 쇼핑 트렌드 데이터를 페칭하고, 시각화를 위한 좌표 데이터(xcoord, ycoord)를 가공합니다.
+   * @param isRetry - 재시도 여부
    */
   const fetchData = async (isRetry = false) => {
     if (!isRetry && hasAttemptedFetch) return;
@@ -144,7 +152,7 @@ export default function Dashboard({
         score: item.value || 0,
         value: item.value || 0,
         percentStr: item.percentStr || '0%',
-        xcoord: Math.random() * 200 - 100,
+        xcoord: Math.random() * 200 - 100, // 클라이언트 사이드 랜덤 좌표 생성
         ycoord: Math.random() * 200 - 100,
         productId: `trend-${i}`,
         productName: item.style || `Style-${i}`
@@ -160,7 +168,8 @@ export default function Dashboard({
   };
 
   /**
-   * 매출 랭킹 데이터 페칭
+   * 베스트 셀러(매출 랭킹) 데이터를 조회하여 내림차순 정렬합니다.
+   * @param isRetry - 재시도 여부
    */
   const fetchSales = async (isRetry = false) => {
     if (!isRetry && hasAttemptedSalesFetch) return;

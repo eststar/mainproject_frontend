@@ -67,7 +67,11 @@ export default function MemberInfo() {
     }
   }, [isMounted, auth, router]);
 
-  // 프로필 이미지 변경 핸들러
+  /**
+   * file input 변경 시 호출되는 핸들러
+   * 선택된 파일을 state에 저장하고, 미리보기 URL을 생성하여 화면에 표시합니다.
+   * @param e - 파일 입력 이벤트 객체
+   */
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -80,7 +84,11 @@ export default function MemberInfo() {
     }
   };
 
-  // 프로필 이미지 업데이트 핸들러
+  /**
+   * 프로필 이미지를 서버에 업데이트하는 비동기 함수
+   * 선택된 파일이 없거나 인증 정보가 없으면 중단합니다.
+   * 업로드 성공 시 전역 상태(auth)를 갱신하고 성공 메시지를 표시합니다.
+   */
   const handleUpdateImage = async () => {
     if (!auth || !selectedFile) {
       return;
@@ -106,7 +114,11 @@ export default function MemberInfo() {
     }
   };
 
-  // 멤버 정보 업데이트 핸들러
+  /**
+   * 회원 정보를 수정(닉네임, 비밀번호)하는 비동기 함수
+   * 비밀번호 변경은 로컬 계정인 경우에만 유효성 검사를 수행합니다.
+   * @param e - 폼 제출 이벤트 객체
+   */
   const handleUpdateMemberInfo = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!auth) return;
@@ -150,12 +162,20 @@ export default function MemberInfo() {
   const [withdrawId, setWithdrawId] = useState('');
   const [withdrawPassword, setWithdrawPassword] = useState('');
 
-  // 회원 탈퇴 처리
+  /**
+   * 회원 탈퇴 모달을 여는 핸들러
+   * 실제 탈퇴 로직은 모달 내부 폼에서 처리됩니다.
+   */
   const handleDeleteAccount = async () => {
     if (!auth) return;
     setIsDeleteModalOpen(true);
   };
 
+  /**
+   * 실제 회원 탈퇴 요청을 서버로 전송하는 비동기 함수
+   * ID와 비밀번호를 검증하고, 성공 시 로그아웃 처리 및 로그인 페이지로 이동합니다.
+   * @param e - 폼 제출 이벤트 객체
+   */
   const submitWithdraw = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!auth) return;

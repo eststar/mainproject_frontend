@@ -1,40 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Neural Interface - Analytic Dashboard Frontend
 
-## Getting Started
+A modern, high-performance web application built with **Next.js 16 (App Router)** for visualizing fashion trend data, managing inventory, and handling user profiles. This project features a premium UI design with glassmorphism effects and dynamic interactive charts.
 
-First, run the development server:
+## 🛠 Tech Stack
+
+- **Framework**: [Next.js 16.1.6](https://nextjs.org/) (App Router & Turbopack)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+- **State Management**: [Jotai](https://jotai.org/) (Atomic state management)
+- **Visualizations**: 
+  - [Plotly.js](https://plotly.com/javascript/react-plotly.js/) (t-SNE Neural Map) via dynamic import
+  - Custom SVG/CSS Charts
+- **Icons**: [React Icons](https://react-icons.github.io/react-icons/) (FontAwesome 6, Simple Icons)
+
+## 🚀 Key Features
+
+### 1. Analytics Dashboard (`/main/dashboard`)
+- **Real-time Metrics**: Displays internal inventory and Naver shopping product counts using async polling with retry logic.
+- **Trend Analysis**: Visualizes shopping trends with custom style distribution cards.
+- **Interactive t-SNE Map**: A 2D projection of high-dimensional style vectors using `react-plotly.js`. Supports zoom, pan, and interactive tooltips.
+- **Sales Ranking**: Best-selling items tracking with sorting capabilities.
+
+### 2. Member Management (`/main/memberinfo`)
+- **Profile Customization**: Update nickname, password (local auth), and profile image with real-time preview.
+- **OAuth2 Integration**: Seamless identity management for social login users (Google, Naver, Kakao).
+- **Account Security**: Secure withdrawal process with double-verification modal.
+- **Session Handling**: Automatic token verification and secure logout flows.
+
+### 3. Authentication System
+- **AuthHandler**: Centralized handling of OAuth2 tokens via URL parameters.
+- **Protected Routes**: Middleware or client-side checks to ensure secure access to internal pages.
+
+## 📂 Project Structure
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+src/
+├── app/
+│   ├── api/             # API Service Layer (fetch wrappers for backend)
+│   ├── main/            
+│   │   ├── dashboard/   # Dashboard Page & Components
+│   │   ├── memberinfo/  # Member Profile Page
+│   │   └── studio/      # Studio/Creation Tools
+│   ├── login/           # Login Page
+│   ├── signup/          # Registration Page
+│   └── layout.tsx       # Root Layout (Theme & Global Styles)
+├── components/          # Shared Reusable UI Components
+├── jotai/               # Global State Atoms (Auth, User Prefs)
+└── types/               # TypeScript Interfaces (API Responses, Props)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🏗 Architecture & Build Strategy
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This project utilizes the **Static Shell + Client Hydration** pattern provided by Next.js App Router.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Static Shell (SSR/SSG)**:
+  - The build output shows pages (`/main/dashboard`, etc.) as **Static (○)**.
+  - The skeleton structure (Sidebar, Header, Layout) is pre-rendered at build time for optimal TTFB (Time to First Byte) and SEO.
 
-## Learn More
+- **Client Hydration (CSR)**:
+  - Dynamic data (Charts, User Profile, Inventory Counts) is fetched client-side after the page loads.
+  - **Dynamic Imports**: Heavy libraries like `react-plotly.js` are loaded dynamically (`ssr: false`) to reduce initial bundle size and avoid server-side window errors.
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+Route (app)
+┌ ○ /main/dashboard  # Static Shell
+└ ○ /main/memberinfo # Static Shell
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📦 Getting Started
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Install Dependencies**
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-## Deploy on Vercel
+2. **Run Development Server**
+   ```bash
+   npm run dev
+   ```
+   Access the app at [http://localhost:3000](http://localhost:3000).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Build for Production**
+   ```bash
+   npm run build
+   ```
+   This generates an optimized production build using Turbopack.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📝 License
 
-## 기본 설치 내용
-- npx create-next-app@latest
-- npm install react-icons jotai
+This project is proprietary software. All rights reserved.
