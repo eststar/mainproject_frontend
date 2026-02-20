@@ -23,3 +23,8 @@ export interface RecommendData {
   productLink: string,
   similarityScore?: number
 }
+
+export interface InternalStyleCount {
+  styleName: string;
+  count: number;
+}

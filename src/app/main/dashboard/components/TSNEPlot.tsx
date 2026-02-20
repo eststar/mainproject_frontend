@@ -29,10 +29,10 @@ export interface TSNEPlotProps {
 }
 
 export default function TSNEPlot({
-    title = "T-SNE Neural Map",
+    title = "T-SNE Clustering Map",
     subtitle = "Style Projection",
     description = "해당 모델의 클러스터링 결과를 2차원 평면에 시각화한 맵입니다.",
-    bottomTextFormat = "Visualizing {count} neural vectors across aesthetic manifold.",
+    bottomTextFormat = "Visualizing {count} Style Latent vectors.",
     className = "lg:col-span-4",
     fetchDataFn
 }: TSNEPlotProps) {
@@ -42,11 +42,11 @@ export default function TSNEPlot({
     const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
 
     const loadingMessages = [
-        "Analyzing high-dimensional vectors...",
-        "Comparing neural patterns...",
-        "Projecting aesthetic space...",
-        "Clustering style DNA...",
-        "Optimizing GPU rendering..."
+        "잠재벡터 분석중...",
+        /* "비교 분석중...",
+        "스타일 공간 투영중...",
+        "스타일 클러스터링중...",
+        "GPU 렌더링 최적화중..." */
     ];
 
     const fetchData = async () => {
@@ -72,8 +72,8 @@ export default function TSNEPlot({
             // 타임아웃인지 일반 에러인지에 따라 메시지 분기 가능
             const isTimeout = err.message === 'TIMEOUT';
             setError(isTimeout
-                ? "Neural engine connection timed out. Displaying cached preview."
-                : "Neural engine offline. Displaying cached preview."
+                ? `backend connection timed out. Please click ${<FaArrowsRotate className="inline-block" />} button.`
+                : `backend offline. Please click ${<FaArrowsRotate className="inline-block" />} button.`
             );
 
             // 데모용 샘플 데이터 생성 (실패 시에도 UI 흐름 유지를 위함)
@@ -157,7 +157,7 @@ export default function TSNEPlot({
 
     return (
         <>
-            <div className={`${className} bg-white dark:bg-neutral-900/50 rounded-4xl border border-neutral-200 dark:border-white/5 p-8 space-y-8 shadow-sm overflow-hidden flex flex-col min-h-87.5 relative ${isExpanded ? 'invisible' : ''}`}>
+            <div className={`${className} bg-white dark:bg-neutral-900/50 rounded-4xl border border-neutral-200 dark:border-white/5 p-6 space-y-4 shadow-sm overflow-hidden flex flex-col min-h-72 relative ${isExpanded ? 'invisible' : ''}`}>
                 <div className="flex justify-between items-end relative z-10">
                     <div className="space-y-2">
                         <span className="text-[9px] font-bold text-gray-400 dark:text-gray-600 uppercase tracking-[0.4em]">{subtitle}</span>
@@ -171,7 +171,7 @@ export default function TSNEPlot({
                 </div>
 
                 {/* 그래프 컨테이너 (축소 상태) */}
-                <div className="w-full flex-1 min-h-100 rounded-3xl overflow-hidden border border-neutral-300 dark:border-white/10 bg-gray-50/10 dark:bg-black/20 relative shadow-inner cursor-pointer group" onClick={() => setIsExpanded(true)}>
+                <div className="w-full flex-1 min-h-50 rounded-3xl overflow-hidden border border-neutral-300 dark:border-white/10 bg-gray-50/10 dark:bg-black/20 relative shadow-inner cursor-pointer group" onClick={() => setIsExpanded(true)}>
                     <AnimatePresence>
                         {isLoading && (
                             <motion.div
@@ -192,27 +192,27 @@ export default function TSNEPlot({
                     </AnimatePresence>
 
                     {/* 최적화: 메인 화면에서는 무거운 Plotly 대신 퍼포먼스 가벼운 CSS 플레이스홀더를 띄웁니다. */}
-                    <div className="w-full h-100 relative z-10 flex flex-col items-center justify-center gap-6 bg-linear-to-b from-transparent to-neutral-100/50 dark:to-white/5 transition-colors">
+                    <div className="w-full h-full min-h-50 relative z-10 flex flex-col items-center justify-center gap-4 py-4 bg-linear-to-b from-transparent to-neutral-100/50 dark:to-white/5 transition-colors">
 
                         {/* CSS 렌더링 추상 신경망 */}
-                        <div className="relative w-40 h-40 flex items-center justify-center">
+                        <div className="relative w-32 h-32 flex items-center justify-center">
                             <div className="absolute inset-0 bg-violet-400/20 dark:bg-violet-600/20 rounded-full blur-2xl group-hover:bg-violet-500/40 transition-colors duration-500"></div>
-                            <div className="absolute inset-4 bg-indigo-400/20 dark:bg-indigo-600/20 rounded-full blur-xl group-hover:bg-indigo-500/40 transition-colors duration-500 delay-75"></div>
-                            <div className="absolute inset-10 bg-pink-400/20 dark:bg-pink-600/20 rounded-full blur-md group-hover:bg-pink-500/40 transition-colors duration-500 delay-150"></div>
+                            <div className="absolute inset-3 bg-indigo-400/20 dark:bg-indigo-600/20 rounded-full blur-xl group-hover:bg-indigo-500/40 transition-colors duration-500 delay-75"></div>
+                            <div className="absolute inset-8 bg-pink-400/20 dark:bg-pink-600/20 rounded-full blur-md group-hover:bg-pink-500/40 transition-colors duration-500 delay-150"></div>
 
-                            <LuChartScatter className="text-5xl text-violet-600 dark:text-violet-400 relative z-10 group-hover:scale-125 transition-transform duration-500 drop-shadow-lg" />
+                            <LuChartScatter className="text-4xl text-violet-600 dark:text-violet-400 relative z-10 group-hover:scale-125 transition-transform duration-500 drop-shadow-lg" />
                         </div>
 
-                        <div className="text-center space-y-2 z-10">
-                            <h4 className="text-xl font-bold text-neutral-800 dark:text-gray-200">Interactive Map Ready</h4>
+                        <div className="text-center space-y-1 z-10">
+                            <h4 className="text-xl font-bold text-neutral-800 dark:text-gray-200">Interactive Map</h4>
                             <p className="text-xs text-gray-500 dark:text-gray-400 max-w-sm mx-auto leading-relaxed px-4">
                                 {description}
                             </p>
                         </div>
 
-                        <span className="mt-2 px-8 py-3 bg-black dark:bg-white text-white dark:text-black rounded-full text-[10px] font-bold uppercase tracking-widest shadow-xl group-hover:scale-105 group-hover:shadow-violet-500/20 transition-all z-10">
+                        {/* <span className="mt-2 px-8 py-3 bg-black dark:bg-white text-white dark:text-black rounded-full text-[10px] font-bold uppercase tracking-widest shadow-xl group-hover:scale-105 group-hover:shadow-violet-500/20 transition-all z-10">
                             Show t-SNE Map
-                        </span>
+                        </span> */}
                     </div>
 
                     {error && !isLoading && (

@@ -182,7 +182,7 @@ export default function Header() {
                   </div>
                   <div
                     onClick={() => setIsProfileOpen(!isProfileOpen)}
-                    className="relative w-8 h-8 md:w-9 md:h-9 rounded-full bg-violet-600 p-0.5 border border-white/10 shadow-sm overflow-hidden shrink-0 cursor-pointer hover:ring-2 ring-violet-500 transition-all active:scale-95"
+                    className="relative w-8 h-8 md:w-9 md:h-9 rounded-full bg-transparent p-0.5 shadow-sm overflow-hidden shrink-0 cursor-pointer hover:ring-2 ring-violet-500 transition-all active:scale-95"
                   >
                     {hasValidUrl ? (
                       <Image

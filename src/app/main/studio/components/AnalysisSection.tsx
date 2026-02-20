@@ -3,10 +3,14 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import {
-    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-    RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar
+    BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer
 } from 'recharts';
-import { FaFingerprint, FaWaveSquare, FaCircleCheck } from 'react-icons/fa6';
+import { FaWaveSquare, FaCircleCheck } from 'react-icons/fa6';
+import { getNaverProductCount } from '@/app/api/productservice/productapi';
+import { getShoppingTrends } from '@/app/api/trendservice/trendapi';
+import { SiNaver } from 'react-icons/si';
+import DashboardCard from '../../dashboard/components/DashboardCard';
+import SearchRankCard from '../../dashboard/components/SearchRankCard';
 
 interface AnalysisData {
     name: string;
@@ -20,14 +24,14 @@ interface AnalysisSectionProps {
     isLoading?: boolean;
 }
 
-const mockRadarData: AnalysisData[] = [
-    { name: 'Minimalism', value: 85, fullMark: 100 },
-    { name: 'Elegance', value: 72, fullMark: 100 },
-    { name: 'Vibrancy', value: 45, fullMark: 100 },
-    { name: 'Avant-Garde', value: 30, fullMark: 100 },
-    { name: 'Heritage', value: 90, fullMark: 100 },
-    { name: 'Technical', value: 65, fullMark: 100 },
-];
+// const mockRadarData: AnalysisData[] = [
+//     { name: 'Minimalism', value: 85, fullMark: 100 },
+//     { name: 'Elegance', value: 72, fullMark: 100 },
+//     { name: 'Vibrancy', value: 45, fullMark: 100 },
+//     { name: 'Avant-Garde', value: 30, fullMark: 100 },
+//     { name: 'Heritage', value: 90, fullMark: 100 },
+//     { name: 'Technical', value: 65, fullMark: 100 },
+// ];
 
 const mockBarData = [
     { name: 'Texture', val: 78 },
@@ -42,9 +46,75 @@ const mockBarData = [
 export default function AnalysisSection({ sourceImage, productName, isLoading }: AnalysisSectionProps) {
     const [isMounting, setIsMounting] = useState(true);
 
+    //네이버 상품 개수
+    const [naverProductCount, setNaverProductCount] = useState(0);
+    const [isLoadingNaverProductCount, setIsLoadingNaverProductCount] = useState(true);
+    const [errorNaverProductCount, setErrorNaverProductCount] = useState<string | null>(null);
+    const [hasAttemptedNaverProductCount, setHasAttemptedNaverProductCount] = useState(false);
+
+    // 네이버 검색 트렌드
+    const [trendsData, setTrendsData] = useState<any[]>([]);
+    const [isLoadingTrends, setIsLoadingTrends] = useState(true);
+    const [errorTrends, setErrorTrends] = useState<string | null>(null);
+    const [hasAttemptedTrendsFetch, setHasAttemptedTrendsFetch] = useState(false);
+
     useEffect(() => {
         setIsMounting(false);
     }, []);
+
+    useEffect(() => {
+        if (naverProductCount === 0 && !hasAttemptedNaverProductCount) {
+            fetchNaverProductCount();
+        }
+        if (trendsData.length === 0 && !hasAttemptedTrendsFetch) {
+            fetchTrends();
+        }
+    }, [naverProductCount, hasAttemptedNaverProductCount, trendsData.length, hasAttemptedTrendsFetch]);
+
+    const fetchNaverProductCount = async (isRetry = false) => {
+        if (!isRetry && hasAttemptedNaverProductCount) return;
+        setHasAttemptedNaverProductCount(true);
+        setIsLoadingNaverProductCount(true);
+        setErrorNaverProductCount(null);
+        try {
+            const result = await getNaverProductCount();
+            setNaverProductCount(result);
+        } catch (err) {
+            console.error('Failed to fetch product count:', err);
+            setErrorNaverProductCount('Connection Failed');
+        } finally {
+            setIsLoadingNaverProductCount(false);
+        }
+    };
+
+    const fetchTrends = async (isRetry = false) => {
+        if (!isRetry && hasAttemptedTrendsFetch) return;
+        setHasAttemptedTrendsFetch(true);
+        setIsLoadingTrends(true);
+        setErrorTrends(null);
+
+        try {
+            const result = await getShoppingTrends();
+            const processedData = result.map((item: any, i: number) => ({
+                ...item,
+                score: item.value || 0,
+                value: item.value || 0,
+                percentStr: item.percentStr || '0%',
+                xcoord: Math.random() * 200 - 100,
+                ycoord: Math.random() * 200 - 100,
+                productId: `trend-${i}`,
+                productName: item.style || `Style-${i}`
+            })).sort((a: any, b: any) => b.value - a.value);
+
+            setTrendsData(processedData);
+        } catch (err) {
+            console.error('Failed to fetch trends:', err);
+            setErrorTrends('Connection Failed');
+        } finally {
+            setIsLoadingTrends(false);
+        }
+    };
+
 
     return (
         <div className="space-y-8">
@@ -87,42 +157,19 @@ export default function AnalysisSection({ sourceImage, productName, isLoading }:
                             </div>
                         )}
                     </div>
-
-                    <div className="p-8 rounded-4xl bg-violet-50/50 dark:bg-violet-950/10 border-2 border-violet-100/50 dark:border-violet-500/20 space-y-4">
-                        <div className="flex items-center gap-2 mb-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse" />
-                            <span className="text-[9px] font-bold uppercase tracking-widest text-violet-600 dark:text-violet-400">Embedding Extraction</span>
-                        </div>
-                        <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed font-light">
-                            Successfully extracted 2048-dimensional vector embedding. Visual signatures indicate high structural fidelity and textural complexity.
-                        </p>
-                    </div>
                 </div>
 
                 {/* Right Col: Graphs */}
                 <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-10">
 
-                    {/* Radar Chart Section */}
-                    <div className="bg-white dark:bg-neutral-900/50 rounded-4xl p-8 border-2 border-neutral-100 dark:border-white/10 shadow-sm space-y-6">
-                        <h4 className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 dark:text-neutral-500">Style Projection Radar</h4>
-                        <div className="h-64 w-full">
-                            {!isMounting && (
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <RadarChart cx="50%" cy="50%" outerRadius="80%" data={mockRadarData}>
-                                        <PolarGrid stroke="#e5e7eb" className="dark:opacity-10" />
-                                        <PolarAngleAxis dataKey="name" tick={{ fontSize: 8, fontWeight: 700 }} />
-                                        <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-                                        <Radar
-                                            name="Style DNA"
-                                            dataKey="value"
-                                            stroke="#7c3aed"
-                                            fill="#7c3aed"
-                                            fillOpacity={0.4}
-                                        />
-                                    </RadarChart>
-                                </ResponsiveContainer>
-                            )}
-                        </div>
+                    <div className="lg:col-span-1">
+                        <SearchRankCard
+                            trends={trendsData}
+                            isLoading={isLoadingTrends}
+                            error={errorTrends}
+                            onRetry={() => fetchTrends(true)}
+                            className="h-full"
+                        />
                     </div>
 
                     {/* Bar Chart Section */}
@@ -137,6 +184,7 @@ export default function AnalysisSection({ sourceImage, productName, isLoading }:
                                         <Tooltip
                                             contentStyle={{ backgroundColor: '#121212', borderRadius: '12px', border: 'none', fontSize: '10px', color: '#fff' }}
                                             itemStyle={{ color: '#fff' }}
+                                            cursor={{ fill: 'transparent' }}
                                         />
                                         <Bar
                                             dataKey="val"

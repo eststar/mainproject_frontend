@@ -67,7 +67,7 @@ const ResultGrid: React.FC<ResultGridProps> = ({
                 </div>
 
                 {/* AI Similarity Badge: 분석 신뢰도를 시각적으로 표현 */}
-                {isActive && (
+                {/* {isActive && (
                     <div className="flex items-center gap-3 rounded-full border border-violet-100 bg-violet-50 px-6 py-2.5 hover:bg-violet-600 hover:text-white dark:border-violet-800 dark:bg-violet-900/10 dark:hover:bg-violet-700 group shadow-sm transition-all">
                         <FaWaveSquare size={10} className="text-violet-400 group-hover:text-white animate-pulse" />
                         <span className="flex items-center gap-2 text-[8px] font-bold uppercase tracking-widest text-violet-700 group-hover:text-white dark:text-violet-400">
@@ -75,7 +75,7 @@ const ResultGrid: React.FC<ResultGridProps> = ({
                             <span className="font-serif text-[10px] italic">98.2%</span>
                         </span>
                     </div>
-                )}
+                )} */}
             </div>
 
             {/* 2. 스크롤 가능한 결과 영역 */}

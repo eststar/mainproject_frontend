@@ -127,3 +127,26 @@ export const getInternalProductCount = async (): Promise<number> => {
         return 0;
     }
 }
+
+export const getInternalStyleCount = async () => {
+    try {
+        const response = await fetch(`${BASEURL}/api/products/style-count`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            console.error(`서버 에러: ${response.status}`);
+            return [];
+        }
+
+        const data = await response.json();
+
+        return data;
+    } catch (error) {
+        console.error("getStyleCount error:", error);
+        return [];
+    }
+};

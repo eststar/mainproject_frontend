@@ -3,6 +3,7 @@
 import React from 'react';
 import DashboardCard from './DashboardCard';
 import { FaArrowTrendUp } from 'react-icons/fa6';
+import { SiNaver } from 'react-icons/si';
 
 interface Trend {
     percentStr: string;
@@ -33,12 +34,11 @@ const SearchRankCard: React.FC<Props> = ({ trends, isLoading, error, onRetry, cl
             lgColSpan={1}
             className={`${className} min-h-72`}
             topRight={
-                <>
-                    {/* <div className="flex items-center gap-1.5 px-2.5 py-1 bg-violet-600 rounded-full shadow-md">
-                    <FaArrowTrendUp size={9} className="text-white" />
-                    <span className="text-[7px] font-bold text-white uppercase tracking-widest">Rank</span>
-                </div> */}
-                </>
+
+                <div className="w-10 h-10 rounded-2xl flex items-center justify-center text-white text-sm shadow-lg transform group-hover:scale-110 transition-transform bg-emerald-500 shadow-emerald-100 dark:shadow-none">
+                    <SiNaver size={15} />
+                </div>
+
             }
         >
             <div className="flex flex-col h-full space-y-2">
