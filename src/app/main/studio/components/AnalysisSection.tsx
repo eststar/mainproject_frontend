@@ -77,8 +77,8 @@ export default function AnalysisSection({ sourceImage, productName, isLoading }:
         setIsLoadingNaverProductCount(true);
         setErrorNaverProductCount(null);
         try {
-            const result = await getNaverProductCount();
-            setNaverProductCount(result);
+            // const result = await getNaverProductCount();
+            // setNaverProductCount(result);
         } catch (err) {
             console.error('Failed to fetch product count:', err);
             setErrorNaverProductCount('Connection Failed');
@@ -94,19 +94,19 @@ export default function AnalysisSection({ sourceImage, productName, isLoading }:
         setErrorTrends(null);
 
         try {
-            const result = await getShoppingTrends();
-            const processedData = result.map((item: any, i: number) => ({
-                ...item,
-                score: item.value || 0,
-                value: item.value || 0,
-                percentStr: item.percentStr || '0%',
-                xcoord: Math.random() * 200 - 100,
-                ycoord: Math.random() * 200 - 100,
-                productId: `trend-${i}`,
-                productName: item.style || `Style-${i}`
-            })).sort((a: any, b: any) => b.value - a.value);
+            // const result = await getShoppingTrends();
+            // const processedData = result.map((item: any, i: number) => ({
+            //     ...item,
+            //     score: item.value || 0,
+            //     value: item.value || 0,
+            //     percentStr: item.percentStr || '0%',
+            //     xcoord: Math.random() * 200 - 100,
+            //     ycoord: Math.random() * 200 - 100,
+            //     productId: `trend-${i}`,
+            //     productName: item.style || `Style-${i}`
+            // })).sort((a: any, b: any) => b.value - a.value);
 
-            setTrendsData(processedData);
+            // setTrendsData(processedData);
         } catch (err) {
             console.error('Failed to fetch trends:', err);
             setErrorTrends('Connection Failed');

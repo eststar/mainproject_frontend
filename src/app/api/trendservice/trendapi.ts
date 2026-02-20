@@ -14,14 +14,14 @@ export const getShoppingTrends = async () => {
         });
 
         if (!response.ok) {
-            console.error(`서버 에러: ${response.status}`);
+            console.log(`서버 에러: ${response.status}`);
             return [];
         }
 
         const data = await response.json();
         return data;
     } catch (error) {
-        console.error("fetchTrends error:", error);
+        console.log("fetchTrends error:", error);
         return [];
     }
 };

@@ -151,6 +151,12 @@ export default function Header() {
               <Link
                 key={item.id}
                 href={item.path}
+                onClick={(e) => {
+                  if (pathname === item.path) {
+                    e.preventDefault();
+                    window.location.href = item.path;
+                  }
+                }}
                 className={`px-3 sm:px-4 md:px-5 py-2 md:py-2.5 rounded-full text-[9px] font-bold uppercase tracking-widest md:tracking-[0.2em] flex items-center gap-2 transition-all shrink-0 ${pathname === item.path
                   ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/30'
                   : 'text-gray-500 hover:text-violet-600 dark:text-gray-400 dark:hover:text-white'

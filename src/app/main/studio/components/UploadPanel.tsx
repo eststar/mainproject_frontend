@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { FaCloudArrowUp, FaXmark, FaMagnifyingGlass, FaCircleInfo, FaExpand, FaFileImage, FaLightbulb } from 'react-icons/fa6';
+import { FaCloudArrowUp, FaXmark, FaMagnifyingGlass, FaCircleInfo, FaFileImage } from 'react-icons/fa6';
 import Image from 'next/image';
 import { RecommendData } from '@/types/ProductType';
-// import { getRecommendList } from '@/app/api/productservice/productapi';
-// import { postImage } from '@/app/api/imageservice/imageapi';
-import { searchByImage, FashionSearchResponse } from '@/app/api/imageservice/fashionSearch';
+
+import { imageAnalyze } from '@/app/api/imageservice/imageapi';
+// import { searchByImage, FashionSearchResponse } from '@/app/api/imageservice/fashionSearch';
 
 interface UploadPanelProps {
   onResultFound: (results: any[] | null) => void;
@@ -62,41 +62,23 @@ export default function UploadPanel({ onResultFound, onAnalysisStart, onAnalysis
       // 1. 즉시 로딩 화면으로 전환 (결과 그리드 초기화)
       onResultFound([]);
 
-      try {
-        // 2. 이미지 서버로 업로드 (Server Action 호출)
-        const uploadResult = await searchByImage(selectedFile);
-        console.log("Upload Success:", uploadResult);
-        if (uploadResult /* && uploadResult.success */) {
-          // 3. 분석 결과를 바탕으로 유사 상품 추천 리스트 조회
-          const results: RecommendData[] = uploadResult.results.map((item) => {
-            return {
-              productId: item.product_id,
-              title: item.title,
-              price: item.price,
-              productLink: '',
-              imageUrl: item.image_url,
-              similarityScore: item.score
-            };
-          });
-          console.log("Upload Success:", uploadResult);
-          onResultFound(results);
-        } else {
-          alert("이미지 업로드에 실패했습니다.");
-          onResultFound(null);
-        }
-      } catch (e) {
-        console.error("검색 실패:", e);
-        onResultFound(null); // 실패 시 초기 상태로
-      }
-
       // try {
-      //   // 2. 이미지 서버로 업로드 (Server Action 호출)
-      //   const uploadResult = await postImage(selectedFile);
+      // 2. 이미지 서버로 업로드 (Server Action 호출)
+      //   const uploadResult = await searchByImage(selectedFile);
       //   console.log("Upload Success:", uploadResult);
-      //   if (uploadResult && uploadResult.success) {
+      //   if (uploadResult /* && uploadResult.success */) {
       //     // 3. 분석 결과를 바탕으로 유사 상품 추천 리스트 조회
-      //     const results: RecommendData[] = await getRecommendList("AKA3CA001");
-
+      //     const results: RecommendData[] = uploadResult.results.map((item) => {
+      //       return {
+      //         productId: item.product_id,
+      //         title: item.title,
+      //         price: item.price,
+      //         productLink: '',
+      //         imageUrl: item.image_url,
+      //         similarityScore: item.score
+      //       };
+      //     });
+      //     console.log("Upload Success:", uploadResult);
       //     onResultFound(results);
       //   } else {
       //     alert("이미지 업로드에 실패했습니다.");
@@ -106,6 +88,24 @@ export default function UploadPanel({ onResultFound, onAnalysisStart, onAnalysis
       //   console.error("검색 실패:", e);
       //   onResultFound(null); // 실패 시 초기 상태로
       // }
+
+      try {
+        // 2. 이미지 서버로 업로드 (Server Action 호출)
+        const uploadResult: any = await imageAnalyze(selectedFile);
+        console.log("uploadResult", uploadResult);
+        if (uploadResult) {
+          // 3. 분석 결과를 바탕으로 유사 상품 추천 리스트 조회
+          // const results: RecommendData[] = await getRecommendList("AKA3CA001");
+
+          onResultFound(uploadResult.similarProducts);
+        } else {
+          alert("이미지 업로드에 실패했습니다.");
+          onResultFound(null);
+        }
+      } catch (e) {
+        console.error("검색 실패:", e);
+        onResultFound(null); // 실패 시 초기 상태로
+      }
     });
   };
 
@@ -227,7 +227,7 @@ export default function UploadPanel({ onResultFound, onAnalysisStart, onAnalysis
             <div className="p-5 rounded-3xl border-2 border-neutral-100 dark:border-white/10 bg-neutral-50/50 dark:bg-neutral-800/30 space-y-2">
               <h4 className="text-[10px] font-black uppercase tracking-widest text-neutral-800 dark:text-neutral-200">Formats & Quality</h4>
               <p className="text-[10px] text-neutral-500 dark:text-neutral-400 leading-relaxed">
-                Standard JPG/PNG with clean backgrounds ensures maximum DNA fidelity and matching accuracy.
+                Standard JPG/PNG
               </p>
             </div>
           </div>

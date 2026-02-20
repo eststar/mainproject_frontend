@@ -39,7 +39,7 @@ const ResultGrid: React.FC<ResultGridProps> = ({
     ];
 
     const [messageIndex, setMessageIndex] = React.useState(0);
-
+    // console.log("products", products);
     // 로딩 메시지 순환 타이머
     React.useEffect(() => {
         if (!isPending) {
@@ -101,7 +101,7 @@ const ResultGrid: React.FC<ResultGridProps> = ({
                             </p>
                         </div>
                     </div>
-                ) : (isActive || products) && products ? (
+                ) : (isActive || products) && Array.isArray(products) ? (
                     /* [상태 2] 분석 완료 및 상품 리스트 노출 */
                     <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4 pb-12">
                         {products.map((item, idx) => (

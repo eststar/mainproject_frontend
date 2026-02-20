@@ -1,5 +1,7 @@
 "use server"
 
+import { RecommendData } from "@/types/ProductType";
+
 /**
  * imageapi.ts
  * 스타일 분석을 위한 이미지 업로드 및 관련 처리를 담당하는 Server Actions
@@ -24,14 +26,14 @@ export const postImage = async (file: File) => {
         });
 
         if (!response.ok) {
-            console.error("Server error:", response.status, response.statusText);
+            console.log("Server error:", response.status, response.statusText);
             return null; // 에러 발생 시 null 반환하여 호출부에서 처리하게 함
         }
 
         const data = await response.json();
         return data;
     } catch (error) {
-        console.error("postImage error:", error);
+        console.log("postImage error:", error);
         return null; // 네트워크 에러 등 발생 시에도 null 반환하여 중단 방지
     }
 }
@@ -60,23 +62,27 @@ export const getImages = async () => {
     }
 }
 
-// export const testAnalyze = async () => {
-//     const reqUrl = `${TESTURL}/api/imageupload/testAnalyze`;
+export const imageAnalyze = async (file: File) => {
+    const reqUrl = `${BASEURL}/api/imageupload/analyze`;
+    const formData = new FormData();
+    formData.append('file', file);
 
-//     try {
-//         const response = await fetch(reqUrl, {
-//             method: 'GET',
-//         });
+    try {
+        const response = await fetch(reqUrl, {
+            method: 'POST',
+            body: formData,
+        });
 
-//         if (!response.ok) {
-//             console.error("Server error:", response.status, response.statusText);
-//             return []; // 실패 시 빈 배열 반환
-//         }
+        if (!response.ok) {
+            console.log("Server error:", response.status, response.statusText);
+            return []; // 실패 시 빈 배열 반환
+        }
+        console.log("response", response);
+        const data = await response.json();
 
-//         const data = await response.json();
-//         return data;
-//     } catch (error) {
-//         console.error("testAnalyze error:", error);
-//         return []; // 에러 시 빈 배열 반환하여 UI 깨짐 방지
-//     }
-// }
+        return data;
+    } catch (error) {
+        console.log("imageAnalyze error:", error);
+        return []; // 에러 시 빈 배열 반환하여 UI 깨짐 방지
+    }
+}
