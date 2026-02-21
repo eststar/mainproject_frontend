@@ -10,7 +10,7 @@ interface ProductCardProps {
 }
 
 /**
- * ProductCard: 스튜디오 검색 결과나 추천 상품을 보여주는 개별 상품 카드
+ * ProductCard: Upload Studio 및 Explore Catalog의 검색/분석 결과로 반환된 추천 상품을 표시하는 개별 아이템 카드 컴포넌트입니다.
  */
 export default function ProductCard({ product, index = 0, selected = false, onClick }: ProductCardProps) {
     // ... 기존 포맷팅 로직 생략 (유지에 주의)

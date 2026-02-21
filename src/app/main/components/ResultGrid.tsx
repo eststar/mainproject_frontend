@@ -15,8 +15,8 @@ interface ResultGridProps {
 }
 
 /**
- * ResultGrid: AI 스타일 분석 결과를 그리드 형태로 표시하는 컴포넌트
- * 분석 중일 때는 세련된 로딩 애니메이션을 보여주고, 완료 후 결과 카드를 나열합니다.
+ * ResultGrid: AI 스타일 분석(유사도 추천) 결과를 그리드 형태로 나열하여 표시하는 리스트 컴포넌트
+ * 분석 대기, 로딩, 완료 상태에 따른 시각적 피드백(Skeleton, Spinner)을 제공합니다.
  */
 const ResultGrid: React.FC<ResultGridProps> = ({
     title = "Archive Selection",

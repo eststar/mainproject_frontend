@@ -17,8 +17,9 @@ interface UploadPanelProps {
 }
 
 /**
- * UploadPanel: 이미지를 직접 업로드하여 분석을 요청하는 컴포넌트
- * 파일 선택, 미리보기, 서버 전송 및 분석 시작 로직을 포함합니다.
+ * UploadPanel: 이미지를 직접 업로드하여 분석 대상을 설정하는 컴포넌트
+ * Upload Studio 페이지(`/main/uploadpage`)에서 입력 대기 상태로 사용되며,
+ * 로컬 파일 선택, 미리보기, 서버 전송 전 인터랙션을 담당합니다.
  */
 export default function UploadPanel({ onResultFound, onAnalysisStart, onAnalysisCancel, isPending, startTransition }: UploadPanelProps) {
   const [preview, setPreview] = useState<string | null>(null); // 이미지 미리보기 URL

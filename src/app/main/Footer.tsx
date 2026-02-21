@@ -37,13 +37,18 @@ export default function Footer() {
           <div className="space-y-6">
             <h4 className="text-[9px] font-bold uppercase tracking-[0.4em] text-violet-600 dark:text-violet-500">System</h4>
             <ul className="space-y-3">
-              {['Overview', 'Studio', 'Statistics'].map((item) => (
-                <li key={item}>
+              {[
+                { name: 'Overview', path: '/main' },
+                { name: 'Upload Studio', path: '/main/uploadpage' },
+                { name: 'Explore', path: '/main/selectionpage' },
+                { name: 'Dashboard', path: '/main/dashboard' }
+              ].map((item) => (
+                <li key={item.name}>
                   <Link
-                    href={item === 'Overview' ? '/main' : `/main/${item.toLowerCase()}`}
+                    href={item.path}
                     className="text-[11px] font-light uppercase tracking-widest text-neutral-500 transition-colors hover:text-violet-600 dark:text-neutral-400 dark:hover:text-violet-400"
                   >
-                    {item}
+                    {item.name}
                   </Link>
                 </li>
               ))}

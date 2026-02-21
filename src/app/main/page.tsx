@@ -58,9 +58,9 @@ export default function MainPage() {
           </div>
         </Link>
 
-        {/* Card 2: Statistics Dashboard */}
+        {/* Card 2: Analytics Dashboard */}
         <Link
-          href="/main/statistics"
+          href="/main/dashboard"
           suppressHydrationWarning
           className="relative flex flex-col justify-between overflow-hidden rounded-[3rem] border-2 border-neutral-100 bg-white p-10 dark:border-white/10 dark:bg-neutral-900/50 md:p-14 group shadow-sm transition-[border-color,box-shadow,transform] duration-300 hover:border-violet-500/40"
         >
@@ -72,7 +72,7 @@ export default function MainPage() {
               <h4 className="text-[11px] font-bold uppercase tracking-widest text-violet-500">Dashboard</h4>
               <p className="text-7xl font-serif italic tracking-tighter text-neutral-900 dark:text-white"></p>
               <div className="flex items-center gap-3">
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">statistics</span>
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">analytics</span>
               </div>
             </div>
           </div>

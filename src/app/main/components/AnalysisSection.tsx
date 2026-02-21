@@ -32,7 +32,8 @@ const mockBarData = [
 ];
 
 /**
- * AnalysisSection: Studio 페이지에서 이미지 분석 결과를 시각화합니다.
+ * AnalysisSection: Studio 상단 영역에서, 사용자가 선택/업로드한 원본 이미지를 보여주고
+ * 이에 대한 간단한 분석 진행률이나 통계 리포트(차트 포함)를 시각화하는 패널 컴포넌트입니다.
  */
 export default function AnalysisSection({ sourceImage, productName, isLoading }: AnalysisSectionProps) {
     const [isMounting, setIsMounting] = useState(true);

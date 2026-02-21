@@ -16,8 +16,9 @@ interface SelectionPanelProps {
 }
 
 /**
- * DiscoveryPanel: 카테고리별 상품을 탐색하고, 특정 상품을 선택하여 스타일 검색을 시작하는 컴포넌트
- * 무한 스크롤(가상화), 카테고리 필터링, 상품 선택 기능을 포함합니다.
+ * SelectionPanel: 기존 데이터베이스 내 카테고리별 상품을 탐색하고, 특정 상품을 선택하여 비슷한 스타일을 검색하는 컴포넌트
+ * Explore Catalog 페이지(`/main/selectionpage`)에서 입력 대기 상태로 사용되며,
+ * 카테고리 필터링과 무한 스크롤 형태의 상품 탐색을 제공합니다.
  */
 export default function SelectionPanel({
   onResultFound,

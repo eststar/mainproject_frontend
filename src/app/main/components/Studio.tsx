@@ -12,9 +12,9 @@ import { RecommendData } from '@/types/ProductType';
 export type StudioMode = 'imageInput' | 'imageSelection';
 
 /**
- * Studio: AI 기반 스타일 탐색 및 분석의 메인 페이지 컨테이너
- * 두 가지 모드(기존 데이터 탐색 / 이미지 직접 업로드)를 관리하며,
- * 분석 결과 발생 시 세련된 2-Card 레이아웃으로 결과를 표시합니다.
+ * Studio: AI 기반 스타일 탐색 및 분석의 공통 페이지(컨테이너) 컴포넌트
+ * 'Upload Studio' (이미지 직접 업로드) 및 'Explore Catalog' (기존 데이터 탐색) 
+ * 두 가지 모드를 mode prop으로 주입받아 처리하며, 분석 완료 시 2-Card 레이아웃으로 상세 보고서와 추천 아이템을 표시합니다.
  */
 export default function Studio({ mode }: { mode: StudioMode }) {
   // React 18 Transition을 사용한 매끄러운 상태 전환
