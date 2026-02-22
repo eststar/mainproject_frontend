@@ -1,6 +1,8 @@
 import { RecommendData } from "@/types/ProductType";
 import Image from "next/image";
-import { FaCheck } from "react-icons/fa6";
+import { FaCheck, FaCartArrowDown } from "react-icons/fa6";
+import { useAtom } from "jotai";
+import { cartAtom } from "@/jotai/historyJotai";
 
 interface ProductCardProps {
     product: RecommendData;
@@ -22,6 +24,19 @@ export default function ProductCard({ product, index = 0, selected = false, onCl
         style: 'currency',
         currency: 'KRW'
     }).format(product.price);
+
+    // 장바구니 상태 관리
+    const [cart, setCart] = useAtom(cartAtom);
+    const isInCart = cart.some((item) => item.productId === product.productId);
+
+    const toggleCart = (e: React.MouseEvent) => {
+        e.stopPropagation(); // 카드 자체의 클릭 이벤트(새 창 열기 등) 방지
+        if (isInCart) {
+            setCart(cart.filter((item) => item.productId !== product.productId));
+        } else {
+            setCart([...cart, product]);
+        }
+    };
 
     return (
         <div
@@ -49,6 +64,16 @@ export default function ProductCard({ product, index = 0, selected = false, onCl
                 )}
 
                 <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-all" />
+
+                {/* 우측 상단 장바구니 버튼 */}
+                <button
+                    onClick={toggleCart}
+                    title={isInCart ? 'Remove from Cart' : 'Add to Cart'}
+                    className={`absolute top-4 right-4 z-20 w-8 h-8 rounded-full flex items-center justify-center transition-all bg-white shadow-xl ${isInCart ? 'text-violet-600 scale-110 shadow-violet-500/20' : 'text-neutral-300 hover:text-violet-500 hover:scale-110'
+                        }`}
+                >
+                    <FaCartArrowDown size={14} className={isInCart ? 'animate-bounce' : ''} />
+                </button>
             </div>
 
             {/* 2. 상품 정보 컨테이너 */}

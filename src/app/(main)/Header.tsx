@@ -122,12 +122,11 @@ export default function Header() {
     }
   };
 
-  // 네비게이션 아이템 정의
+  // 네비게이션 아이템 정의 (Overview 메뉴 대신 로고 클릭 권장)
   const navItems = [
-    { id: 'home', label: 'Overview', icon: <FaHouse size={20} />, path: '/' },
-    { id: 'uploadpage', label: 'Upload Studio', icon: <FaCamera size={20} />, path: '/uploadpage' },
-    { id: 'selectionpage', label: 'Selection Studio', icon: <FaMagnifyingGlass size={20} />, path: '/selectionpage' },
-    { id: 'dashboard', label: 'Dashboard', icon: <FaChartLine size={20} />, path: '/dashboard' },
+    { id: 'uploadpage', label: 'Upload Studio', icon: <FaCamera size={18} />, path: '/uploadpage' },
+    { id: 'selectionpage', label: 'Selection Studio', icon: <FaMagnifyingGlass size={18} />, path: '/selectionpage' },
+    { id: 'dashboard', label: 'Dashboard', icon: <FaChartLine size={18} />, path: '/dashboard' },
   ];
 
   return (
@@ -136,20 +135,21 @@ export default function Header() {
         {/* 단일 통합 헤더 바: w-full로 아래 카드들과 길이를 맞춤 */}
         <div className="w-full flex items-center bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl p-1.5 rounded-full border-2 border-neutral-100 dark:border-white/10 shadow-xl transition-all">
 
-          {/* 1. 좌측: 브랜드 로고 */}
-          <Link href="/" className="flex flex-row gap-2 items-center px-3 py-1 hover:opacity-70 transition-opacity shrink-0">
-            <div className="relative w-10 h-10 md:w-11 md:h-11">
+          {/* 1. 좌측: 브랜드 로고 (좌측 밀착) */}
+          <Link href="/" className="flex flex-row gap-2 items-center pl-3 pr-1 md:pr-2 py-1 hover:opacity-70 transition-opacity shrink-0">
+            <div className="relative w-6 h-6 md:w-7 md:h-7 opacity-90 drop-shadow-sm shrink-0">
               <Image src={Wizard} alt="Logo" fill className="object-contain" unoptimized />
             </div>
-            <h1 className="hidden md:block text-lg lg:text-2xl font-sans font-black tracking-widest lg:tracking-[0.4em] uppercase text-neutral-900 dark:text-white leading-none">
+            <h1 className="hidden md:block text-base lg:text-xl font-sans font-black tracking-widest lg:tracking-[0.3em] uppercase text-neutral-900 dark:text-white leading-none truncate">
               <span className="text-yellow-400"> Wizard</span> of <span className='text-purple-700'>Ounce</span>
             </h1>
           </Link>
 
-          <div className="w-px h-6 bg-gray-200 dark:bg-white/10 mx-1 md:mx-4 shrink-0" />
+          {/* 중앙 요소들과 로고 사이의 미세한 간격 및 시각적 구분선 */}
+          <div className="hidden md:block w-px h-5 bg-gray-200 dark:bg-white/10 mx-1 lg:mx-3 shrink-0" />
 
-          {/* 2. 중앙: 메인 네비게이션 */}
-          <div className="flex items-center gap-0.5 md:gap-1 overflow-hidden">
+          {/* 2. 중앙: 메인 네비게이션 (로고 바로 옆에서 일정한 간격 유지) */}
+          <div className="flex items-center gap-1 md:gap-2 ml-1 md:ml-0">
             {navItems.map((item) => (
               <Link
                 key={item.id}
@@ -160,9 +160,9 @@ export default function Header() {
                     window.location.href = item.path;
                   }
                 }}
-                className={`px-3 sm:px-4 md:px-5 py-2 md:py-2.5 rounded-full text-[9px] font-bold uppercase tracking-widest md:tracking-[0.2em] flex items-center gap-2 transition-all shrink-0 ${pathname === item.path
+                className={`px-2.5 sm:px-3 lg:px-4 py-2 rounded-full text-[9px] font-bold uppercase tracking-wider lg:tracking-[0.2em] flex items-center gap-1.5 md:gap-2 transition-all shrink-0 ${pathname === item.path
                   ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/30'
-                  : 'text-gray-500 hover:text-violet-600 dark:text-gray-400 dark:hover:text-white'
+                  : 'text-gray-500 hover:text-violet-600 dark:text-gray-400 dark:hover:text-white bg-transparent hover:bg-neutral-50 dark:hover:bg-white/5'
                   }`}
               >
                 {item.icon}
@@ -171,11 +171,11 @@ export default function Header() {
             ))}
           </div>
 
-          {/* 우측으로 밀어주기 위한 Spacer */}
+          {/* 톱니바퀴만 오른쪽 끝으로 밀어내기 위한 여백(Spacer) */}
           <div className="flex-1" />
 
-          {/* 3. 우측: 설정 및 인증 상태 (통합 영역) */}
-          <div className="flex items-center shrink-0 pr-1 md:pr-2" ref={profileRef}>
+          {/* 3. 우측: 설정 및 인증 상태 (오른쪽 끝에 고정) */}
+          <div className="flex items-center justify-end shrink-0 pr-1 md:pr-2" ref={profileRef}>
 
             {/* 로그인 상태 정보 (Desktop) */}
             {isMounted && authInfo && (() => {
